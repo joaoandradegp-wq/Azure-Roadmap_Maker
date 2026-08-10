@@ -1,0 +1,69 @@
+{
+  "azure": {
+    "organization": "sua-organizacao",
+    "project": "SeuProjeto",
+    "patEnvVar": "AZURE_DEVOPS_PAT",
+    "apiVersion": "7.1"
+  },
+
+  "query": {
+    "workItemTypes": ["Feature"],
+    "areaPath": null,
+    "extraWiqlWhere": null
+  },
+
+  "fields": {
+    "id": "System.Id",
+    "title": "System.Title",
+    "type": "System.WorkItemType",
+    "state": "System.State",
+    "assignedTo": "System.AssignedTo",
+    "iterationPath": "System.IterationPath",
+    "tags": "System.Tags",
+    "plannedStart": "Microsoft.VSTS.Scheduling.StartDate",
+    "plannedEnd": "Microsoft.VSTS.Scheduling.TargetDate",
+    "actualStart": "Microsoft.VSTS.Scheduling.StartDate",
+    "closedDate": "Microsoft.VSTS.Common.ClosedDate"
+  },
+
+  "statusMapping": {
+    "byState": {
+      "New": "naoIniciado",
+      "Proposed": "naoIniciado",
+      "Active": "noPrazo",
+      "In Progress": "noPrazo",
+      "Resolved": "noPrazo",
+      "In QA": "noPrazo",
+      "Closed": "noPrazo",
+      "Done": "noPrazo",
+      "Removed": "pausado"
+    },
+    "byTag": {
+      "Atraso": "atraso",
+      "Atrasado": "atraso",
+      "Bloqueado": "atraso",
+      "Blocked": "atraso",
+      "Risco": "risco",
+      "Pausado": "pausado"
+    }
+  },
+
+  "timeline": {
+    "granularity": "biweekly",
+    "monthsBack": 4,
+    "monthsForward": 2
+  },
+
+  "sprintCadence": {
+    "_comment": "Datas de início/fim de UMA sprint conhecida, usadas como referência pra calcular todas as outras (pra frente e pra trás) por cadência fixa. Ajuste pra uma sprint atual do seu board.",
+    "referenceSprintNumber": 10,
+    "referenceStart": "2026-08-10",
+    "referenceEnd": "2026-08-21",
+    "cadenceDays": 14
+  },
+
+  "project": {
+    "title": "Roadmap de Projetos e Melhorias Funil de Vendas - Livre",
+    "squad": "Vendas"
+  }
+}

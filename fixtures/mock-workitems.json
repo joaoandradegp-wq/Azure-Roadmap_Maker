@@ -1,0 +1,58 @@
+[
+  {
+    "id": 10521,
+    "fields": {
+      "System.Title": "Liveness Fraude",
+      "System.WorkItemType": "Feature",
+      "System.State": "Active",
+      "System.AssignedTo": { "displayName": "Equipe Salesforce" },
+      "System.IterationPath": "Projeto Funil de Vendas Ongoing\\Sprint 10 - Livre e Fleet",
+      "System.Tags": "",
+      "Microsoft.VSTS.Scheduling.StartDate": "2026-04-02",
+      "Microsoft.VSTS.Scheduling.TargetDate": "2026-07-15",
+      "Microsoft.VSTS.Common.ClosedDate": null
+    }
+  },
+  {
+    "id": 10522,
+    "fields": {
+      "System.Title": "150 Propostas",
+      "System.WorkItemType": "Feature",
+      "System.State": "Closed",
+      "System.AssignedTo": { "displayName": "Equipe Comercial" },
+      "System.IterationPath": "Projeto Funil de Vendas Ongoing\\Sprint 09 - Livre e Fleet",
+      "System.Tags": "",
+      "Microsoft.VSTS.Scheduling.StartDate": "2026-04-01",
+      "Microsoft.VSTS.Scheduling.TargetDate": "2026-06-30",
+      "Microsoft.VSTS.Common.ClosedDate": "2026-08-05"
+    }
+  },
+  {
+    "id": 10524,
+    "fields": {
+      "System.Title": "Pedido de Compra",
+      "System.WorkItemType": "Feature",
+      "System.State": "Active",
+      "System.AssignedTo": { "displayName": "Equipe Comercial" },
+      "System.IterationPath": "Projeto Funil de Vendas Ongoing\\Sprint 10 - Livre e Fleet",
+      "System.Tags": "Bloqueado; Risco",
+      "Microsoft.VSTS.Scheduling.StartDate": "2026-04-10",
+      "Microsoft.VSTS.Scheduling.TargetDate": "2026-08-01",
+      "Microsoft.VSTS.Common.ClosedDate": null
+    }
+  },
+  {
+    "id": 10530,
+    "fields": {
+      "System.Title": "Item sem sprint atribuída",
+      "System.WorkItemType": "Feature",
+      "System.State": "New",
+      "System.AssignedTo": { "displayName": "Equipe Comercial" },
+      "System.IterationPath": "Projeto Funil de Vendas Ongoing",
+      "System.Tags": "",
+      "Microsoft.VSTS.Scheduling.StartDate": null,
+      "Microsoft.VSTS.Scheduling.TargetDate": null,
+      "Microsoft.VSTS.Common.ClosedDate": null
+    }
+  }
+]
