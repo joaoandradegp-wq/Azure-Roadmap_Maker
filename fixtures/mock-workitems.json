@@ -1,58 +1,86 @@
 [
   {
-    "id": 10521,
+    "id": 1,
     "fields": {
-      "System.Title": "Liveness Fraude",
+      "System.Title": "Sprint 09 - Livre e Fleet - Zebra: item com sprint só no título (deveria virar SP09)",
       "System.WorkItemType": "Feature",
       "System.State": "Active",
-      "System.AssignedTo": { "displayName": "Equipe Salesforce" },
-      "System.IterationPath": "Projeto Funil de Vendas Ongoing\\Sprint 10 - Livre e Fleet",
-      "System.Tags": "",
-      "Microsoft.VSTS.Scheduling.StartDate": "2026-04-02",
-      "Microsoft.VSTS.Scheduling.TargetDate": "2026-07-15",
-      "Microsoft.VSTS.Common.ClosedDate": null
-    }
-  },
-  {
-    "id": 10522,
-    "fields": {
-      "System.Title": "150 Propostas",
-      "System.WorkItemType": "Feature",
-      "System.State": "Closed",
-      "System.AssignedTo": { "displayName": "Equipe Comercial" },
-      "System.IterationPath": "Projeto Funil de Vendas Ongoing\\Sprint 09 - Livre e Fleet",
-      "System.Tags": "",
-      "Microsoft.VSTS.Scheduling.StartDate": "2026-04-01",
-      "Microsoft.VSTS.Scheduling.TargetDate": "2026-06-30",
-      "Microsoft.VSTS.Common.ClosedDate": "2026-08-05"
-    }
-  },
-  {
-    "id": 10524,
-    "fields": {
-      "System.Title": "Pedido de Compra",
-      "System.WorkItemType": "Feature",
-      "System.State": "Active",
-      "System.AssignedTo": { "displayName": "Equipe Comercial" },
-      "System.IterationPath": "Projeto Funil de Vendas Ongoing\\Sprint 10 - Livre e Fleet",
-      "System.Tags": "Bloqueado; Risco",
-      "Microsoft.VSTS.Scheduling.StartDate": "2026-04-10",
-      "Microsoft.VSTS.Scheduling.TargetDate": "2026-08-01",
-      "Microsoft.VSTS.Common.ClosedDate": null
-    }
-  },
-  {
-    "id": 10530,
-    "fields": {
-      "System.Title": "Item sem sprint atribuída",
-      "System.WorkItemType": "Feature",
-      "System.State": "New",
-      "System.AssignedTo": { "displayName": "Equipe Comercial" },
+      "System.AssignedTo": { "displayName": "Equipe A" },
       "System.IterationPath": "Projeto Funil de Vendas Ongoing",
       "System.Tags": "",
       "Microsoft.VSTS.Scheduling.StartDate": null,
       "Microsoft.VSTS.Scheduling.TargetDate": null,
       "Microsoft.VSTS.Common.ClosedDate": null
+    }
+  },
+  {
+    "id": 2,
+    "fields": {
+      "System.Title": "Alfa: item normal em SP10 (dentro da janela, deveria aparecer)",
+      "System.WorkItemType": "Feature",
+      "System.State": "Active",
+      "System.AssignedTo": { "displayName": "Equipe B" },
+      "System.IterationPath": "Projeto Funil de Vendas Ongoing\\Sprint 10 - Livre e Fleet",
+      "System.Tags": "",
+      "Microsoft.VSTS.Scheduling.StartDate": null,
+      "Microsoft.VSTS.Scheduling.TargetDate": null,
+      "Microsoft.VSTS.Common.ClosedDate": null
+    }
+  },
+  {
+    "id": 3,
+    "fields": {
+      "System.Title": "Item com tag Bug (não deveria aparecer de jeito nenhum)",
+      "System.WorkItemType": "Feature",
+      "System.State": "Active",
+      "System.AssignedTo": { "displayName": "Equipe C" },
+      "System.IterationPath": "Projeto Funil de Vendas Ongoing\\Sprint 10 - Livre e Fleet",
+      "System.Tags": "Bug; Livre",
+      "Microsoft.VSTS.Scheduling.StartDate": null,
+      "Microsoft.VSTS.Scheduling.TargetDate": null,
+      "Microsoft.VSTS.Common.ClosedDate": null
+    }
+  },
+  {
+    "id": 4,
+    "fields": {
+      "System.Title": "Item da SP01 lá atrás (fora da janela de 3 meses, não deveria aparecer)",
+      "System.WorkItemType": "Feature",
+      "System.State": "Closed",
+      "System.AssignedTo": { "displayName": "Equipe D" },
+      "System.IterationPath": "Projeto Funil de Vendas Ongoing\\Sprint 01 - Livre e Fleet",
+      "System.Tags": "",
+      "Microsoft.VSTS.Scheduling.StartDate": null,
+      "Microsoft.VSTS.Scheduling.TargetDate": null,
+      "Microsoft.VSTS.Common.ClosedDate": "2026-01-15"
+    }
+  },
+  {
+    "id": 5,
+    "fields": {
+      "System.Title": "Beta: fechou depois do fim da própria sprint (deveria ser atraso)",
+      "System.WorkItemType": "Feature",
+      "System.State": "Closed",
+      "System.AssignedTo": { "displayName": "Equipe E" },
+      "System.IterationPath": "Projeto Funil de Vendas Ongoing\\Sprint 09 - Livre e Fleet",
+      "System.Tags": "",
+      "Microsoft.VSTS.Scheduling.StartDate": null,
+      "Microsoft.VSTS.Scheduling.TargetDate": null,
+      "Microsoft.VSTS.Common.ClosedDate": "2026-08-15"
+    }
+  },
+  {
+    "id": 6,
+    "fields": {
+      "System.Title": "Delta: fechou dentro do prazo da própria sprint (no prazo)",
+      "System.WorkItemType": "Feature",
+      "System.State": "Closed",
+      "System.AssignedTo": { "displayName": "Equipe F" },
+      "System.IterationPath": "Projeto Funil de Vendas Ongoing\\Sprint 09 - Livre e Fleet",
+      "System.Tags": "",
+      "Microsoft.VSTS.Scheduling.StartDate": null,
+      "Microsoft.VSTS.Scheduling.TargetDate": null,
+      "Microsoft.VSTS.Common.ClosedDate": "2026-08-05"
     }
   }
 ]

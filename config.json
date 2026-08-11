@@ -9,7 +9,7 @@
   "query": {
     "workItemTypes": ["Feature", "User Story", "Tech Story", "Sustentação", "Administrativo"],
     "areaPath": "Projeto Funil de Vendas Ongoing",
-    "extraWiqlWhere": "[System.BoardLane] = 'LIVRE' AND [System.CreatedDate] >= '2026-01-01'"
+    "extraWiqlWhere": "[System.BoardLane] = 'LIVRE' AND [System.CreatedDate] >= '2026-01-01' AND [System.Tags] NOT CONTAINS 'Bug'"
   },
 
   "fields": {
