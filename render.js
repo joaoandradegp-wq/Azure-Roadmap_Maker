@@ -127,26 +127,18 @@ function renderPage(roadmapChunk, pageInfo) {
   phaseOrder.forEach((key) => {
     const color = data.phaseColors[key];
     const label = data.phaseLabels[key];
-    if (key === "naoIniciado") {
-      slide.addText("n", {
-        x: px, y: legendY1b, w: 0.16, h: 0.16,
-        fontSize: 10, bold: true, color, fontFace: "Arial",
-        align: "center", margin: 0,
-      });
-    } else {
-      slide.addShape("rect", {
-        x: px, y: legendY1b + 0.01, w: 0.13, h: 0.13,
-        fill: { color: "FFFFFF" },
-        line: { color, width: 1.5 },
-      });
-    }
+    slide.addShape("ellipse", {
+      x: px, y: legendY1b, w: 0.15, h: 0.15,
+      fill: { color },
+      line: { color: "FFFFFF", width: 0.5 },
+    });
     const labelW = estimateTextWidth(label, legendFont);
     slide.addText(label, {
-      x: px + 0.2, y: legendY1b - 0.03, w: labelW, h: 0.22,
+      x: px + 0.17, y: legendY1b - 0.03, w: labelW, h: 0.22,
       fontSize: legendFont, color: TEXT_DARK, fontFace: "Arial",
       valign: "middle", margin: 0,
     });
-    px += 0.2 + labelW + 0.22;
+    px += 0.17 + labelW + 0.12;
   });
 
   // ---------- Legenda: Status – Entregas ----------
@@ -166,10 +158,10 @@ function renderPage(roadmapChunk, pageInfo) {
   });
   const inicioW = estimateTextWidth("Início", legendFont);
   slide.addText("Início", {
-    x: dx + 0.22, y: legendY2b - 0.03, w: inicioW, h: 0.22,
+    x: dx + 0.18, y: legendY2b - 0.03, w: inicioW, h: 0.22,
     fontSize: legendFont, color: TEXT_DARK, fontFace: "Arial", valign: "middle", margin: 0,
   });
-  dx += 0.22 + inicioW + 0.2;
+  dx += 0.18 + inicioW + 0.12;
 
   const deliveryOrder = ["previsao", "concluidaPrazo", "concluidaAtraso"];
   deliveryOrder.forEach((key) => {
@@ -187,10 +179,10 @@ function renderPage(roadmapChunk, pageInfo) {
     });
     const labelW = estimateTextWidth(label, legendFont);
     slide.addText(label, {
-      x: dx + 0.22, y: legendY2b - 0.05, w: labelW, h: 0.3,
+      x: dx + 0.19, y: legendY2b - 0.05, w: labelW, h: 0.3,
       fontSize: legendFont, color: TEXT_DARK, fontFace: "Arial", valign: "middle", margin: 0,
     });
-    dx += 0.22 + labelW + 0.2;
+    dx += 0.19 + labelW + 0.12;
   });
 
   // ---------- Grade do roadmap ----------
@@ -277,19 +269,12 @@ function renderPage(roadmapChunk, pageInfo) {
     });
 
     const phaseColor = data.phaseColors[item.phaseStatus] || "9E9E9E";
-    if (item.phaseStatus === "naoIniciado") {
-      slide.addText("n", {
-        x: MARGIN + nameColW, y: rowY, w: statusColW, h: rowH,
-        fontSize: 10, bold: true, color: phaseColor, fontFace: "Arial",
-        align: "center", valign: "middle", margin: 0,
-      });
-    } else {
-      slide.addShape("rect", {
-        x: MARGIN + nameColW + statusColW / 2 - 0.08, y: rowY + rowH / 2 - 0.08,
-        w: 0.16, h: 0.16,
-        fill: { color: "FFFFFF" }, line: { color: phaseColor, width: 1.5 },
-      });
-    }
+    slide.addShape("ellipse", {
+      x: MARGIN + nameColW + statusColW / 2 - 0.08, y: rowY + rowH / 2 - 0.08,
+      w: 0.16, h: 0.16,
+      fill: { color: phaseColor },
+      line: { color: "FFFFFF", width: 0.5 },
+    });
 
     const startIdx = periodToFlatIndex(flatPeriods, item.startPeriod);
     const endIdx = periodToFlatIndex(flatPeriods, item.endPeriod);

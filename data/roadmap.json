@@ -2,7 +2,7 @@
   "project": {
     "squad": "Vendas",
     "title": "Roadmap de Projetos e Melhorias Funil de Vendas - Livre",
-    "reportDate": "2026-08-10"
+    "reportDate": "2026-08-11"
   },
   "months": [
     {
@@ -58,14 +58,14 @@
   "todayPeriod": {
     "month": "Agosto",
     "subcolIndex": 0,
-    "fraction": 0.6428571428571429
+    "fraction": 0.7142857142857143
   },
   "phaseColors": {
-    "naoIniciado": "E53935",
-    "noPrazo": "8BC34A",
-    "risco": "FFC107",
-    "atraso": "E53935",
-    "pausado": "FF9800"
+    "naoIniciado": "BFBFBF",
+    "noPrazo": "70AD47",
+    "risco": "FFC000",
+    "atraso": "C00000",
+    "pausado": "E97132"
   },
   "phaseLabels": {
     "naoIniciado": "Não iniciado",
@@ -86,612 +86,10 @@
   },
   "roadmap": [
     {
-      "id": 385296,
-      "title": "OPORTUNIDADE | Correção de Cancelamento de Crédito e Validação de Múltiplas Chamadas",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 387018,
-      "title": "OPORTUNIDADE | Liberação de edição do campo “Número do Contrato Master – Origem",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 387493,
-      "title": "SP01 - OPORTUNIDADE | Desenvolver Exibição do Ano/Modelo na Oportunidade",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 387519,
-      "title": "LEAD | Desenvolver Padronização do Cadastro de Cidades Atendidas pela UNIDAS",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 387569,
-      "title": "ASSET | Ano do Produto Desatualizado",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 388456,
-      "title": "CONTRATO | Desativação da ValidationRule de Assinatura do Contrato",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 389140,
-      "title": "LEAD | Desenvolver  Fluxo de Consulta com Pré-Score",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 389294,
-      "title": "SP01 - CONTRATO | Tornar FirstName não obrigatório na criação de Contrato",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 391124,
-      "title": "OPORTUNIDADE | Desenvolver correção do preenchimento do campo IRIS_ValorKmRodado__c nas Oportunidades",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 393032,
-      "title": "RENOVAÇÃO | Desenvolver Integração de Pedidos de Renovação com Locavia",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 394012,
-      "title": "SP01 - OPORTUNIDADE | Desenvolvimento de Subfases para oportunidades de Renovação",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 394013,
-      "title": "SP01 - CONTRATO | Desenvolver remoção da trava de Cadastro SF x Assinatura",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 394897,
-      "title": "OPORTUNIDADE | Atualização e inclusão de motivos no campo “Motivo Fechado Perdido”",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 395197,
-      "title": "LEAD | Desenvolvimento de Correção Nº2 de Cadastro de Cidades via Integração",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 395200,
-      "title": "PRODUTO | Voltar Flow e da UF de Emplacamento",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 395870,
-      "title": "USER| Desenvolver liberação de edição de Oportunidades para IRIS_Gestor_Comercial_Livre",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 397306,
-      "title": "SP06 - QUOTE | Desenvolver envio de Opcionais no Pedido de Compra para o Locavia - Etapa Integração (fase 2)",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Junho",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Julho",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 397308,
-      "title": "ACCOUNT | Desenvolver bloqueio na trigger quando o tipo de registro da Conta for Empresa",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 397404,
-      "title": "OPORTUNIDADE | Desenvolver correção Motivo de Perda (Fechado Perdido)",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 398780,
-      "title": "OPORTUNIDADE - Desenvolver correção de mudança indevida do status da Oportunidade",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 409101,
-      "title": "OPORTUNIDADE | Desenvolver obrigatoriedade do Campo Subfase",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 417288,
-      "title": "SP01 - OPORTUNIDADE | Remover perfis do bloqueio de edição de campos na Oportunidade.",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 419044,
-      "title": "CONTA | Alterar Nome do Cliente após Subida de Nova Proposta",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 422745,
-      "title": "OPORTUNIDADE | Liberar a visualização do campo \"Cadastro sincronizado SAP e Locavia\" para o Perfil Atendimento Livre",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 428396,
-      "title": "CONTRATO | Desenvolver JOB para que apenas 5 tipos de contratos gerem a Renovação",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 434664,
-      "title": "LEAD | Investigar falha na conversão automática de Lead",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 457607,
-      "title": "CONTRATO | Integração com Plataforma de Crédito \"Tipo de Contrato\"",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 484927,
-      "title": "SP01 - OPORTUNIDADE | Tratar descrição de LOG para Pedido de Compra",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 517369,
-      "title": "SP60 - OPORTUNIDADE | Fraude - Alteração Revision20 na API ContractLivre",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Novembro",
-        "subcolIndex": 1
-      },
-      "endPeriod": {
-        "month": "Novembro",
-        "subcolIndex": 1
-      }
-    },
-    {
-      "id": 534334,
-      "title": "SP01 - LEAD | Melhoria no processo de Consulta SERASA + Log",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 539556,
-      "title": "OPORTUNIDADE | Substituir exibição de endereço detalhado de fornecedores por localização genérica",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Junho",
-        "subcolIndex": 1
-      }
-    },
-    {
-      "id": 539599,
-      "title": "OPORTUNIDADE | Permitir reversão automática do status “Fechado Ganho” para “Fechado Perdido” em caso de cancelamento antes da entrega",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "previsao",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 543185,
-      "title": "SP08 - OPORTUNIDADE | Criar campo para rastrear a data da última alteração da subfase da oportunidade",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Julho",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 543196,
-      "title": "SP04 - OPORTUNIDADE | Desenvolver permissão para geração de pedido de compra sem delay de 8 dias​",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 1
-      },
-      "endPeriod": {
-        "month": "Junho",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 543211,
-      "title": "SP06 - OPORTUNIDADE | Atualizar motivo “Preço” para “Problemas financeiros” e incluir opção “Não informado”",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Junho",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Julho",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 543213,
-      "title": "SP07 - OPORTUNIDADE | Disparar e-mail ao vendedor quando o crédito reprovar uma renovação",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Junho",
-        "subcolIndex": 1
-      },
-      "endPeriod": {
-        "month": "Julho",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 543226,
-      "title": "SP08 - OPORTUNIDADE | Adicionar campo “Data término do contrato” nas oportunidades de renovação",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Julho",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 543229,
-      "title": "OPORTUNIDADE | Desenvolver correção para atualização do motivo do pedido de compra em cenários de renovação",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Junho",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 561852,
-      "title": "SP07 - OPORTUNIDADE | Preenchimento automático da Data de Retorno da Análise de Dados em Oportunidades de Renovação",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Junho",
-        "subcolIndex": 1
-      },
-      "endPeriod": {
-        "month": "Julho",
-        "subcolIndex": 1
-      }
-    },
-    {
-      "id": 593039,
-      "title": "[Bug] - Batch de Renovação sendo Afetado pela integração do Score Serasa",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 593226,
-      "title": "SP02 - CONTA | Permitir alteração manual do nome da Conta para registros criados de forma sistêmica",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 594558,
-      "title": "ASSET - Stauts do Ativo Fleet aparecendo no Livre",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 1
-      }
-    },
-    {
-      "id": 625264,
-      "title": "OPORTUNIDADE | Desenvolver Correção do Status da Análise de Crédito",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 1
-      }
-    },
-    {
       "id": 625328,
       "title": "SP03 - CONTA | Botão Manual para Consulta SERASA na Conta (Pessoa Física)",
       "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
+      "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
         "month": "Maio",
         "subcolIndex": 0
@@ -699,69 +97,13 @@
       "endPeriod": {
         "month": "Maio",
         "subcolIndex": 1
-      }
-    },
-    {
-      "id": 639777,
-      "title": "OPORTUNIDADE | Desenvolver correção de atualização de SubFase em Oportunidade de Renovação",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 1
-      }
-    },
-    {
-      "id": 640188,
-      "title": "USER | \"Atendimento Livre\" precisa enxergar \"Nome_do_Vendedor__c\"",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 1
-      }
-    },
-    {
-      "id": 640903,
-      "title": "SP04 - OPORTUNIDADE | Desenvolver ajuste na atualização do campo de desconto via Integração​",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 1
-      },
-      "endPeriod": {
-        "month": "Junho",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 642299,
-      "title": "OPORTUNIDADE | Desenvolver correção para Renovação Automática",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
       }
     },
     {
       "id": 642989,
       "title": "SP04 - CASO | Desenvolver regra de criação de CASO de não renovação",
       "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
+      "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
         "month": "Maio",
         "subcolIndex": 1
@@ -769,48 +111,6 @@
       "endPeriod": {
         "month": "Junho",
         "subcolIndex": 0
-      }
-    },
-    {
-      "id": 645061,
-      "title": "SP03 - OPORTUNIDADE | Desenvolver correção para BUG pós Deploy em Renovação Automática",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 656857,
-      "title": "SP04 - OPORTUNIDADE | Complemento de Distribuição de Leads – Inserir ID e NOME do Gestor da Oportunidade",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 1
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 1
-      }
-    },
-    {
-      "id": 657117,
-      "title": "OPORTUNIDADE | Desenvolver correção do disparo da Distribuição de Lead",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 1
       }
     },
     {
@@ -828,51 +128,23 @@
       }
     },
     {
-      "id": 657375,
-      "title": "OPORTUNIDADE | Desenvolver correção de vinculo do vendedor no Atlas na Distribuição de Leads",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 1
-      }
-    },
-    {
-      "id": 657521,
-      "title": "OPORTUNIDADE | Desenvolver cópia do nome do Owner para o Campo \"Nome do Vendedor\"",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 1
-      }
-    },
-    {
-      "id": 658406,
-      "title": "LEAD | Desenvolver correção para LeadSource Nulo",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Maio",
-        "subcolIndex": 1
-      }
-    },
-    {
       "id": 659617,
       "title": "SP04 - OPORTUNIDADE | Ajustar balanceamento de Distribuição de Leads",
       "phaseStatus": "noPrazo",
+      "deliveryStatus": "concluidaAtraso",
+      "startPeriod": {
+        "month": "Maio",
+        "subcolIndex": 1
+      },
+      "endPeriod": {
+        "month": "Maio",
+        "subcolIndex": 1
+      }
+    },
+    {
+      "id": 656857,
+      "title": "SP04 - OPORTUNIDADE | Complemento de Distribuição de Leads – Inserir ID e NOME do Gestor da Oportunidade",
+      "phaseStatus": "noPrazo",
       "deliveryStatus": "concluidaPrazo",
       "startPeriod": {
         "month": "Maio",
@@ -884,13 +156,27 @@
       }
     },
     {
-      "id": 659679,
-      "title": "OPORTUNIDADE | Desenvolver Status da Análise de Crédito em Branco em Cenários de Renovação",
+      "id": 640903,
+      "title": "SP04 - OPORTUNIDADE | Desenvolver ajuste na atualização do campo de desconto via Integração​",
       "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
+      "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
         "month": "Maio",
+        "subcolIndex": 1
+      },
+      "endPeriod": {
+        "month": "Junho",
         "subcolIndex": 0
+      }
+    },
+    {
+      "id": 543196,
+      "title": "SP04 - OPORTUNIDADE | Desenvolver permissão para geração de pedido de compra sem delay de 8 dias​",
+      "phaseStatus": "noPrazo",
+      "deliveryStatus": "concluidaAtraso",
+      "startPeriod": {
+        "month": "Maio",
+        "subcolIndex": 1
       },
       "endPeriod": {
         "month": "Junho",
@@ -901,7 +187,7 @@
       "id": 660361,
       "title": "SP05 - OPORTUNIDADE | Desenvolver Batch para aumentar frequência de geração de Pedido de Compra",
       "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
+      "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
         "month": "Junho",
         "subcolIndex": 0
@@ -909,103 +195,19 @@
       "endPeriod": {
         "month": "Junho",
         "subcolIndex": 1
-      }
-    },
-    {
-      "id": 660405,
-      "title": "CONTRATO | Criar campos de controle para integração de retorno de assinatura contrato (Authentique)",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Julho",
-        "subcolIndex": 1
-      }
-    },
-    {
-      "id": 661063,
-      "title": "SP06 - OPORTUNIDADE | Desatrelamento Automático de Vendedor",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Junho",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Julho",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 663594,
-      "title": "LEAD | Desenvolver melhoria no processamento do Job IRIS_BatchCalloutsAndUpdateOwner",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Junho",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 663652,
-      "title": "ASSET | Desenvolver Tratamento de Nome de Produto para Criação de Asset",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Junho",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 666988,
-      "title": "OPORTUNIDADE | Desenvolver importação de Campos do Lead para a Oportunidade",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Junho",
-        "subcolIndex": 0
       }
     },
     {
       "id": 669621,
       "title": "SP05 - QUOTE | Desenvolver envio de Opcionais no Pedido de Compra para o Locavia - Etapa relacionamento Dispositivo + Opcionais (fase 1)",
       "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
+      "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
         "month": "Junho",
         "subcolIndex": 0
       },
       "endPeriod": {
         "month": "Junho",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 670506,
-      "title": "SP06 - OPORTUNIDADE | Inclusão do vendedor Iroa Gurgel na distribuição da fila Nexi",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Junho",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Julho",
         "subcolIndex": 0
       }
     },
@@ -1013,7 +215,7 @@
       "id": 670511,
       "title": "SP06 - FLOW | Notificação e e-mail para distribuição de Leads/Oportunidades",
       "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
+      "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
         "month": "Junho",
         "subcolIndex": 0
@@ -1024,12 +226,54 @@
       }
     },
     {
-      "id": 678829,
-      "title": "OPORTUNIDADE | Bloquear movimentação para \"Aguardando Reserva de Pagamento\" sem aprovação de crédito",
+      "id": 543211,
+      "title": "SP06 - OPORTUNIDADE | Atualizar motivo “Preço” para “Problemas financeiros” e incluir opção “Não informado”",
       "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
+      "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
-        "month": "Maio",
+        "month": "Junho",
+        "subcolIndex": 0
+      },
+      "endPeriod": {
+        "month": "Julho",
+        "subcolIndex": 0
+      }
+    },
+    {
+      "id": 661063,
+      "title": "SP06 - OPORTUNIDADE | Desatrelamento Automático de Vendedor",
+      "phaseStatus": "noPrazo",
+      "deliveryStatus": "concluidaAtraso",
+      "startPeriod": {
+        "month": "Junho",
+        "subcolIndex": 0
+      },
+      "endPeriod": {
+        "month": "Julho",
+        "subcolIndex": 0
+      }
+    },
+    {
+      "id": 670506,
+      "title": "SP06 - OPORTUNIDADE | Inclusão do vendedor Iroa Gurgel na distribuição da fila Nexi",
+      "phaseStatus": "noPrazo",
+      "deliveryStatus": "concluidaAtraso",
+      "startPeriod": {
+        "month": "Junho",
+        "subcolIndex": 0
+      },
+      "endPeriod": {
+        "month": "Julho",
+        "subcolIndex": 0
+      }
+    },
+    {
+      "id": 397306,
+      "title": "SP06 - QUOTE | Desenvolver envio de Opcionais no Pedido de Compra para o Locavia - Etapa Integração (fase 2)",
+      "phaseStatus": "noPrazo",
+      "deliveryStatus": "concluidaAtraso",
+      "startPeriod": {
+        "month": "Junho",
         "subcolIndex": 0
       },
       "endPeriod": {
@@ -1041,55 +285,13 @@
       "id": 679032,
       "title": "SP07 - CASO | Ajuste da regra de criação de caso para desmobilização, contabilizando dias úteis e removendo a regra de fechamento automatico da oportunidade",
       "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
+      "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
         "month": "Junho",
         "subcolIndex": 1
       },
       "endPeriod": {
         "month": "Julho",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 679043,
-      "title": "SP08 - OPORTUNIDADE | Criação do campo \"Prazo de entrega informado ao Cliente\" na Oportunidade",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Julho",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 679454,
-      "title": "[REFORMA] OPORTUNIDADE - Exposição de Campos Financeiros na Oportunidade Livre e Integração com Site, BRIM e LocaviaWeb",
-      "phaseStatus": "naoIniciado",
-      "deliveryStatus": "previsao",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 679614,
-      "title": "LEAD | Criação do campo “LeadPrincipalCPF”",
-      "phaseStatus": "naoIniciado",
-      "deliveryStatus": "previsao",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Agosto",
         "subcolIndex": 0
       }
     },
@@ -1097,7 +299,7 @@
       "id": 680444,
       "title": "SP07 - DISTRIBUIÇÃO | Regra de distribuição considerando Score",
       "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
+      "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
         "month": "Junho",
         "subcolIndex": 1
@@ -1108,13 +310,83 @@
       }
     },
     {
-      "id": 702180,
-      "title": "CONTRACT | Ajuste no cálculo da Data de Término do Contrato Master",
+      "id": 543213,
+      "title": "SP07 - OPORTUNIDADE | Disparar e-mail ao vendedor quando o crédito reprovar uma renovação",
       "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
+      "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
-        "month": "Maio",
+        "month": "Junho",
+        "subcolIndex": 1
+      },
+      "endPeriod": {
+        "month": "Julho",
         "subcolIndex": 0
+      }
+    },
+    {
+      "id": 561852,
+      "title": "SP07 - OPORTUNIDADE | Preenchimento automático da Data de Retorno da Análise de Dados em Oportunidades de Renovação",
+      "phaseStatus": "noPrazo",
+      "deliveryStatus": "concluidaAtraso",
+      "startPeriod": {
+        "month": "Junho",
+        "subcolIndex": 1
+      },
+      "endPeriod": {
+        "month": "Julho",
+        "subcolIndex": 1
+      }
+    },
+    {
+      "id": 543226,
+      "title": "SP08 - OPORTUNIDADE | Adicionar campo “Data término do contrato” nas oportunidades de renovação",
+      "phaseStatus": "noPrazo",
+      "deliveryStatus": "concluidaAtraso",
+      "startPeriod": {
+        "month": "Julho",
+        "subcolIndex": 0
+      },
+      "endPeriod": {
+        "month": "Agosto",
+        "subcolIndex": 0
+      }
+    },
+    {
+      "id": 679043,
+      "title": "SP08 - OPORTUNIDADE | Criação do campo \"Prazo de entrega informado ao Cliente\" na Oportunidade",
+      "phaseStatus": "noPrazo",
+      "deliveryStatus": "concluidaAtraso",
+      "startPeriod": {
+        "month": "Julho",
+        "subcolIndex": 0
+      },
+      "endPeriod": {
+        "month": "Agosto",
+        "subcolIndex": 0
+      }
+    },
+    {
+      "id": 543185,
+      "title": "SP08 - OPORTUNIDADE | Criar campo para rastrear a data da última alteração da subfase da oportunidade",
+      "phaseStatus": "noPrazo",
+      "deliveryStatus": "concluidaAtraso",
+      "startPeriod": {
+        "month": "Julho",
+        "subcolIndex": 0
+      },
+      "endPeriod": {
+        "month": "Agosto",
+        "subcolIndex": 0
+      }
+    },
+    {
+      "id": 707287,
+      "title": "SP09 - [Proativo] Identificar processo de utilização do botão de gerar pedido de compra | Geração do relatório de Historico de desatrelar vendedor",
+      "phaseStatus": "noPrazo",
+      "deliveryStatus": "previsao",
+      "startPeriod": {
+        "month": "Julho",
+        "subcolIndex": 1
       },
       "endPeriod": {
         "month": "Agosto",
@@ -1126,104 +398,6 @@
       "title": "SP09 - [REQ - C2607-8248] - Identificar origem dos campos captura de reserva, reserva primeira parcela e assinatura de contrato",
       "phaseStatus": "noPrazo",
       "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Julho",
-        "subcolIndex": 1
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 704245,
-      "title": "[OPORTUNIDADE] Criar forma de parametrizar o prazo de criação de oportunidade sem necessidade de GMUD",
-      "phaseStatus": "naoIniciado",
-      "deliveryStatus": "previsao",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 704266,
-      "title": "OPORTUNIDADE | Criar forma de parametrizar a regra de score para podermos alterar sem necessidade de GMUD",
-      "phaseStatus": "naoIniciado",
-      "deliveryStatus": "previsao",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 705106,
-      "title": "OPORTUNIDADE | Perda da Informação de Desconto na Oportunidade Após Gerar Contrato",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 705908,
-      "title": "[Proativo] Perfil apenas de leitura para atender critérios da auditoria",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 706480,
-      "title": "OPORTUNIDADE | Subfase em oportunidades de renovação com troca de titularidade",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "previsao",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 706680,
-      "title": "SP09 - OPORTUNIDADE | Desenvolver novas regras de Desatrelamento",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Julho",
-        "subcolIndex": 1
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 706718,
-      "title": "SP09 - OPORTUNIDADE | Enviar novas informações da proposta de Renovação para a Plataforma de Crédito",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "previsao",
       "startPeriod": {
         "month": "Julho",
         "subcolIndex": 1
@@ -1248,10 +422,24 @@
       }
     },
     {
-      "id": 707287,
-      "title": "SP09 - [Proativo] Identificar processo de utilização do botão de gerar pedido de compra | Geração do relatório de Historico de desatrelar vendedor",
-      "phaseStatus": "noPrazo",
+      "id": 712472,
+      "title": "SP09 - OPORTUNIDADE | Cadastro de Loja de Retirada",
+      "phaseStatus": "naoIniciado",
       "deliveryStatus": "previsao",
+      "startPeriod": {
+        "month": "Julho",
+        "subcolIndex": 1
+      },
+      "endPeriod": {
+        "month": "Agosto",
+        "subcolIndex": 0
+      }
+    },
+    {
+      "id": 706680,
+      "title": "SP09 - OPORTUNIDADE | Desenvolver novas regras de Desatrelamento",
+      "phaseStatus": "noPrazo",
+      "deliveryStatus": "concluidaPrazo",
       "startPeriod": {
         "month": "Julho",
         "subcolIndex": 1
@@ -1276,181 +464,13 @@
       }
     },
     {
-      "id": 709249,
-      "title": "OPORTUNIDADE | Erro em Backend para JOB Renovação",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "previsao",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 710260,
-      "title": "CONTRACT | Duplicidade de \"Contrato Provisório\" em Renovação",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "previsao",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 710750,
-      "title": "Ajustes nos objetos conflitantes para deploy",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 711119,
-      "title": "SP09 - [Proativo] - Flag para desativar ou ativar a verificação Score para conversão do Lead",
+      "id": 706718,
+      "title": "SP09 - OPORTUNIDADE | Enviar novas informações da proposta de Renovação para a Plataforma de Crédito",
       "phaseStatus": "noPrazo",
       "deliveryStatus": "previsao",
       "startPeriod": {
         "month": "Julho",
         "subcolIndex": 1
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 711288,
-      "title": "[Proativo] Expor campo Pré assinatura na API SF",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "previsao",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 711715,
-      "title": "[INC C2608-3660] Erro no retorno da assinatura do contrato",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaPrazo",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 711716,
-      "title": "OPORTUNIDADE / LEAD | Adicionar valor ao campo \"Loja de Retirada\"",
-      "phaseStatus": "noPrazo",
-      "deliveryStatus": "previsao",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 711788,
-      "title": "CONTRATO / OPORTUNIDADE | Desenvolver alteração no método de Data e Hora da Assinatura de Contrato",
-      "phaseStatus": "naoIniciado",
-      "deliveryStatus": "previsao",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 712097,
-      "title": "OPORTUNIDADE | Atualização de Cadastro Existente no Locavia Antes da Geração do Contrato",
-      "phaseStatus": "naoIniciado",
-      "deliveryStatus": "previsao",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 712346,
-      "title": "OPORTUNIDADE | Desenvolver captura do campo \"Data Captura Reserva Primeira Parcela\"",
-      "phaseStatus": "naoIniciado",
-      "deliveryStatus": "previsao",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 712472,
-      "title": "SP09 - OPORTUNIDADE | Cadastro de Loja de Retirada",
-      "phaseStatus": "naoIniciado",
-      "deliveryStatus": "previsao",
-      "startPeriod": {
-        "month": "Julho",
-        "subcolIndex": 1
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 712633,
-      "title": "OPORTUNIDADE | Desenvolver Permissão ao Campo para Gerar Pedido de Compra",
-      "phaseStatus": "naoIniciado",
-      "deliveryStatus": "previsao",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
-      },
-      "endPeriod": {
-        "month": "Agosto",
-        "subcolIndex": 0
-      }
-    },
-    {
-      "id": 712998,
-      "title": "LEAD | Leads ficam travados em SDR quando CEP vem sem caractere \"-\"",
-      "phaseStatus": "naoIniciado",
-      "deliveryStatus": "previsao",
-      "startPeriod": {
-        "month": "Maio",
-        "subcolIndex": 0
       },
       "endPeriod": {
         "month": "Agosto",
