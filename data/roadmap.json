@@ -2,7 +2,7 @@
   "project": {
     "squad": "Vendas",
     "title": "Roadmap de Projetos e Melhorias Funil de Vendas - Livre",
-    "reportDate": "2026-08-11"
+    "reportDate": "2026-08-13"
   },
   "months": [
     {
@@ -58,7 +58,7 @@
   "todayPeriod": {
     "month": "Agosto",
     "subcolIndex": 0,
-    "fraction": 0.7142857142857143
+    "fraction": 0.8571428571428571
   },
   "phaseColors": {
     "naoIniciado": "BFBFBF",
@@ -89,15 +89,19 @@
       "id": 625328,
       "title": "SP03 - CONTA | Botão Manual para Consulta SERASA na Conta (Pessoa Física)",
       "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaAtraso",
+      "deliveryStatus": "concluidaPrazo",
       "startPeriod": {
         "month": "Maio",
-        "subcolIndex": 0
+        "subcolIndex": 0,
+        "fraction": 0.21428571428571427
       },
       "endPeriod": {
         "month": "Maio",
-        "subcolIndex": 1
-      }
+        "subcolIndex": 1,
+        "fraction": 0.2
+      },
+      "plannedDate": null,
+      "actualDate": "19/05"
     },
     {
       "id": 642989,
@@ -106,12 +110,16 @@
       "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
         "month": "Maio",
-        "subcolIndex": 1
+        "subcolIndex": 1,
+        "fraction": 0.13333333333333333
       },
       "endPeriod": {
         "month": "Junho",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 0.5714285714285714
+      },
+      "plannedDate": "02/06",
+      "actualDate": "09/06"
     },
     {
       "id": 657177,
@@ -120,26 +128,34 @@
       "deliveryStatus": "concluidaPrazo",
       "startPeriod": {
         "month": "Maio",
-        "subcolIndex": 1
+        "subcolIndex": 1,
+        "fraction": 0.13333333333333333
       },
       "endPeriod": {
         "month": "Maio",
-        "subcolIndex": 1
-      }
+        "subcolIndex": 1,
+        "fraction": 0.4
+      },
+      "plannedDate": null,
+      "actualDate": "21/05"
     },
     {
       "id": 659617,
       "title": "SP04 - OPORTUNIDADE | Ajustar balanceamento de Distribuição de Leads",
       "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaAtraso",
+      "deliveryStatus": "concluidaPrazo",
       "startPeriod": {
         "month": "Maio",
-        "subcolIndex": 1
+        "subcolIndex": 1,
+        "fraction": 0.13333333333333333
       },
       "endPeriod": {
         "month": "Maio",
-        "subcolIndex": 1
-      }
+        "subcolIndex": 1,
+        "fraction": 0.8666666666666667
+      },
+      "plannedDate": null,
+      "actualDate": "28/05"
     },
     {
       "id": 656857,
@@ -148,12 +164,16 @@
       "deliveryStatus": "concluidaPrazo",
       "startPeriod": {
         "month": "Maio",
-        "subcolIndex": 1
+        "subcolIndex": 1,
+        "fraction": 0.13333333333333333
       },
       "endPeriod": {
         "month": "Maio",
-        "subcolIndex": 1
-      }
+        "subcolIndex": 1,
+        "fraction": 0.3333333333333333
+      },
+      "plannedDate": null,
+      "actualDate": "21/05"
     },
     {
       "id": 640903,
@@ -162,12 +182,16 @@
       "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
         "month": "Maio",
-        "subcolIndex": 1
+        "subcolIndex": 1,
+        "fraction": 0.13333333333333333
       },
       "endPeriod": {
         "month": "Junho",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 0.5714285714285714
+      },
+      "plannedDate": "02/06",
+      "actualDate": "09/06"
     },
     {
       "id": 543196,
@@ -176,12 +200,16 @@
       "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
         "month": "Maio",
-        "subcolIndex": 1
+        "subcolIndex": 1,
+        "fraction": 0.13333333333333333
       },
       "endPeriod": {
         "month": "Junho",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 0.5714285714285714
+      },
+      "plannedDate": "02/06",
+      "actualDate": "09/06"
     },
     {
       "id": 660361,
@@ -190,26 +218,34 @@
       "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
         "month": "Junho",
-        "subcolIndex": 0
+        "subcolIndex": 0,
+        "fraction": 0
       },
       "endPeriod": {
         "month": "Junho",
-        "subcolIndex": 1
-      }
+        "subcolIndex": 1,
+        "fraction": 0.5
+      },
+      "plannedDate": "16/06",
+      "actualDate": "23/06"
     },
     {
       "id": 669621,
       "title": "SP05 - QUOTE | Desenvolver envio de Opcionais no Pedido de Compra para o Locavia - Etapa relacionamento Dispositivo + Opcionais (fase 1)",
       "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaAtraso",
+      "deliveryStatus": "concluidaPrazo",
       "startPeriod": {
         "month": "Junho",
-        "subcolIndex": 0
+        "subcolIndex": 0,
+        "fraction": 0
       },
       "endPeriod": {
         "month": "Junho",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 0.7857142857142857
+      },
+      "plannedDate": null,
+      "actualDate": "11/06"
     },
     {
       "id": 670511,
@@ -218,12 +254,16 @@
       "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
         "month": "Junho",
-        "subcolIndex": 0
+        "subcolIndex": 0,
+        "fraction": 1
       },
       "endPeriod": {
         "month": "Julho",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 0.5
+      },
+      "plannedDate": "30/06",
+      "actualDate": "07/07"
     },
     {
       "id": 543211,
@@ -232,12 +272,16 @@
       "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
         "month": "Junho",
-        "subcolIndex": 0
+        "subcolIndex": 0,
+        "fraction": 1
       },
       "endPeriod": {
         "month": "Julho",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 0.5
+      },
+      "plannedDate": "30/06",
+      "actualDate": "07/07"
     },
     {
       "id": 661063,
@@ -246,12 +290,16 @@
       "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
         "month": "Junho",
-        "subcolIndex": 0
+        "subcolIndex": 0,
+        "fraction": 1
       },
       "endPeriod": {
         "month": "Julho",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 0.5
+      },
+      "plannedDate": "30/06",
+      "actualDate": "07/07"
     },
     {
       "id": 670506,
@@ -260,12 +308,16 @@
       "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
         "month": "Junho",
-        "subcolIndex": 0
+        "subcolIndex": 0,
+        "fraction": 1
       },
       "endPeriod": {
         "month": "Julho",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 0.5
+      },
+      "plannedDate": "30/06",
+      "actualDate": "07/07"
     },
     {
       "id": 397306,
@@ -274,54 +326,70 @@
       "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
         "month": "Junho",
-        "subcolIndex": 0
+        "subcolIndex": 0,
+        "fraction": 1
       },
       "endPeriod": {
         "month": "Julho",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 0.5714285714285714
+      },
+      "plannedDate": "30/06",
+      "actualDate": "09/07"
     },
     {
       "id": 679032,
       "title": "SP07 - CASO | Ajuste da regra de criação de caso para desmobilização, contabilizando dias úteis e removendo a regra de fechamento automatico da oportunidade",
       "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaAtraso",
+      "deliveryStatus": "concluidaPrazo",
       "startPeriod": {
         "month": "Junho",
-        "subcolIndex": 1
+        "subcolIndex": 1,
+        "fraction": 0.9285714285714286
       },
       "endPeriod": {
         "month": "Julho",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 1
+      },
+      "plannedDate": null,
+      "actualDate": "14/07"
     },
     {
       "id": 680444,
       "title": "SP07 - DISTRIBUIÇÃO | Regra de distribuição considerando Score",
       "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaAtraso",
+      "deliveryStatus": "concluidaPrazo",
       "startPeriod": {
         "month": "Junho",
-        "subcolIndex": 1
+        "subcolIndex": 1,
+        "fraction": 0.9285714285714286
       },
       "endPeriod": {
         "month": "Julho",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 1
+      },
+      "plannedDate": null,
+      "actualDate": "14/07"
     },
     {
       "id": 543213,
       "title": "SP07 - OPORTUNIDADE | Disparar e-mail ao vendedor quando o crédito reprovar uma renovação",
       "phaseStatus": "noPrazo",
-      "deliveryStatus": "concluidaAtraso",
+      "deliveryStatus": "concluidaPrazo",
       "startPeriod": {
         "month": "Junho",
-        "subcolIndex": 1
+        "subcolIndex": 1,
+        "fraction": 0.9285714285714286
       },
       "endPeriod": {
         "month": "Julho",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 1
+      },
+      "plannedDate": null,
+      "actualDate": "14/07"
     },
     {
       "id": 561852,
@@ -330,12 +398,16 @@
       "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
         "month": "Junho",
-        "subcolIndex": 1
+        "subcolIndex": 1,
+        "fraction": 0.9285714285714286
       },
       "endPeriod": {
         "month": "Julho",
-        "subcolIndex": 1
-      }
+        "subcolIndex": 1,
+        "fraction": 0
+      },
+      "plannedDate": "14/07",
+      "actualDate": "16/07"
     },
     {
       "id": 543226,
@@ -344,12 +416,16 @@
       "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
         "month": "Julho",
-        "subcolIndex": 0
+        "subcolIndex": 0,
+        "fraction": 0.8571428571428571
       },
       "endPeriod": {
         "month": "Agosto",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 0.21428571428571427
+      },
+      "plannedDate": "28/07",
+      "actualDate": "04/08"
     },
     {
       "id": 679043,
@@ -358,12 +434,16 @@
       "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
         "month": "Julho",
-        "subcolIndex": 0
+        "subcolIndex": 0,
+        "fraction": 0.8571428571428571
       },
       "endPeriod": {
         "month": "Agosto",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 0.21428571428571427
+      },
+      "plannedDate": "28/07",
+      "actualDate": "04/08"
     },
     {
       "id": 543185,
@@ -372,12 +452,16 @@
       "deliveryStatus": "concluidaAtraso",
       "startPeriod": {
         "month": "Julho",
-        "subcolIndex": 0
+        "subcolIndex": 0,
+        "fraction": 0.8571428571428571
       },
       "endPeriod": {
         "month": "Agosto",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 0.21428571428571427
+      },
+      "plannedDate": "28/07",
+      "actualDate": "04/08"
     },
     {
       "id": 707287,
@@ -386,12 +470,16 @@
       "deliveryStatus": "previsao",
       "startPeriod": {
         "month": "Julho",
-        "subcolIndex": 1
+        "subcolIndex": 1,
+        "fraction": 0.7333333333333333
       },
       "endPeriod": {
         "month": "Agosto",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 0.42857142857142855
+      },
+      "plannedDate": null,
+      "actualDate": "13/08"
     },
     {
       "id": 702764,
@@ -400,26 +488,34 @@
       "deliveryStatus": "concluidaPrazo",
       "startPeriod": {
         "month": "Julho",
-        "subcolIndex": 1
+        "subcolIndex": 1,
+        "fraction": 0.7333333333333333
       },
       "endPeriod": {
         "month": "Agosto",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 0.21428571428571427
+      },
+      "plannedDate": null,
+      "actualDate": "04/08"
     },
     {
       "id": 706752,
       "title": "SP09 - LEAD | Encaminhar automaticamente para LOST Leads com Score inferior a 300",
       "phaseStatus": "noPrazo",
-      "deliveryStatus": "previsao",
+      "deliveryStatus": "concluidaPrazo",
       "startPeriod": {
         "month": "Julho",
-        "subcolIndex": 1
+        "subcolIndex": 1,
+        "fraction": 0.7333333333333333
       },
       "endPeriod": {
         "month": "Agosto",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 0.7857142857142857
+      },
+      "plannedDate": null,
+      "actualDate": "11/08"
     },
     {
       "id": 712472,
@@ -428,12 +524,16 @@
       "deliveryStatus": "previsao",
       "startPeriod": {
         "month": "Julho",
-        "subcolIndex": 1
+        "subcolIndex": 1,
+        "fraction": 0.7333333333333333
       },
       "endPeriod": {
         "month": "Agosto",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 0.42857142857142855
+      },
+      "plannedDate": null,
+      "actualDate": "13/08"
     },
     {
       "id": 706680,
@@ -442,26 +542,34 @@
       "deliveryStatus": "concluidaPrazo",
       "startPeriod": {
         "month": "Julho",
-        "subcolIndex": 1
+        "subcolIndex": 1,
+        "fraction": 0.7333333333333333
       },
       "endPeriod": {
         "month": "Agosto",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 0.21428571428571427
+      },
+      "plannedDate": null,
+      "actualDate": "04/08"
     },
     {
       "id": 708091,
       "title": "SP09 - OPORTUNIDADE | Desenvolver novas regras de Distribuição de oportunidades",
       "phaseStatus": "noPrazo",
-      "deliveryStatus": "previsao",
+      "deliveryStatus": "concluidaPrazo",
       "startPeriod": {
         "month": "Julho",
-        "subcolIndex": 1
+        "subcolIndex": 1,
+        "fraction": 0.7333333333333333
       },
       "endPeriod": {
         "month": "Agosto",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 0.7857142857142857
+      },
+      "plannedDate": null,
+      "actualDate": "11/08"
     },
     {
       "id": 706718,
@@ -470,12 +578,70 @@
       "deliveryStatus": "previsao",
       "startPeriod": {
         "month": "Julho",
-        "subcolIndex": 1
+        "subcolIndex": 1,
+        "fraction": 0.7333333333333333
       },
       "endPeriod": {
         "month": "Agosto",
-        "subcolIndex": 0
-      }
+        "subcolIndex": 0,
+        "fraction": 0.42857142857142855
+      },
+      "plannedDate": null,
+      "actualDate": "13/08"
+    },
+    {
+      "id": 712097,
+      "title": "SP10 - [Proativo] OPORTUNIDADE | Atualização de Cadastro Existente no Locavia Antes da Geração do Contrato",
+      "phaseStatus": "naoIniciado",
+      "deliveryStatus": "previsao",
+      "startPeriod": {
+        "month": "Agosto",
+        "subcolIndex": 0,
+        "fraction": 0.6428571428571429
+      },
+      "endPeriod": {
+        "month": "Agosto",
+        "subcolIndex": 1,
+        "fraction": 0.3333333333333333
+      },
+      "plannedDate": null,
+      "actualDate": "25/08"
+    },
+    {
+      "id": 679454,
+      "title": "SP10 - [REFORMA] OPORTUNIDADE - Exposição de Campos Financeiros na Oportunidade Livre e Integração com Site, BRIM e LocaviaWeb",
+      "phaseStatus": "noPrazo",
+      "deliveryStatus": "previsao",
+      "startPeriod": {
+        "month": "Agosto",
+        "subcolIndex": 0,
+        "fraction": 0.6428571428571429
+      },
+      "endPeriod": {
+        "month": "Agosto",
+        "subcolIndex": 1,
+        "fraction": 0.3333333333333333
+      },
+      "plannedDate": null,
+      "actualDate": "25/08"
+    },
+    {
+      "id": 711788,
+      "title": "SP10 - CONTRATO / OPORTUNIDADE | Desenvolver alteração no método de Data e Hora da Assinatura de Contrato",
+      "phaseStatus": "noPrazo",
+      "deliveryStatus": "previsao",
+      "startPeriod": {
+        "month": "Agosto",
+        "subcolIndex": 0,
+        "fraction": 0.6428571428571429
+      },
+      "endPeriod": {
+        "month": "Agosto",
+        "subcolIndex": 1,
+        "fraction": 0.3333333333333333
+      },
+      "plannedDate": null,
+      "actualDate": "25/08"
     }
   ]
 }

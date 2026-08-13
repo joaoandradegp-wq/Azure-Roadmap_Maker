@@ -114,7 +114,7 @@ function renderPage(roadmapChunk, pageInfo) {
   });
 
   // ---------- Legenda: Status – Fase ----------
-  const legendY1 = 0.6;
+  const legendY1 = 0.58;
   const legendFont = 8.5;
   slide.addText("Status – Fase", {
     x: MARGIN, y: legendY1, w: 1.3, h: 0.22,
@@ -123,7 +123,7 @@ function renderPage(roadmapChunk, pageInfo) {
 
   const phaseOrder = ["naoIniciado", "noPrazo", "risco", "atraso", "pausado"];
   let px = MARGIN;
-  const legendY1b = legendY1 + 0.25;
+  const legendY1b = legendY1 + 0.16;
   phaseOrder.forEach((key) => {
     const color = data.phaseColors[key];
     const label = data.phaseLabels[key];
@@ -278,8 +278,12 @@ function renderPage(roadmapChunk, pageInfo) {
 
     const startIdx = periodToFlatIndex(flatPeriods, item.startPeriod);
     const endIdx = periodToFlatIndex(flatPeriods, item.endPeriod);
-    const barX = gridLeft + startIdx * cellW;
-    const barW = (endIdx - startIdx + 1) * cellW;
+    const startFrac = typeof item.startPeriod.fraction === "number" ? item.startPeriod.fraction : 0;
+    const endFrac = typeof item.endPeriod.fraction === "number" ? item.endPeriod.fraction : 1;
+    const barX = gridLeft + (startIdx + startFrac) * cellW;
+    const barEndX = gridLeft + (endIdx + endFrac) * cellW;
+    // largura mínima garantida, pra itens de 1 dia não sumirem (barra de largura ~0)
+    const barW = Math.max(cellW * 0.06, barEndX - barX);
     const barH = rowH * 0.42;
     const barY = rowY + (rowH - barH) / 2;
 

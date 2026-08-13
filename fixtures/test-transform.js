@@ -20,9 +20,11 @@ const result = transform(workItems, config, { today });
 console.log(JSON.stringify(result.roadmap, null, 2));
 console.log("\nTítulos na ordem final:", result.roadmap.map((r) => r.title));
 
-// Deveria sobrar: id 1 (SP09 via título), id 2 (SP10), id 5 (SP09 atraso), id 6 (SP09 no prazo)
+// Deveria sobrar: id 1 (SP09 via título), id 2 (SP10), id 5 (SP09 atraso),
+// id 6 (SP09 no prazo), id 7 (SP09 defasagem de 1 dia corrigida),
+// id 8 (fechado com timestamp de hora), id 9 (fechado 04/08)
 // Fora: id 3 (tag Bug), id 4 (SP01, fora da janela de 3 meses)
-console.assert(result.roadmap.length === 4, `Deveria sobrar 4 itens, veio ${result.roadmap.length}`);
+console.assert(result.roadmap.length === 7, `Deveria sobrar 7 itens, veio ${result.roadmap.length}`);
 console.assert(
   !result.roadmap.some((r) => r.id === 3),
   "Item com tag Bug não deveria aparecer"
@@ -48,6 +50,28 @@ const item6 = result.roadmap.find((r) => r.id === 6);
 console.assert(
   item6 && item6.deliveryStatus === "concluidaPrazo",
   `Item 6 (fechou 05/08, sprint terminava 07/08) deveria ser concluidaPrazo, veio "${item6 && item6.deliveryStatus}"`
+);
+
+const item7 = result.roadmap.find((r) => r.id === 7);
+console.assert(
+  item7 && item7.deliveryStatus === "concluidaPrazo",
+  `Item 7 (fechou quarta 12/08, 1 dia após terça 11/08 = deploy real) deveria corrigir pra concluidaPrazo, veio "${item7 && item7.deliveryStatus}"`
+);
+console.assert(
+  item7 && item7.actualDate === "11/08",
+  `Item 7 deveria mostrar actualDate corrigido para 11/08 (não 13/08), veio "${item7 && item7.actualDate}"`
+);
+
+const item8 = result.roadmap.find((r) => r.id === 8);
+console.assert(
+  item8 && item8.deliveryStatus === "concluidaPrazo",
+  `Item 8 (fechado 11/08 com timestamp de hora) deveria ser concluidaPrazo, veio "${item8 && item8.deliveryStatus}" — bug do horário na comparação`
+);
+
+const item9 = result.roadmap.find((r) => r.id === 9);
+console.assert(
+  item8 && item9 && item9.endPeriod.fraction < item8.endPeriod.fraction,
+  `Item 9 (fechado 04/08) deveria ter fração menor que item 8 (fechado 11/08) dentro da mesma quinzena — item9: ${item9 && item9.endPeriod.fraction}, item8: ${item8 && item8.endPeriod.fraction}`
 );
 
 // Ordenação alfabética: Alfa, Beta, Delta, Zebra (ignorando o prefixo SPxx)

@@ -82,5 +82,47 @@
       "Microsoft.VSTS.Scheduling.TargetDate": null,
       "Microsoft.VSTS.Common.ClosedDate": "2026-08-05"
     }
+  },
+  {
+    "id": 7,
+    "fields": {
+      "System.Title": "Épsilon: fechado 1 dia depois do deploy real (deveria corrigir pra 'no prazo')",
+      "System.WorkItemType": "Feature",
+      "System.State": "Closed",
+      "System.AssignedTo": { "displayName": "Equipe G" },
+      "System.IterationPath": "Projeto Funil de Vendas Ongoing\\Sprint 09 - Livre e Fleet",
+      "System.Tags": "",
+      "Microsoft.VSTS.Scheduling.StartDate": null,
+      "Microsoft.VSTS.Scheduling.TargetDate": null,
+      "Microsoft.VSTS.Common.ClosedDate": "2026-08-12"
+    }
+  },
+  {
+    "id": 8,
+    "fields": {
+      "System.Title": "Fi: fechado 11/08 com timestamp de hora (deveria bater com planejado e ficar 'no prazo')",
+      "System.WorkItemType": "Feature",
+      "System.State": "Closed",
+      "System.AssignedTo": { "displayName": "Equipe H" },
+      "System.IterationPath": "Projeto Funil de Vendas Ongoing\\Sprint 09 - Livre e Fleet",
+      "System.Tags": "",
+      "Microsoft.VSTS.Scheduling.StartDate": null,
+      "Microsoft.VSTS.Scheduling.TargetDate": null,
+      "Microsoft.VSTS.Common.ClosedDate": "2026-08-11T14:32:00Z"
+    }
+  },
+  {
+    "id": 9,
+    "fields": {
+      "System.Title": "Gama: fechado 04/08 (deveria terminar a barra mais atrás que o Fi, mesma quinzena)",
+      "System.WorkItemType": "Feature",
+      "System.State": "Closed",
+      "System.AssignedTo": { "displayName": "Equipe I" },
+      "System.IterationPath": "Projeto Funil de Vendas Ongoing\\Sprint 09 - Livre e Fleet",
+      "System.Tags": "",
+      "Microsoft.VSTS.Scheduling.StartDate": null,
+      "Microsoft.VSTS.Scheduling.TargetDate": null,
+      "Microsoft.VSTS.Common.ClosedDate": "2026-08-04T10:00:00Z"
+    }
   }
 ]
