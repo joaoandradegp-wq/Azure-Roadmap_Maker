@@ -124,5 +124,19 @@
       "Microsoft.VSTS.Scheduling.TargetDate": null,
       "Microsoft.VSTS.Common.ClosedDate": "2026-08-04T10:00:00Z"
     }
+  },
+  {
+    "id": 10,
+    "fields": {
+      "System.Title": "Cadastro de Loja de Retirada (não iniciado, previsão não pode ser o deploy imediato)",
+      "System.WorkItemType": "Feature",
+      "System.State": "New",
+      "System.AssignedTo": { "displayName": "Equipe J" },
+      "System.IterationPath": "Projeto Funil de Vendas Ongoing\\Sprint 09 - Livre e Fleet",
+      "System.Tags": "",
+      "Microsoft.VSTS.Scheduling.StartDate": null,
+      "Microsoft.VSTS.Scheduling.TargetDate": null,
+      "Microsoft.VSTS.Common.ClosedDate": null
+    }
   }
 ]

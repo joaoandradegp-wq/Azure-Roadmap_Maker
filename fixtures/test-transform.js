@@ -13,7 +13,7 @@ const workItems = JSON.parse(
   fs.readFileSync(path.join(__dirname, "mock-workitems.json"), "utf-8")
 );
 
-const today = new Date(2026, 7, 10); // 10/08/2026
+const today = new Date(2026, 7, 13); // 13/08/2026 (mesma data do cenário real reportado)
 
 const result = transform(workItems, config, { today });
 
@@ -22,9 +22,9 @@ console.log("\nTítulos na ordem final:", result.roadmap.map((r) => r.title));
 
 // Deveria sobrar: id 1 (SP09 via título), id 2 (SP10), id 5 (SP09 atraso),
 // id 6 (SP09 no prazo), id 7 (SP09 defasagem de 1 dia corrigida),
-// id 8 (fechado com timestamp de hora), id 9 (fechado 04/08)
+// id 8 (fechado com timestamp de hora), id 9 (fechado 04/08), id 10 (não iniciado)
 // Fora: id 3 (tag Bug), id 4 (SP01, fora da janela de 3 meses)
-console.assert(result.roadmap.length === 7, `Deveria sobrar 7 itens, veio ${result.roadmap.length}`);
+console.assert(result.roadmap.length === 8, `Deveria sobrar 8 itens, veio ${result.roadmap.length}`);
 console.assert(
   !result.roadmap.some((r) => r.id === 3),
   "Item com tag Bug não deveria aparecer"
@@ -38,6 +38,10 @@ const item1 = result.roadmap.find((r) => r.id === 1);
 console.assert(
   item1 && item1.title === "SP09 - Zebra: item com sprint só no título (deveria virar SP09)",
   `Título do item 1 deveria começar com "SP09 - Zebra", veio "${item1 && item1.title}"`
+);
+console.assert(
+  item1 && item1.plannedDate === null,
+  `Item 1 (aberto, "no prazo", previsão só avançou naturalmente) NÃO deveria mostrar data riscada — veio "${item1 && item1.plannedDate}"`
 );
 
 const item5 = result.roadmap.find((r) => r.id === 5);
@@ -72,6 +76,20 @@ const item9 = result.roadmap.find((r) => r.id === 9);
 console.assert(
   item8 && item9 && item9.endPeriod.fraction < item8.endPeriod.fraction,
   `Item 9 (fechado 04/08) deveria ter fração menor que item 8 (fechado 11/08) dentro da mesma quinzena — item9: ${item9 && item9.endPeriod.fraction}, item8: ${item8 && item8.endPeriod.fraction}`
+);
+
+const item10 = result.roadmap.find((r) => r.id === 10);
+console.assert(
+  item10 && item10.phaseStatus === "naoIniciado",
+  `Item 10 deveria ter phaseStatus naoIniciado, veio "${item10 && item10.phaseStatus}"`
+);
+console.assert(
+  item10 && item10.actualDate === "18/08",
+  `Item 10 (não iniciado, previsão vencida) deveria pular pro deploy seguinte (18/08), não o imediato (13/08) — veio "${item10 && item10.actualDate}"`
+);
+console.assert(
+  item10 && item10.plannedDate === "13/08",
+  `Item 10 deveria mostrar 13/08 riscado (a previsão que teria sido, sem o pulo extra) — veio "${item10 && item10.plannedDate}"`
 );
 
 // Ordenação alfabética: Alfa, Beta, Delta, Zebra (ignorando o prefixo SPxx)
