@@ -9,7 +9,7 @@
   "query": {
     "workItemTypes": ["Feature"],
     "areaPath": null,
-    "extraWiqlWhere": null
+    "extraWiqlWhere": "[System.Tags] NOT CONTAINS 'Bug' AND [System.Tags] NOT CONTAINS 'RASCUNHO'"
   },
 
   "fields": {
