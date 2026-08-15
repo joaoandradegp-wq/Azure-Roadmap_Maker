@@ -1,4 +1,4 @@
-<h1 align="center">📊 Status Report Generator</h1>
+<h1 align="center">📊 Azure Roadmap Maker</h1>
 
 <p align="center">
 Gerador automático de <b>One Page Status Report</b> a partir do Azure DevOps, transformando Work Items em um roadmap visual e gerando apresentações PowerPoint automaticamente.
