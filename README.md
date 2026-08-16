@@ -17,7 +17,7 @@ Gerador automático de <b>One Page Status Report</b> a partir do Azure DevOps, t
 <h2>📌 Sobre</h2>
 
 <p>
-O <b>Status Report Generator</b> é uma ferramenta desenvolvida para automatizar a criação de <b>One Page Status Reports</b> a partir dos dados existentes no <b>Azure DevOps</b>.
+O <b>Status Report Generator</b> é uma ferramenta desenvolvida para automatizar a criação de <b>Status Reports</b> a partir dos dados existentes no <b>Azure DevOps</b>.
 </p>
 
 <p>
