@@ -60,7 +60,7 @@ A arquitetura foi construída de forma modular, permitindo que a etapa de coleta
 </pre>
 
 <p>
-O fluxo pode ser executado completamente de forma automática ou utilizar um <b>roadmap.json</b> previamente gerado/editado para testes e validações.
+O fluxo completo é disparado por um único comando (<b>node azure.js</b>), que executa as duas etapas em sequência. Também é possível rodar cada etapa separadamente, ou utilizar um <b>roadmap.json</b> previamente gerado/editado para testes e validações.
 </p>
 
 ---
@@ -254,41 +254,52 @@ export AZURE_DEVOPS_PAT=seu_token_aqui
 <h2>🚀 Execução</h2>
 
 <p>
-O processo completo possui duas etapas principais.
+Um único comando executa o processo completo: busca os dados no Azure DevOps, pergunta quais sprints exportar, gera o <b>roadmap.json</b> e, na sequência, já chama o <b>render.js</b> sozinho, gerando o PowerPoint — sem precisar rodar dois comandos separados.
 </p>
-
-<h3>1️⃣ Buscar dados do Azure DevOps</h3>
 
 <pre>
 node azure.js
 </pre>
 
+<h3>🏃 Seleção de sprint</h3>
+
 <p>
-O comando consulta o Azure DevOps e gera:
+Se algum Work Item tiver uma sprint numerada reconhecível, o script pergunta interativamente:
 </p>
 
 <pre>
-data/roadmap.json
-</pre>
+Qual Sprint deseja exportar? (ex: 9 ou 9,10 — disponíveis: 8, 9, 10, 11)
+></pre>
 
-<h3>2️⃣ Gerar o PowerPoint</h3>
+<ul>
+  <li>🔢 Aceita um número (<b>9</b>) ou vários separados por vírgula (<b>9,10</b>)</li>
+  <li>0️⃣ <b>09</b> e <b>9</b> são equivalentes — o zero à esquerda é ignorado</li>
+  <li>🔁 Se a sprint digitada não existir entre os itens buscados, o script mostra a lista de sprints disponíveis e pergunta novamente, sem encerrar</li>
+  <li>⏭️ Se nenhum item tiver sprint reconhecível, a pergunta é pulada e todos os itens são exportados</li>
+</ul>
 
-<pre>
-node render.js
-</pre>
+<h3>⚙️ Flags para automação</h3>
 
 <p>
-O resultado será criado em:
+Para pular a pergunta interativa (ex: rodando num agendador), informe as sprints direto:
 </p>
 
 <pre>
-output/status_report.pptx
+node azure.js config.json data/roadmap.json --sprints=9,10
 </pre>
 
-<h3>📁 Utilizando caminhos personalizados</h3>
+<p>
+Para gerar somente o <b>roadmap.json</b>, sem chamar o <b>render.js</b> na sequência:
+</p>
 
 <pre>
-node azure.js config.json data/roadmap.json
+node azure.js config.json data/roadmap.json --no-render
+</pre>
+
+<h3>📁 Rodando as etapas separadas, com caminhos personalizados</h3>
+
+<pre>
+node azure.js config.json data/roadmap.json --no-render
 
 node render.js data/roadmap.json output/status_report.pptx
 </pre>
