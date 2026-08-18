@@ -627,7 +627,7 @@ Portanto, um card pode possuir a Tag <b>Livre</b> e ainda assim não pertencer �
   <br>
   ↓
   <br>
-  <b>One Page Status Report</b>
+  <b>Status Report</b>
 </p>
 
 ---
