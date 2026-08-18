@@ -1,7 +1,7 @@
 <h1 align="center">📊 Azure Roadmap Maker</h1>
 
 <p align="center">
-Gerador automático de <b>One Page Status Report</b> a partir do Azure DevOps, transformando Work Items em um roadmap visual e gerando apresentações PowerPoint automaticamente.
+Gerador automático de <b>Status Report</b> a partir do Azure DevOps, transformando Work Items em um roadmap visual e gerando apresentações PowerPoint automaticamente.
 </p>
 
 <p align="center">
@@ -17,7 +17,7 @@ Gerador automático de <b>One Page Status Report</b> a partir do Azure DevOps, t
 <h2>📌 Sobre</h2>
 
 <p>
-O <b>Status Report Generator</b> é uma ferramenta desenvolvida para automatizar a criação de <b>Status Reports</b> a partir dos dados existentes no <b>Azure DevOps</b>.
+O <b>Azure Roadmap Maker</b> é uma ferramenta desenvolvida para automatizar a criação de <b>Status Reports</b> a partir dos dados existentes no <b>Azure DevOps</b>.
 </p>
 
 <p>
