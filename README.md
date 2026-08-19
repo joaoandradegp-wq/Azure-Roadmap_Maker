@@ -36,27 +36,9 @@ A arquitetura foi construída de forma modular, permitindo que a etapa de coleta
 <h2>🔄 Funcionamento</h2>
 
 <pre>
-                    Azure DevOps
-                         │
-                         ▼
-                     azure.js
-                         │
-                    WIQL / API
-                         │
-                         ▼
-                  Work Items
-                         │
-                         ▼
-                 transform.js
-                         │
-                         ▼
-                  roadmap.json
-                         │
-                         ▼
-                    render.js
-                         │
-                         ▼
-              status_report.pptx
+┌───────────────┐     ┌───────────┐     ┌────────────┐     ┌───────────────┐     ┌─────────────┐      ┌────────────┐     ┌────────────────────┐
+│ Azure DevOps  │ ──► │ azure.js  │ ──► │ WIQL / API │ ──► │  Work Items   │ ──► │ transform.js │ ──► │roadmap.json│ ──► │ status_report.pptx │
+└───────────────┘     └───────────┘     └────────────┘     └───────────────┘     └─────────────┘      └────────────┘     └────────────────────┘
 </pre>
 
 <p>
@@ -306,34 +288,6 @@ node render.js data/roadmap.json output/status_report.pptx
 
 ---
 
-<h2>🧪 Testes Offline</h2>
-
-<p>
-O projeto possui uma estrutura para testar as regras de transformação sem precisar acessar o Azure DevOps.
-</p>
-
-<pre>
-node fixtures/test-transform.js
-</pre>
-
-<p>
-O teste utiliza uma resposta simulada da API localizada em:
-</p>
-
-<pre>
-fixtures/mock-workitems.json
-</pre>
-
-<p>
-Dessa forma é possível validar as regras do <b>transform.js</b> sem necessidade de PAT, conexão com o Azure DevOps ou acesso à rede.
-</p>
-
-<p>
-Os testes possuem asserções para validar as principais regras de negócio. Quando uma regra for alterada no código, os testes devem ser atualizados juntamente com ela.
-</p>
-
----
-
 <h2>🏃 Sprints e Deploys</h2>
 
 <p>
@@ -549,35 +503,6 @@ A barra Gantt não representa o histórico completo de replanejamentos.
 O Azure DevOps fornece o estado atual do Work Item nessa consulta. Portanto, quando um card muda de sprint diversas vezes, o relatório representa a sprint atual, e não todo o histórico percorrido pelo item.
 </p>
 
-<h3>📅 Virada de ano</h3>
-
-<p>
-Quando a janela configurada atravessa a virada do ano, os meses aparecem corretamente na timeline. Entretanto, o rótulo do ano no cabeçalho representa o ano do primeiro mês da janela.
-</p>
-
-<h3>🏊 Swimlane x Tag</h3>
-
-<p>
-A <b>Swimlane</b> do Azure DevOps é diferente de uma Tag.
-</p>
-
-<p>
-O filtro:
-
-</p>
-
-<pre>
-[System.BoardLane] = 'LIVRE'
-</pre>
-
-<p>
-verifica a Swimlane configurada no Board e não uma Tag chamada <b>Livre</b>.
-</p>
-
-<p>
-Portanto, um card pode possuir a Tag <b>Livre</b> e ainda assim não pertencer à Swimlane <b>LIVRE</b>.
-</p>
-
 ---
 
 <h2>🛠 Tecnologias</h2>
@@ -590,7 +515,6 @@ Portanto, um card pode possuir a Tag <b>Livre</b> e ainda assim não pertencer �
   <li>PowerPoint / PPTX</li>
   <li>JSON</li>
   <li>Regex</li>
-  <li>Automação de processos</li>
 </ul>
 
 ---
@@ -633,5 +557,5 @@ Portanto, um card pode possuir a Tag <b>Livre</b> e ainda assim não pertencer �
 ---
 
 <p align="center">
-<b>Status Report Generator</b> transforma os dados do Azure DevOps em uma visão visual e automatizada do andamento das entregas, reduzindo o trabalho manual na preparação de status reports e garantindo que as regras de sprint, deploy, prazo e risco sejam aplicadas de forma consistente.
+<b>Azure Roadmap Maker</b> transforma os dados do Azure DevOps em uma visão visual e automatizada do andamento das entregas, reduzindo o trabalho manual na preparação de status reports e garantindo que as regras de sprint, deploy, prazo e risco sejam aplicadas de forma consistente. 💻
 </p>
