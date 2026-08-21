@@ -1,0 +1,16 @@
+{
+  "name": "azure-sheets-sync",
+  "version": "1.0.0",
+  "description": "Sincroniza Work Items do Azure DevOps com a planilha local (OneDrive) Backlog Funil de Vendas - BO + PO",
+  "main": "sync.js",
+  "type": "commonjs",
+  "scripts": {
+    "sync": "node sync.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "exceljs": "^4.4.0"
+  }
+}
