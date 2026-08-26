@@ -3,3 +3,7 @@ output/status_report.pptx
 data/roadmap.json
 fixtures/mock-workitems.json
 fixtures/test-transform.js
+node_modules/
+.env
+*.backup-*.xlsx
+
