@@ -32,6 +32,19 @@ No Windows (PowerShell), se preferir não usar `.env`, dá pra exportar direto:
 $env:AZURE_DEVOPS_PAT = "seu_token_aqui"
 ```
 
+**Mais fácil ainda:** dê duplo clique em `rodar_sync.bat`. Na primeira vez ele
+pede o token e salva permanentemente na sua conta do Windows — nunca fica
+escrito em nenhum arquivo dentro da pasta do projeto, e você não precisa
+abrir terminal nem digitar comando. Como usa a mesma variável
+`AZURE_DEVOPS_PAT`, é o **mesmo token** que o `gerar_roadmap.bat` do projeto
+`Azure-Roadmap_Maker` já usa — configurando em um dos dois projetos, o outro
+já enxerga.
+
+⚠️ **Nunca preencha o `.env` com o token real se for compartilhar essa pasta
+(zipar, subir pro GitHub, mandar por e-mail etc).** O `.gitignore` já
+protege contra commit acidental, mas isso não impede de mandar o arquivo
+manualmente sem perceber. Prefira sempre o `.bat`.
+
 ## 3. Completar o `config.json`
 
 Já vem preenchido com tudo que definimos na conversa. **Só falta uma coisa**:

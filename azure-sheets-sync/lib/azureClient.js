@@ -58,6 +58,9 @@ async function queryWorkItemIds({ organization, project, apiVersion, pat, queryC
 
   if (!res.ok) {
     const body = await res.text().catch(() => "");
+    if (res.status === 401) {
+      throw new Error("Seu TOKEN no Azure está vencido, favor gerar um novo.");
+    }
     throw new Error(`WIQL query falhou (HTTP ${res.status}): ${body}`);
   }
 
@@ -86,6 +89,9 @@ async function getWorkItemsByIds({ organization, project, apiVersion, pat, ids, 
 
     if (!res.ok) {
       const body = await res.text().catch(() => "");
+      if (res.status === 401) {
+        throw new Error("Seu TOKEN no Azure está vencido, favor gerar um novo.");
+      }
       throw new Error(`Busca de work items falhou (HTTP ${res.status}): ${body}`);
     }
 
@@ -124,6 +130,9 @@ async function checkIdsExist({ organization, project, apiVersion, pat, ids }) {
 
     if (!res.ok) {
       const body = await res.text().catch(() => "");
+      if (res.status === 401) {
+        throw new Error("Seu TOKEN no Azure está vencido, favor gerar um novo.");
+      }
       throw new Error(`Checagem de existência de work items falhou (HTTP ${res.status}): ${body}`);
     }
 
