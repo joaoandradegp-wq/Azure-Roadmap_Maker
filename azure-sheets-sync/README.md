@@ -45,20 +45,33 @@ já enxerga.
 protege contra commit acidental, mas isso não impede de mandar o arquivo
 manualmente sem perceber. Prefira sempre o `.bat`.
 
-## 3. Completar o `config.json`
+## 3. `config.json` -- caminho da planilha (`excel.filePath`)
 
-Já vem preenchido com tudo que definimos na conversa. **Só falta uma coisa**:
+Esse campo aceita dois formatos:
 
-- `excel.filePath` — está com um nome de arquivo genérico
-  (`NOME_DO_ARQUIVO.xlsx`). Troque pelo caminho completo e real do `.xlsx`
-  dentro da pasta do OneDrive, por exemplo:
+- **Caminho RELATIVO** (o padrão, ex: `"./planilha-teste/arquivo.xlsx"`) --
+  sempre resolvido a partir da pasta ONDE O PROJETO ESTÁ, não da pasta em
+  que você abriu o terminal ou o `.bat`. Assim, o projeto funciona igual
+  não importa se está no Downloads, no `D:\GitHUB\...` ou em qualquer
+  outro lugar -- não precisa reescrever o `config.json` toda vez que mudar
+  a pasta do projeto de lugar.
+
+  Por padrão já vem apontando pra `./planilha-teste/`, uma pasta dentro do
+  próprio projeto (ignorada pelo Git) onde você pode colocar uma CÓPIA da
+  planilha real pra testar sem mexer no arquivo oficial do OneDrive. Veja
+  o `planilha-teste/LEIA-ME.txt`.
+
+- **Caminho ABSOLUTO** -- quando estiver pronto pra rodar de verdade contra
+  o arquivo oficial, troque pelo caminho completo do `.xlsx` dentro da
+  pasta do OneDrive, por exemplo:
 
   ```json
   "filePath": "C:\\Users\\joaoa\\Unidas\\IT Transformação Digital - Backlog Funil de Vendas - BO + PO\\Ongoing - Melhorias Funil de Vendas - Livre.xlsx"
   ```
 
   (repare nas barras duplas `\\` — é assim que o JSON escreve uma barra
-  invertida `\`).
+  invertida `\`). Um caminho absoluto sempre é usado do jeito que está
+  escrito, ignorando a pasta do projeto.
 
 Todo o resto do `config.json` (DE/PARA de status, nomes das colunas, cadência
 de sprint) já reflete o que foi combinado. Os comentários (`_comment...`)

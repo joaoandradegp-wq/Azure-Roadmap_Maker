@@ -8,6 +8,7 @@
 // Requer a variável de ambiente AZURE_DEVOPS_PAT (ver .env.example) e o
 // config.json preenchido (principalmente excel.filePath).
 
+const path = require("path");
 const config = require("./config.json");
 const { fetchWorkItems, checkIdsExist, azureAuthBase } = require("./lib/azureClient");
 const { normalizeWorkItem } = require("./lib/normalize");
@@ -29,6 +30,19 @@ const {
 function log(msg) {
   console.log(`[sync] ${msg}`);
 }
+
+// excel.filePath no config.json pode ser um caminho ABSOLUTO (ex: o endereço
+// oficial na pasta do OneDrive) ou um caminho RELATIVO — nesse caso, é
+// resolvido a partir da pasta do próprio projeto (onde este arquivo está),
+// não da pasta em que o terminal/`.bat` foi aberto. Isso permite testar com
+// uma cópia local da planilha (ex: "./planilha-teste/arquivo.xlsx") antes de
+// apontar pro endereço oficial definitivo, e continua funcionando não
+// importa em qual pasta o projeto inteiro for colocado (Downloads, GitHub
+// local, etc.) — sem precisar reescrever o config.json toda vez que o
+// projeto mudar de lugar.
+const excelFilePath = path.isAbsolute(config.excel.filePath)
+  ? config.excel.filePath
+  : path.join(__dirname, config.excel.filePath);
 
 function parseCutoffDate(config) {
   const raw = config.query && config.query.cutoffDate;
@@ -246,14 +260,14 @@ async function main() {
   const items = rawItems.map((raw) => normalizeWorkItem(raw, config.fields));
   log(`${items.length} work item(s) encontrado(s) com a tag "Livre".`);
 
-  log(`Abrindo planilha: ${config.excel.filePath}`);
-  const workbook = await openWorkbook(config.excel.filePath, config.excel.makeBackup);
+  log(`Abrindo planilha: ${excelFilePath}`);
+  const workbook = await openWorkbook(excelFilePath, config.excel.makeBackup);
 
   const { worksheet, headerRow, headerMap, cols } = await syncLivreOficial(workbook, items, cutoffDate);
   await marcarSemAzureValido(workbook, worksheet, headerRow, headerMap, cols);
   await syncProativos(workbook, items, cutoffDate);
 
-  await saveWorkbook(workbook, config.excel.filePath);
+  await saveWorkbook(workbook, excelFilePath);
   log("Planilha salva com sucesso.");
 }
 
