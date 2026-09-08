@@ -9,6 +9,7 @@
 const fs = require("fs");
 const path = require("path");
 const ExcelJS = require("exceljs");
+const { buildFinalXlsxBuffer, validateZipXmlPartsWellFormed } = require("./xlsxSurgery");
 
 /** Lê a linha de cabeçalho e devolve um mapa { "Nome da Coluna": número da coluna }. */
 function readHeaderMap(worksheet, headerRow) {
@@ -224,8 +225,59 @@ function addStatusColorRuleForNewRows(worksheet, statusColNumber, newRowNumbers,
   worksheet.addConditionalFormatting({ ref, rules });
 }
 
-/** Abre o workbook e faz uma cópia de segurança (.bak) do arquivo antes de qualquer alteração. */
-async function openWorkbook(filePath, makeBackup) {
+/**
+ * Calcula a fórmula de validação em lista (Listbox) pra coluna "Status",
+ * a partir da aba "Status" da própria planilha: pega a última linha
+ * preenchida da coluna indicada, então a lista sempre acompanha se alguém
+ * adicionar um novo status na aba "Status" no futuro.
+ * Devolve algo como `Status!$A$2:$A$21`, ou null se a aba/coluna não existir.
+ */
+function computeStatusListFormula(workbook, validationConfig) {
+  if (!validationConfig) return null;
+  const sheetName = validationConfig.sheet;
+  const colLetter = validationConfig.column || "A";
+  const headerRow = validationConfig.headerRow || 1;
+
+  const sheet = workbook.getWorksheet(sheetName);
+  if (!sheet) return null;
+
+  let lastRow = headerRow;
+  for (let r = headerRow + 1; r <= sheet.rowCount; r++) {
+    const v = sheet.getCell(`${colLetter}${r}`).value;
+    if (v !== null && v !== undefined && String(v).trim() !== "") lastRow = r;
+  }
+  if (lastRow <= headerRow) return null;
+
+  return `'${sheetName}'!$${colLetter}$${headerRow + 1}:$${colLetter}$${lastRow}`;
+}
+
+/**
+ * Aplica (ou reaplica) a validação em lista (Listbox) na célula de Status
+ * de uma linha específica, apontando pra fórmula calculada por
+ * `computeStatusListFormula`. Chamado toda vez que o app escreve um valor
+ * de Status -- tanto em linha nova quanto em linha já existente -- pra
+ * garantir que o campo continue sendo um Listbox de verdade (clicável),
+ * e não texto solto.
+ */
+function applyStatusListValidation(worksheet, statusCol, rowNumber, formula) {
+  if (!formula) return;
+  const cell = worksheet.getRow(rowNumber).getCell(statusCol);
+  cell.dataValidation = {
+    type: "list",
+    allowBlank: true,
+    formulae: [formula],
+    showErrorMessage: true,
+  };
+}
+
+/**
+ * Abre o workbook e faz uma cópia de segurança (.bak) do arquivo antes de
+ * qualquer alteração. Guarda os bytes ORIGINAIS do arquivo inteiro e a
+ * lista de abas graváveis — usados depois em `saveWorkbook` pra montar o
+ * arquivo final protegendo tudo que o programa não edita (ver
+ * lib/xlsxSurgery.js pro motivo completo).
+ */
+async function openWorkbook(filePath, makeBackup, writableSheetNames = []) {
   if (!fs.existsSync(filePath)) {
     throw new Error(`Arquivo não encontrado: ${filePath}. Confira o caminho em config.json -> excel.filePath.`);
   }
@@ -238,19 +290,99 @@ async function openWorkbook(filePath, makeBackup) {
     fs.copyFileSync(filePath, backupPath);
   }
 
+  const rawBuffer = fs.readFileSync(filePath);
+
   const workbook = new ExcelJS.Workbook();
-  await workbook.xlsx.readFile(filePath);
+  await workbook.xlsx.load(rawBuffer);
+
+  workbook.__originalRawBuffer = rawBuffer;
+  workbook.__writableSheetNames = writableSheetNames;
+
   return workbook;
 }
 
-/** Salva o workbook de volta no mesmo caminho. Dá erro claro se o arquivo estiver aberto/travado. */
+/**
+ * Salva o workbook de volta no mesmo caminho, de forma ATÔMICA: escreve
+ * primeiro num arquivo temporário (na mesma pasta, mesmo disco) e só troca
+ * pelo arquivo final com um `rename` — que é praticamente instantâneo —
+ * em vez de escrever direto em cima do arquivo original.
+ *
+ * Isso importa especialmente aqui porque o arquivo fica dentro de uma pasta
+ * sincronizada pelo OneDrive: escrever um .xlsx grande direto no destino
+ * final pode levar alguns segundos, e se o OneDrive (ou um antivírus)
+ * mexer no arquivo enquanto ele ainda está sendo escrito pela metade, o
+ * resultado é um arquivo corrompido.
+ *
+ * Antes de trocar o arquivo de verdade, monta a versão final combinando o
+ * ORIGINAL (intocado, pra tudo que o programa não edita -- outras abas,
+ * Tabela Dinâmica, gráfico, Tabela, comentário, etc.) com só o que o
+ * ExcelJS escreveu de fato novo (as duas abas graváveis + styles/shared
+ * strings -- ver `buildFinalXlsxBuffer` em lib/xlsxSurgery.js), e só then
+ * valida que todo XML do resultado abre sem erro. Se sobrar qualquer parte
+ * malformada, aborta sem tocar no arquivo de verdade -- melhor a
+ * sincronização falhar com um erro claro do que substituir uma planilha
+ * boa por uma corrompida.
+ */
 async function saveWorkbook(workbook, filePath) {
+  const dir = path.dirname(filePath);
+  const base = path.basename(filePath);
+  const tmpPath = path.join(dir, `.${base}.tmp-${process.pid}-${Date.now()}`);
+
+  const cleanupTmp = () => {
+    try {
+      if (fs.existsSync(tmpPath)) fs.unlinkSync(tmpPath);
+    } catch (_) {
+      /* ignora erro de limpeza, o erro original é o que importa */
+    }
+  };
+
   try {
-    await workbook.xlsx.writeFile(filePath);
+    await workbook.xlsx.writeFile(tmpPath);
   } catch (err) {
+    cleanupTmp();
     if (err && (err.code === "EBUSY" || err.code === "EPERM")) {
       throw new Error(
         `Não consegui salvar "${filePath}" — parece que o arquivo está aberto no Excel. Feche a planilha e rode o sync de novo.`
+      );
+    }
+    throw err;
+  }
+
+  try {
+    let finalBuffer;
+    if (workbook.__originalRawBuffer) {
+      const writtenBuffer = fs.readFileSync(tmpPath);
+      finalBuffer = await buildFinalXlsxBuffer(
+        workbook.__originalRawBuffer,
+        writtenBuffer,
+        workbook.__writableSheetNames || []
+      );
+    } else {
+      finalBuffer = fs.readFileSync(tmpPath);
+    }
+
+    const xmlErrors = await validateZipXmlPartsWellFormed(finalBuffer);
+    if (xmlErrors.length > 0) {
+      const detalhe = xmlErrors.map((e) => `  - ${e.path}: ${e.error}`).join("\n");
+      throw new Error(
+        `Abortei o salvamento: o .xlsx que ia ser gravado tem XML inválido em ${xmlErrors.length} parte(s) ` +
+          `(o Excel provavelmente ia reportar "conteúdo ilegível" ao abrir). O arquivo original NÃO foi alterado.\n${detalhe}`
+      );
+    }
+
+    fs.writeFileSync(tmpPath, finalBuffer);
+  } catch (err) {
+    cleanupTmp();
+    throw err;
+  }
+
+  try {
+    fs.renameSync(tmpPath, filePath);
+  } catch (err) {
+    cleanupTmp();
+    if (err && (err.code === "EBUSY" || err.code === "EPERM")) {
+      throw new Error(
+        `Salvei o arquivo temporário mas não consegui substituir "${filePath}" — parece que o arquivo está aberto no Excel (ou o OneDrive está sincronizando ele agora). Feche a planilha, espere o ícone do OneDrive terminar de sincronizar, e rode o sync de novo.`
       );
     }
     throw err;
@@ -269,6 +401,8 @@ module.exports = {
   applyFallbackStyle,
   autoFitColumns,
   addStatusColorRuleForNewRows,
+  computeStatusListFormula,
+  applyStatusListValidation,
   openWorkbook,
   saveWorkbook,
 };

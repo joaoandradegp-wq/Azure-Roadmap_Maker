@@ -108,23 +108,58 @@ O script:
 
 Ordem de prioridade — a primeira que bater, vence:
 
-1. **State do Azure**: `Removed` → `Cancelado` · `Resolved`/`Closed` → `Entregue`
-2. **Tag**: `Pausado` → `Paralisado` · `Bloqueado`/`Blocked` → `Bloqueado`
-3. **Coluna do board** (`System.BoardColumn`), só se o card estiver na
-   **sprint atual** (calculada por `sprintCadence`, mesma lógica do app
-   original):
-   - `Pronto para GMUD` → `Pronto GMUD` (não depende de sprint)
+1. **State final do Azure**: `Removed` → `Removido` · `Closed` → `Entregue`
+   (esses dois sempre vencem, não importa mais nada).
+2. **Tag**: `Pausado` → `Paralisado` · `Bloqueado`/`Blocked` → `Bloqueado` ·
+   `RASCUNHO` → `Aguardando Desenvolvimento da História`
+3. **Coluna do board, SEM depender da sprint atual** (`byBoardColumnAlways`):
+   - `Pronto para GMUD` → `Pronto GMUD`
+   - `Priorizar proxima Sprint` → `Priorizado Proxima Sprint`
+4. **Coluna do board, só se estiver na sprint atual** (`byBoardColumn`,
+   calculada por `sprintCadence`):
    - `Pronto para Desenvolvimento/Spike` → `Na Sprint Atual`
    - `Em Desenvolvimento` → `Em Desenvolvimento`
    - `Em correção (Ambiente QA)` → `QA`
+   - `Em testes - Ambiente QA` → `QA`
    - `Em correção (HML)` → `QA` (+ marca `HML` na coluna `OBS`)
+5. **State `Resolved`** → `Entregue`, só como ÚLTIMO recurso (se nada acima
+   bateu) — de propósito por último: um card pode continuar `Resolved` no
+   Azure enquanto passa por várias colunas do board (ex: testes de QA) antes
+   de virar `Closed` de verdade; se `Resolved` tivesse prioridade mais alta,
+   essas colunas nunca seriam vistas.
 
 Se nenhuma regra bater, o `Status` da linha **não é sobrescrito** — fica como
-está (pode ser um status gerenciado manualmente, tipo `Backlog`,
-`Priorizado`, `Aguardando Refinamento de Negócio` etc).
+está (pode ser um status gerenciado manualmente, tipo `Priorizado`,
+`Aguardando Refinamento de Negócio` etc).
 
-`Removido` nunca é escrito pelo app — é status de uso manual, por decisão
-sua.
+**Linha já marcada `Removido` na planilha é intocável** — nenhum campo é
+atualizado (nem título, nem chamado, nem status), EXCETO se o próprio card
+no Azure também estiver com State `Removed` (aí segue o fluxo normal, que
+mantém `Removido` e atualiza o título).
+
+**`Nº Azure` em branco ou inválido** (não existe mais no Azure) → `Status`
+vira `Backlog` — a menos que a linha já esteja travada como `Removido`
+(regra acima).
+
+**Classificação** (`lib/statusMapping.js` → `resolveClassificacao`): olha só
+a tag `Bug` ou `Melhoria` (mutuamente exclusivas) e escreve na coluna
+`Classificação`.
+
+**Data de corte**: dinâmica, recalculada a cada execução — é sempre a data
+mais antiga já presente na coluna `Data da Inserção` da aba LIVRE Oficial.
+O valor fixo em `config.json` (`query.cutoffDate`) só é usado como reserva
+se essa coluna estiver totalmente vazia.
+
+### Testar as regras sem precisar do Azure nem da planilha real
+
+```
+node test-rules.js
+```
+
+Roda um teste rápido, todo em memória, cobrindo as regras acima (inclusive
+um round-trip real de leitura/escrita `.xlsx` com dropdown, pra checar que a
+formatação/validação sobrevive). Útil pra conferir depois de mexer no
+`config.json` antes de rodar contra a planilha de verdade.
 
 ## O que ainda vale revisar
 
@@ -138,3 +173,21 @@ sua.
   coluna no board, é só ajustar aqui.
 - Se quiser rodar automaticamente (ex: 1x por dia), dá pra agendar via Task
   Scheduler do Windows chamando `node sync.js` dentro da pasta do projeto.
+- A coluna `Classificação` (`config.json` → `excel.livreColumns.classificacao`)
+  precisa bater **exatamente** com o cabeçalho real da planilha (acento
+  incluído). Se der erro de "coluna não encontrada", é só ajustar o nome aí.
+
+## Corrupção do arquivo ao salvar (erro de XML no Excel)
+
+Se o Excel já reclamou de "Parte Substituída... erro XML" ao abrir o
+arquivo depois do sync: o `lib/excelSheet.js` agora salva de forma
+**atômica** (escreve num arquivo temporário e só troca pelo original no
+final, em vez de escrever direto em cima do arquivo do OneDrive) e o
+`lib/normalize.js` remove caracteres de controle inválidos que às vezes
+vêm colados no título/chamado do Azure — as duas causas mais prováveis de
+corrupção nesse tipo de arquivo. Isso foi validado com um teste de
+round-trip real (leitura → escrita → releitura, com dropdown incluído), mas
+não com o arquivo de vocês especificamente (que é bem mais complexo). Se a
+planilha real do OneDrive corromper de novo mesmo com essa correção, guarde
+o backup gerado (`.backup-<data>.xlsx`, criado automaticamente antes de
+cada salvamento) e avise — precisa investigar com o arquivo real.

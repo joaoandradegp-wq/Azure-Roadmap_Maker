@@ -1,63 +1,106 @@
 // lib/statusMapping.js
-// DE/PARA: campos do card no Azure -> valor da coluna "Status" na planilha
-// "LIVRE Oficial". Ordem de prioridade (combinada em conversa):
+// REESCRITO em 28/08/2026 -- regra nova, simples, direto do que foi definido:
 //
-//   1) State do Azure   (byState)   -> Removed = Cancelado, Resolved/Closed = Entregue
-//   2) Tag do Azure      (byTag)     -> Pausado = Paralisado, Bloqueado/Blocked = Bloqueado
-//   3) Coluna do board   (byBoardColumn), MAS só se o card estiver na sprint
-//      atual (comparando o número da sprint do card com a sprint atual,
-//      calculada por sprintCadence):
-//        - "Pronto para GMUD"                  -> Pronto GMUD  (não depende da sprint)
-//        - "Pronto para Desenvolvimento/Spike"  -> Na Sprint Atual
-//        - "Em Desenvolvimento"                 -> Em Desenvolvimento
-//        - "Em correção (Ambiente QA)"          -> QA
-//        - "Em correção (HML)"                  -> QA (+ marca "HML" na coluna OBS)
+//   1) Tag "Bloqueado"/"Pausado"/"RASCUNHO" (byTag)         -> vence tudo
+//   2) State "New"/"Refinement"/"Refined"                   -> "Backlog"
+//   3) Iteration Path = raiz do projeto (sem sprint ainda)  -> "Backlog"
+//   4) Coluna do board "Closed/Em PRD"                      -> "Entregue"
+//   5) Coluna do board "Pronto para GMUD" /
+//      "Adicionar na GMUD do dia"                           -> "Pronto GMUD"
+//   6) Tag "Análise Técnica" OU coluna "Em investigação
+//      (Spike)"                                             -> "Em Análise Técnica TI"
+//   7) Catch-all: qualquer outra coisa                      -> "Na sprint Atual"
 //
-// Se nada bater, devolve status: null -> quem chama NÃO deve sobrescrever o
-// que já está na planilha (pode ser um status gerenciado manualmente, tipo
-// "Backlog", "Priorizado", "Aguardando Refinamento de Negócio" etc).
+// Isso só é aplicado a cards que a busca no Azure já retornou (tag "Livre")
+// E que passaram pelo filtro de lib/cardFilters.js (tipo "User Story", sem
+// tag/título "Barramento") -- cards ignorados nem chegam aqui, ver sync.js.
+// Cards sem "Nº Azure" na planilha ou fora do grupo "Livre" têm status
+// próprio (ver statusSemAzurePreenchido / statusForaDoGrupoLivre em
+// config.json), resolvidos em sync.js, não aqui.
 //
-// "Removido" nunca é escrito pelo app — é só de uso manual, por decisão do
-// usuário.
+// Em NENHUM caso este módulo decide se pode ou não escrever na planilha --
+// isso é responsabilidade de quem chama (ver podeAtualizarStatus abaixo),
+// que só sobrescreve a célula se o valor atual já for um dos
+// "managedStatuses" (ou estiver vazia). Assim nunca se perde um status que
+// a BO colocou manualmente (ex: "Priorizado Proxima Sprint").
 
 const { hasTag } = require("./normalize");
-const { currentSprintNumber } = require("./sprintUtils");
 
-function resolveStatus(item, config, today = new Date()) {
+function resolveStatus(item, config) {
   const mapping = config.statusMapping;
-  const hmlColumns = new Set(mapping.hmlBoardColumns || []);
 
-  // 1) State
-  if (mapping.byState[item.state]) {
-    return { status: mapping.byState[item.state], isHml: false };
-  }
-
-  // 2) Tag (primeira tag da lista que bater, na ordem declarada no config)
-  for (const [tag, status] of Object.entries(mapping.byTag)) {
+  // 1) Tag de bloqueio/pausa/rascunho -- vence tudo, não importa a coluna do board
+  for (const [tag, status] of Object.entries(mapping.byTag || {})) {
     if (hasTag(item, tag)) {
-      return { status, isHml: false };
+      return { status };
     }
   }
 
-  // 3) Coluna do board, ligado a "Pronto para GMUD" (não depende de sprint)
-  if (item.boardColumn === "Pronto para GMUD" && mapping.byBoardColumn["Pronto para GMUD"]) {
-    return { status: mapping.byBoardColumn["Pronto para GMUD"], isHml: false };
+  // 2) State ainda não refinado (o campo State vinha sendo lido errado antes) -> Backlog
+  const statesBacklog = new Set(mapping.statesBacklog || []);
+  if (item.state && statesBacklog.has(item.state)) {
+    return { status: mapping.statusForaDoGrupoLivre || "Backlog" };
   }
 
-  // 3b) Demais colunas do board -> só valem se o card estiver na sprint atual
-  const sprintAtual = currentSprintNumber(config.sprintCadence, today);
-  const estaNaSprintAtual =
-    sprintAtual !== null && item.sprintNumber !== null && item.sprintNumber === sprintAtual;
-
-  if (estaNaSprintAtual && mapping.byBoardColumn[item.boardColumn]) {
-    return {
-      status: mapping.byBoardColumn[item.boardColumn],
-      isHml: hmlColumns.has(item.boardColumn),
-    };
+  // 3) Iteration Path ainda na raiz do projeto (sem sprint atribuída) -> Backlog
+  const areaPathRaiz = config.query && config.query.areaPath;
+  if (mapping.iterationRootIsBacklog && areaPathRaiz && item.iterationPath === areaPathRaiz) {
+    return { status: mapping.statusForaDoGrupoLivre || "Backlog" };
   }
 
-  // Nada bateu: não mexe no status que já está na planilha
-  return { status: null, isHml: false };
+  // 4) Coluna do board "Closed/Em PRD" -> Entregue
+  const entregueCols = new Set(mapping.boardColumnEntregue || []);
+  if (entregueCols.has(item.boardColumn)) {
+    return { status: mapping.statusEntregue || "Entregue" };
+  }
+
+  // 5) Coluna do board "Pronto para GMUD" / "Adicionar na GMUD do dia" -> Pronto GMUD
+  const gmudCols = new Set(mapping.boardColumnGmud || []);
+  if (gmudCols.has(item.boardColumn)) {
+    return { status: mapping.statusProntoGmud || "Pronto GMUD" };
+  }
+
+  // 6) Tag "Análise Técnica" OU coluna "Em investigação (Spike)" -> Em Análise Técnica TI
+  const analiseCols = new Set(mapping.boardColumnAnaliseTecnica || []);
+  const temTagAnaliseTecnica = mapping.tagAnaliseTecnica && hasTag(item, mapping.tagAnaliseTecnica);
+  if (temTagAnaliseTecnica || analiseCols.has(item.boardColumn)) {
+    return { status: mapping.statusAnaliseTecnica || "Em Análise Técnica TI" };
+  }
+
+  // 7) Catch-all: tudo o mais fica "Na sprint Atual"
+  return { status: mapping.statusNaSprintAtual || "Na sprint Atual" };
 }
 
-module.exports = { resolveStatus };
+/**
+ * Classificação (coluna "Classificação"): olha só pra tag "Melhoria" ou
+ * "Bug" -- são mutuamente exclusivas, todo card tem exatamente uma das duas.
+ * Se por algum motivo nenhuma bater (não deveria acontecer), devolve null e
+ * quem chama não sobrescreve o que já está na planilha.
+ */
+function resolveClassificacao(item, config) {
+  const mapping = (config.statusMapping && config.statusMapping.classificacaoByTag) || {
+    Bug: "Bug",
+    Melhoria: "Melhoria",
+  };
+  for (const [tag, valor] of Object.entries(mapping)) {
+    if (hasTag(item, tag)) return valor;
+  }
+  return null;
+}
+
+/**
+ * Diz se o programa pode ESCREVER `novoStatus` em cima do que já está na
+ * célula (`statusAtual`): sim se a célula estiver vazia, ou se o valor
+ * atual já for um dos status que o próprio programa controla
+ * (config.statusMapping.managedStatuses). Se for qualquer outro valor
+ * (a BO colocou manualmente pra revisar depois, ex: "Priorizado Proxima
+ * Sprint"), o programa NUNCA sobrescreve.
+ */
+function podeAtualizarStatus(statusAtual, config) {
+  const managed = new Set((config.statusMapping && config.statusMapping.managedStatuses) || []);
+  const atual = statusAtual === null || statusAtual === undefined ? "" : String(statusAtual).trim();
+  if (atual === "") return true;
+  return managed.has(atual);
+}
+
+module.exports = { resolveStatus, resolveClassificacao, podeAtualizarStatus };

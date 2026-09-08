@@ -191,6 +191,10 @@ Os principais parâmetros disponíveis são:
 O campo <b>query.extraWiqlWhere</b> deve conter somente as condições adicionais. O sistema adiciona automaticamente o operador <b>AND</b>, portanto o valor não deve começar com <b>AND</b>.
 </p>
 
+<p>
+Se <b>query.extraWiqlWhere</b> contiver uma condição <b>[System.BoardLane] = '...'</b>, o valor entre aspas é substituído automaticamente pelo produto escolhido na pergunta interativa (<b>LIVRE</b> ou <b>FLEET</b>) — não precisa editar o config pra trocar de produto.
+</p>
+
 ---
 
 <h2>🔐 Azure DevOps PAT</h2>
@@ -236,12 +240,27 @@ export AZURE_DEVOPS_PAT=seu_token_aqui
 <h2>🚀 Execução</h2>
 
 <p>
-Um único comando executa o processo completo: busca os dados no Azure DevOps, pergunta quais sprints exportar, gera o <b>roadmap.json</b> e, na sequência, já chama o <b>render.js</b> sozinho, gerando o PowerPoint — sem precisar rodar dois comandos separados.
+Um único comando executa o processo completo: busca os dados no Azure DevOps, pergunta qual produto e quais sprints exportar, gera o <b>roadmap.json</b> e, na sequência, já chama o <b>render.js</b> sozinho, gerando o PowerPoint — sem precisar rodar dois comandos separados.
 </p>
 
 <pre>
 node azure.js
 </pre>
+
+<h3>🏷️ Seleção de produto (LIVRE ou FLEET)</h3>
+
+<p>
+Antes de buscar os Work Items, o script pergunta:
+</p>
+
+<pre>
+Qual produto deseja exportar? (LIVRE ou FLEET)
+></pre>
+
+<ul>
+  <li>🔀 A escolha troca só o valor do <b>[System.BoardLane]</b> usado na query (a aba/lane do board que separa os cards por produto dentro das mesmas colunas) — todo o resto (tipos, area path, datas, regras de status, layout do PPTX etc.) continua idêntico entre os dois produtos</li>
+  <li>🔁 Se digitar qualquer coisa diferente de <b>LIVRE</b> ou <b>FLEET</b>, o script avisa e pergunta de novo</li>
+</ul>
 
 <h3>🏃 Seleção de sprint</h3>
 
@@ -263,11 +282,12 @@ Qual Sprint deseja exportar? (ex: 9 ou 9,10 — disponíveis: 8, 9, 10, 11)
 <h3>⚙️ Flags para automação</h3>
 
 <p>
-Para pular a pergunta interativa (ex: rodando num agendador), informe as sprints direto:
+Para pular a pergunta interativa (ex: rodando num agendador), informe o produto e/ou as sprints direto:
 </p>
 
 <pre>
-node azure.js config.json data/roadmap.json --sprints=9,10
+node azure.js config.json data/roadmap.json --produto=FLEET
+node azure.js config.json data/roadmap.json --produto=FLEET --sprints=9,10
 </pre>
 
 <p>

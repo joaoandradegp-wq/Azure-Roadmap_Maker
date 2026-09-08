@@ -11,6 +11,8 @@
     "node": ">=18"
   },
   "dependencies": {
-    "exceljs": "^4.4.0"
+    "exceljs": "^4.4.0",
+    "jszip": "^3.10.1",
+    "saxes": "^5.0.1"
   }
 }

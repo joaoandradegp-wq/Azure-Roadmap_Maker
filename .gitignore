@@ -10,3 +10,4 @@ azure-sheets-sync/Ongoing - Melhorias Funil de Vendas - Livre.xlsx
 azure-sheets-sync/planilha-teste/*.xlsx
 azure-sheets-sync/planilha-teste/*.backup-*.xlsx
 azure-sheets-sync/planilha-teste/LEIA-ME.txt
+azure-sheets-sync/test-rules.js

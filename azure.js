@@ -1,13 +1,14 @@
 // azure.js
-// Conecta ao Azure DevOps, busca os Work Items configurados, pergunta quais
+// Conecta ao Azure DevOps, pergunta qual produto (LIVRE ou FLEET) e quais
 // sprints exportar, gera data/roadmap.json e, na sequência, já roda render.js
 // pra gerar o PPTX — não precisa rodar os dois comandos separados.
 //
 // Uso:
 //   export AZURE_DEVOPS_PAT=xxxxxxxxxxxx
 //   node azure.js [config.json] [saida.json]
-//   node azure.js [config.json] [saida.json] --sprints=9,10   (pula a pergunta)
-//   node azure.js [config.json] [saida.json] --no-render      (só gera o JSON, não chama o render.js)
+//   node azure.js [config.json] [saida.json] --produto=LIVRE     (pula a pergunta do produto)
+//   node azure.js [config.json] [saida.json] --sprints=9,10      (pula a pergunta da sprint)
+//   node azure.js [config.json] [saida.json] --no-render         (só gera o JSON, não chama o render.js)
 //
 // Se nenhum config for passado, usa config.json na raiz do projeto
 // (copie config.example.json para config.json e ajuste org/project/campos).
@@ -25,6 +26,56 @@ function sprintNumberOf(item, config) {
   const iterationPathRaw = f[config.fields.iterationPath];
   const rawTitle = f[config.fields.title] || "";
   return extractSprintNumber(iterationPathRaw) ?? extractSprintNumber(rawTitle);
+}
+
+const PRODUTOS = ["LIVRE", "FLEET"];
+
+/**
+ * Pergunta interativamente qual produto exportar (LIVRE ou FLEET), repetindo
+ * a pergunta se a resposta não for uma das duas opções.
+ */
+async function askProductSelection() {
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+
+  try {
+    while (true) {
+      const answer = await rl.question(`\nQual produto deseja exportar? (LIVRE ou FLEET)\n> `);
+      const normalized = answer.trim().toUpperCase();
+
+      if (PRODUTOS.includes(normalized)) {
+        return normalized;
+      }
+
+      console.log(`Entrada inválida. Digite LIVRE ou FLEET.`);
+    }
+  } finally {
+    rl.close();
+  }
+}
+
+/**
+ * Troca o valor do [System.BoardLane] dentro de query.extraWiqlWhere pelo
+ * produto escolhido (LIVRE ou FLEET) — é a aba/lane do board que separa os
+ * cards por produto dentro das mesmas colunas. Nada mais na config muda.
+ */
+function applyProductToConfig(config, produto) {
+  const where = config.query && config.query.extraWiqlWhere;
+  const boardLaneRe = /(\[System\.BoardLane\]\s*=\s*')[^']*(')/i;
+
+  if (!where || !boardLaneRe.test(where)) {
+    throw new Error(
+      `Não encontrei "[System.BoardLane] = '...'" em query.extraWiqlWhere no config. ` +
+      `Ajuste o config manualmente ou avise pra eu corrigir o código.`
+    );
+  }
+
+  return {
+    ...config,
+    query: {
+      ...config.query,
+      extraWiqlWhere: where.replace(boardLaneRe, `$1${produto}$2`),
+    },
+  };
 }
 
 /** "09" ou "9" ou "9,10" -> [9, 10]. Retorna null se algum token não for número. */
@@ -76,6 +127,7 @@ async function main() {
   const args = process.argv.slice(2);
   const positional = args.filter((a) => !a.startsWith("--"));
   const sprintsFlag = args.find((a) => a.startsWith("--sprints="));
+  const produtoFlag = args.find((a) => a.startsWith("--produto="));
 
   const configPath = positional[0] || path.join(__dirname, "config.json");
   const outPath = positional[1] || path.join(__dirname, "data", "roadmap.json");
@@ -88,7 +140,20 @@ async function main() {
     process.exit(1);
   }
 
-  const config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+  let config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+
+  let produto;
+  if (produtoFlag) {
+    produto = produtoFlag.split("=")[1].trim().toUpperCase();
+    if (!PRODUTOS.includes(produto)) {
+      console.error(`--produto inválido. Use LIVRE ou FLEET.`);
+      process.exit(1);
+    }
+  } else {
+    produto = await askProductSelection();
+  }
+  config = applyProductToConfig(config, produto);
+  console.log(`Produto selecionado: ${produto}`);
 
   console.log(`Buscando work items em ${config.azure.organization}/${config.azure.project}...`);
   const workItems = await fetchWorkItems(config);
@@ -158,4 +223,11 @@ if (require.main === module) {
   });
 }
 
-module.exports = { parseSprintSelection, sprintNumberOf, askSprintSelection };
+module.exports = {
+  parseSprintSelection,
+  sprintNumberOf,
+  askSprintSelection,
+  askProductSelection,
+  applyProductToConfig,
+  PRODUTOS,
+};
