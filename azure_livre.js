@@ -28,7 +28,7 @@ function sprintNumberOf(item, config) {
   return extractSprintNumber(iterationPathRaw) ?? extractSprintNumber(rawTitle);
 }
 
-const PRODUTOS = ["LIVRE", "FLEET", "RAC"];
+const PRODUTOS = ["LIVRE", "FLEET"];
 
 /**
  * Pergunta interativamente qual produto exportar (LIVRE ou FLEET), repetindo
@@ -39,14 +39,14 @@ async function askProductSelection() {
 
   try {
     while (true) {
-      const answer = await rl.question(`\nQual produto deseja exportar? (LIVRE, FLEET ou  RAC)\n> `);
+      const answer = await rl.question(`\nQual produto deseja exportar? (LIVRE ou FLEET)\n> `);
       const normalized = answer.trim().toUpperCase();
 
       if (PRODUTOS.includes(normalized)) {
         return normalized;
       }
 
-      console.log(`Entrada inválida. Digite LIVRE, FLEET ou RAC.`);
+      console.log(`Entrada inválida. Digite LIVRE ou FLEET.`);
     }
   } finally {
     rl.close();
