@@ -1,5 +1,5 @@
 // azure.js
-// Conecta ao Azure DevOps, pergunta qual produto (LIVRE ou FLEET) e quais
+// Conecta ao Azure DevOps, pergunta qual produto (LIVRE, FLEET ou RAC) e quais
 // sprints exportar, gera data/roadmap.json e, na sequência, já roda render.js
 // pra gerar o PPTX — não precisa rodar os dois comandos separados.
 //
@@ -11,7 +11,14 @@
 //   node azure.js [config.json] [saida.json] --no-render         (só gera o JSON, não chama o render.js)
 //
 // Se nenhum config for passado, usa config.json na raiz do projeto
-// (copie config.example.json para config.json e ajuste org/project/campos).
+// (copie config.example.json para config.json e ajuste org/PAT antes de rodar).
+//
+// O config.json tem um bloco "products" (LIVRE, FLEET, RAC) com o que muda
+// entre eles: projeto do Azure, areaPath, tipos de work item e a query WIQL.
+// LIVRE e FLEET hoje só diferem na lane do board; RAC roda em outro projeto
+// inteiro (SysMap - Salesforce Comercial) — tudo isso fica dentro do bloco do
+// produto escolhido, o resto do config (fields, statusMapping, timeline,
+// sprintCadence, squad) é compartilhado pelos três.
 
 const fs = require("fs");
 const path = require("path");
@@ -31,15 +38,15 @@ function sprintNumberOf(item, config) {
 const PRODUTOS = ["LIVRE", "FLEET", "RAC"];
 
 /**
- * Pergunta interativamente qual produto exportar (LIVRE ou FLEET), repetindo
- * a pergunta se a resposta não for uma das duas opções.
+ * Pergunta interativamente qual produto exportar (LIVRE, FLEET ou RAC),
+ * repetindo a pergunta se a resposta não for uma das três opções.
  */
 async function askProductSelection() {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
   try {
     while (true) {
-      const answer = await rl.question(`\nQual produto deseja exportar? (LIVRE, FLEET ou  RAC)\n> `);
+      const answer = await rl.question(`\nQual produto deseja exportar? (LIVRE, FLEET ou RAC)\n> `);
       const normalized = answer.trim().toUpperCase();
 
       if (PRODUTOS.includes(normalized)) {
@@ -54,27 +61,32 @@ async function askProductSelection() {
 }
 
 /**
- * Troca o valor do [System.BoardLane] dentro de query.extraWiqlWhere pelo
- * produto escolhido (LIVRE ou FLEET) — é a aba/lane do board que separa os
- * cards por produto dentro das mesmas colunas. Nada mais na config muda.
+ * Aplica o bloco config.products[produto] por cima do config compartilhado:
+ * troca azure.project, query.areaPath, query.workItemTypes,
+ * query.extraWiqlWhere e project.title pelo que está definido pra esse
+ * produto. Diferente da versão antiga (que só trocava a tag BoardLane dentro
+ * de extraWiqlWhere), isso cobre o caso do RAC, que roda em outro projeto do
+ * Azure inteiro, não só em outra lane do mesmo board.
  */
 function applyProductToConfig(config, produto) {
-  const where = config.query && config.query.extraWiqlWhere;
-  const boardLaneRe = /(\[System\.BoardLane\]\s*=\s*')[^']*(')/i;
+  const bloco = config.products && config.products[produto];
 
-  if (!where || !boardLaneRe.test(where)) {
+  if (!bloco) {
     throw new Error(
-      `Não encontrei "[System.BoardLane] = '...'" em query.extraWiqlWhere no config. ` +
-      `Ajuste o config manualmente ou avise pra eu corrigir o código.`
+      `Não encontrei "products.${produto}" no config.json. ` +
+      `Confira se o config tem os blocos LIVRE, FLEET e RAC dentro de "products".`
     );
   }
 
   return {
     ...config,
+    azure: { ...config.azure, project: bloco.project },
     query: {
-      ...config.query,
-      extraWiqlWhere: where.replace(boardLaneRe, `$1${produto}$2`),
+      areaPath: bloco.areaPath,
+      workItemTypes: bloco.workItemTypes,
+      extraWiqlWhere: bloco.extraWiqlWhere,
     },
+    project: { ...(config.project || {}), title: bloco.title, squad: config.squad },
   };
 }
 
@@ -135,7 +147,7 @@ async function main() {
   if (!fs.existsSync(configPath)) {
     console.error(
       `Config não encontrado em ${configPath}.\n` +
-      `Copie config.example.json para config.json e ajuste organization/project/PAT antes de rodar.`
+      `Copie config.example.json para config.json e ajuste organization/PAT antes de rodar.`
     );
     process.exit(1);
   }
@@ -146,7 +158,7 @@ async function main() {
   if (produtoFlag) {
     produto = produtoFlag.split("=")[1].trim().toUpperCase();
     if (!PRODUTOS.includes(produto)) {
-      console.error(`--produto inválido. Use LIVRE ou FLEET.`);
+      console.error(`--produto inválido. Use LIVRE, FLEET ou RAC.`);
       process.exit(1);
     }
   } else {
