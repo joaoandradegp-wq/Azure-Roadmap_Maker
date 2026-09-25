@@ -36,9 +36,9 @@ A arquitetura foi construída de forma modular, permitindo que a etapa de coleta
 <h2>🔄 Funcionamento</h2>
 
 <pre>
-┌───────────────┐     ┌───────────┐     ┌────────────┐     ┌───────────────┐     ┌─────────────┐      ┌────────────┐     ┌────────────────────┐
-│ Azure DevOps  │ ──► │ azure.js  │ ──► │ WIQL / API │ ──► │  Work Items   │ ──► │ transform.js │ ──► │roadmap.json│ ──► │ status_report.pptx │
-└───────────────┘     └───────────┘     └────────────┘     └───────────────┘     └─────────────┘      └────────────┘     └────────────────────┘
+┌───────────────┐     ┌───────────┐     ┌────────────┐     ┌───────────────┐     ┌──────────────┐      ┌────────────┐     ┌────────────────────┐
+│ Azure DevOps  │ ──► │ azure.js  │ ──► │ WIQL / API │ ──► │  Work Items   │ ──► │ transform.js │  ──► │roadmap.json│ ──► │ status_report.pptx │
+└───────────────┘     └───────────┘     └────────────┘     └───────────────┘     └──────────────┘      └────────────┘     └────────────────────┘
 </pre>
 
 <p>
@@ -62,6 +62,7 @@ O fluxo completo é disparado por um único comando (<b>node azure.js</b>), que 
   <li>⚪ Identificação de itens em previsão</li>
   <li>🔴 Identificação visual de riscos e atrasos</li>
   <li>🏷️ Suporte a regras baseadas em Tags e States</li>
+  <li>🔀 Suporte a múltiplos produtos (LIVRE, FLEET e RAC) em um único config</li>
   <li>📑 Geração automática de múltiplas páginas no PowerPoint</li>
   <li>🧪 Testes offline sem necessidade de acesso ao Azure DevOps</li>
   <li>⚙️ Configuração através de arquivo JSON</li>
@@ -107,10 +108,11 @@ Responsável pela comunicação com o <b>Azure DevOps</b>.
 </p>
 
 <p>
-O script executa a WIQL configurada, recupera os IDs dos Work Items e consulta os dados necessários através da API. Ao final, gera o arquivo <b>data/roadmap.json</b>.
+O script pergunta qual produto exportar, aplica o bloco de configuração correspondente, executa a WIQL configurada, recupera os IDs dos Work Items e consulta os dados necessários através da API. Ao final, gera o arquivo <b>data/roadmap.json</b>.
 </p>
 
 <ul>
+  <li>🏷️ Seleção do produto (LIVRE, FLEET ou RAC)</li>
   <li>🔎 Execução de WIQL</li>
   <li>☁️ Consulta à API do Azure DevOps</li>
   <li>📋 Recuperação dos Work Items</li>
@@ -167,32 +169,41 @@ cp config.example.json config.json
 </pre>
 
 <p>
-Os principais parâmetros disponíveis são:
+Os parâmetros compartilhados por todos os produtos ficam no topo do arquivo:
 </p>
 
 <ul>
   <li><b>azure.organization</b> — organização do Azure DevOps</li>
-  <li><b>azure.project</b> — projeto do Azure DevOps</li>
   <li><b>azure.patEnvVar</b> — variável de ambiente que contém o PAT</li>
-  <li><b>query.workItemTypes</b> — tipos de Work Item que serão consultados</li>
-  <li><b>query.areaPath</b> — Area Path utilizada como filtro</li>
-  <li><b>query.extraWiqlWhere</b> — condições adicionais da WIQL</li>
   <li><b>fields.*</b> — campos do Azure utilizados pelo sistema</li>
   <li><b>statusMapping.byState</b> — mapeamento de status por State</li>
   <li><b>statusMapping.byTag</b> — mapeamento de status por Tag</li>
   <li><b>timeline.monthsBack</b> — quantidade de meses anteriores</li>
   <li><b>timeline.monthsForward</b> — quantidade de meses posteriores</li>
   <li><b>sprintCadence</b> — configuração da cadência das sprints</li>
-  <li><b>project.title</b> — título do relatório</li>
-  <li><b>project.squad</b> — squad apresentado no cabeçalho</li>
+  <li><b>squad</b> — squad apresentado no cabeçalho</li>
+</ul>
+
+<h3>🔀 Bloco <code>products</code></h3>
+
+<p>
+Tudo o que muda de um produto pra outro fica dentro de <b>products.LIVRE</b>, <b>products.FLEET</b> e <b>products.RAC</b>, cada um com:
+</p>
+
+<ul>
+  <li><b>project</b> — projeto do Azure DevOps consultado</li>
+  <li><b>areaPath</b> — Area Path utilizada como filtro</li>
+  <li><b>workItemTypes</b> — tipos de Work Item que serão consultados</li>
+  <li><b>extraWiqlWhere</b> — condições adicionais da WIQL</li>
+  <li><b>title</b> — título do relatório exibido no PowerPoint</li>
 </ul>
 
 <p>
-O campo <b>query.extraWiqlWhere</b> deve conter somente as condições adicionais. O sistema adiciona automaticamente o operador <b>AND</b>, portanto o valor não deve começar com <b>AND</b>.
+O campo <b>extraWiqlWhere</b> deve conter somente as condições adicionais. O sistema adiciona automaticamente o operador <b>AND</b>, portanto o valor não deve começar com <b>AND</b>.
 </p>
 
 <p>
-Se <b>query.extraWiqlWhere</b> contiver uma condição <b>[System.BoardLane] = '...'</b>, o valor entre aspas é substituído automaticamente pelo produto escolhido na pergunta interativa (<b>LIVRE</b> ou <b>FLEET</b>) — não precisa editar o config pra trocar de produto.
+LIVRE e FLEET hoje rodam no mesmo projeto do Azure e só se diferenciam pela lane do board (<b>[System.BoardLane]</b> dentro de <b>extraWiqlWhere</b>); RAC roda em outro projeto inteiro. Como cada produto carrega seu próprio bloco completo, novos produtos — mesmo que estejam em projetos, area paths ou tipos de Work Item totalmente diferentes — podem ser adicionados só incluindo mais uma chave dentro de <b>products</b>, sem editar código.
 </p>
 
 ---
@@ -247,19 +258,20 @@ Um único comando executa o processo completo: busca os dados no Azure DevOps, p
 node azure.js
 </pre>
 
-<h3>🏷️ Seleção de produto (LIVRE ou FLEET)</h3>
+<h3>🏷️ Seleção de produto (LIVRE, FLEET ou RAC)</h3>
 
 <p>
 Antes de buscar os Work Items, o script pergunta:
 </p>
 
 <pre>
-Qual produto deseja exportar? (LIVRE ou FLEET)
+Qual produto deseja exportar? (LIVRE, FLEET ou RAC)
 ></pre>
 
 <ul>
-  <li>🔀 A escolha troca só o valor do <b>[System.BoardLane]</b> usado na query (a aba/lane do board que separa os cards por produto dentro das mesmas colunas) — todo o resto (tipos, area path, datas, regras de status, layout do PPTX etc.) continua idêntico entre os dois produtos</li>
-  <li>🔁 Se digitar qualquer coisa diferente de <b>LIVRE</b> ou <b>FLEET</b>, o script avisa e pergunta de novo</li>
+  <li>🔀 A escolha aplica o bloco correspondente em <b>products</b> do <b>config.json</b> — projeto do Azure, area path, tipos de Work Item, WIQL e título do relatório</li>
+  <li>📁 LIVRE e FLEET usam o mesmo projeto e só mudam a lane do board; RAC roda em outro projeto do Azure DevOps inteiro</li>
+  <li>🔁 Se digitar qualquer coisa diferente de <b>LIVRE</b>, <b>FLEET</b> ou <b>RAC</b>, o script avisa e pergunta de novo</li>
 </ul>
 
 <h3>🏃 Seleção de sprint</h3>
@@ -287,7 +299,7 @@ Para pular a pergunta interativa (ex: rodando num agendador), informe o produto 
 
 <pre>
 node azure.js config.json data/roadmap.json --produto=FLEET
-node azure.js config.json data/roadmap.json --produto=FLEET --sprints=9,10
+node azure.js config.json data/roadmap.json --produto=RAC --sprints=9,10
 </pre>
 
 <p>
