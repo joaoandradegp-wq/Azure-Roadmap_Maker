@@ -1,25 +1,3 @@
-// azure.js
-// Conecta ao Azure DevOps, pergunta qual produto (LIVRE, FLEET ou RAC) e quais
-// sprints exportar, gera data/roadmap.json e, na sequência, já roda render.js
-// pra gerar o PPTX — não precisa rodar os dois comandos separados.
-//
-// Uso:
-//   export AZURE_DEVOPS_PAT=xxxxxxxxxxxx
-//   node azure.js [config.json] [saida.json]
-//   node azure.js [config.json] [saida.json] --produto=LIVRE     (pula a pergunta do produto)
-//   node azure.js [config.json] [saida.json] --sprints=9,10      (pula a pergunta da sprint)
-//   node azure.js [config.json] [saida.json] --no-render         (só gera o JSON, não chama o render.js)
-//
-// Se nenhum config for passado, usa config.json na raiz do projeto
-// (copie config.example.json para config.json e ajuste org/PAT antes de rodar).
-//
-// O config.json tem um bloco "products" (LIVRE, FLEET, RAC) com o que muda
-// entre eles: projeto do Azure, areaPath, tipos de work item e a query WIQL.
-// LIVRE e FLEET hoje só diferem na lane do board; RAC roda em outro projeto
-// inteiro (SysMap - Salesforce Comercial) — tudo isso fica dentro do bloco do
-// produto escolhido, o resto do config (fields, statusMapping, timeline,
-// sprintCadence, squad) é compartilhado pelos três.
-
 const fs = require("fs");
 const path = require("path");
 const readline = require("readline/promises");
@@ -27,7 +5,6 @@ const { spawnSync } = require("child_process");
 const { fetchWorkItems } = require("./lib/azureClient");
 const { transform, extractSprintNumber } = require("./lib/transform");
 
-/** Extrai o número da sprint de um work item bruto (Iteration Path ou título) */
 function sprintNumberOf(item, config) {
   const f = item.fields;
   const iterationPathRaw = f[config.fields.iterationPath];
@@ -37,10 +14,6 @@ function sprintNumberOf(item, config) {
 
 const PRODUTOS = ["LIVRE", "FLEET", "RAC"];
 
-/**
- * Pergunta interativamente qual produto exportar (LIVRE, FLEET ou RAC),
- * repetindo a pergunta se a resposta não for uma das três opções.
- */
 async function askProductSelection() {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
@@ -60,14 +33,6 @@ async function askProductSelection() {
   }
 }
 
-/**
- * Aplica o bloco config.products[produto] por cima do config compartilhado:
- * troca azure.project, query.areaPath, query.workItemTypes,
- * query.extraWiqlWhere e project.title pelo que está definido pra esse
- * produto. Diferente da versão antiga (que só trocava a tag BoardLane dentro
- * de extraWiqlWhere), isso cobre o caso do RAC, que roda em outro projeto do
- * Azure inteiro, não só em outra lane do mesmo board.
- */
 function applyProductToConfig(config, produto) {
   const bloco = config.products && config.products[produto];
 
@@ -90,7 +55,6 @@ function applyProductToConfig(config, produto) {
   };
 }
 
-/** "09" ou "9" ou "9,10" -> [9, 10]. Retorna null se algum token não for número. */
 function parseSprintSelection(raw) {
   const tokens = raw.split(",").map((t) => t.trim()).filter(Boolean);
   if (tokens.length === 0) return null;
@@ -99,10 +63,6 @@ function parseSprintSelection(raw) {
   return numbers;
 }
 
-/**
- * Pergunta interativamente quais sprints exportar, repetindo a pergunta se a
- * resposta tiver algum número que não existe entre as sprints disponíveis.
- */
 async function askSprintSelection(availableSprints) {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   const availableList = availableSprints.join(", ");
@@ -171,7 +131,6 @@ async function main() {
   const workItems = await fetchWorkItems(config);
   console.log(`${workItems.length} work item(s) encontrado(s).`);
 
-  // Sprints distintas entre os itens buscados (Iteration Path ou título)
   const availableSprints = [
     ...new Set(
       workItems
@@ -213,9 +172,6 @@ async function main() {
   fs.writeFileSync(outPath, JSON.stringify(roadmap, null, 2), "utf-8");
   console.log(`Gerado: ${outPath}`);
 
-  // Roda o render.js na sequência, pra não precisar de dois comandos toda vez.
-  // Usa o mesmo roadmap.json que acabou de gerar; saída do PPTX fica no padrão
-  // dele (output/status_report.pptx), a menos que --no-render tenha sido passado.
   if (!args.includes("--no-render")) {
     console.log("\nGerando o PowerPoint (render.js)...");
     const renderResult = spawnSync("node", [path.join(__dirname, "render.js"), outPath], {
