@@ -1,14 +1,7 @@
 @echo off
-REM gerar_roadmap.bat
-REM Duplo clique pra rodar "node azure.js" sem precisar abrir terminal na mao.
-REM Na primeira vez (ou depois de gerar um PAT novo), ele pede o token e salva
-REM permanentemente na sua conta do Windows (setx) -- nas proximas vezes nao
-REM pergunta de novo, a menos que voce apague a variavel ou o token vença.
 
 setlocal enabledelayedexpansion
 
-REM Garante que estamos rodando a partir da pasta onde este .bat esta salvo,
-REM nao da pasta em que o Windows abriu o cmd.
 cd /d "%~dp0"
 
 if "%AZURE_DEVOPS_PAT%"=="" (
