@@ -108,7 +108,7 @@ O script pergunta qual produto exportar, aplica o bloco de configuração corres
 </p>
 
 <ul>
-  <li>🏷️ Seleção do produto (LIVRE, FLEET ou RAC)</li>
+  <li>🏷️ Seleção do produto</li>
   <li>🔎 Execução de WIQL</li>
   <li>☁️ Consulta à API do Azure DevOps</li>
   <li>📋 Recuperação dos Work Items</li>
@@ -183,7 +183,7 @@ Os parâmetros compartilhados por todos os produtos ficam no topo do arquivo:
 <h3>🔀 Bloco <code>products</code></h3>
 
 <p>
-Tudo o que muda de um produto pra outro fica dentro de <b>products.LIVRE</b>, <b>products.FLEET</b> e <b>products.RAC</b>, cada um com:
+Tudo o que muda de um produto pra outro fica dentro de <b>products.PRODUTO_01</b>, <b>products.PRODUTO_02</b> e <b>products.PRODUTO_03</b>, cada um com:
 </p>
 
 <ul>
@@ -199,7 +199,7 @@ O campo <b>extraWiqlWhere</b> deve conter somente as condições adicionais. O s
 </p>
 
 <p>
-LIVRE e FLEET hoje rodam no mesmo projeto do Azure e só se diferenciam pela lane do board (<b>[System.BoardLane]</b> dentro de <b>extraWiqlWhere</b>); RAC roda em outro projeto inteiro. Como cada produto carrega seu próprio bloco completo, novos produtos - mesmo que estejam em projetos, area paths ou tipos de Work Item totalmente diferentes - podem ser adicionados só incluindo mais uma chave dentro de <b>products</b>, sem editar código.
+PRODUTO 01 e PRODUTO 2 hoje rodam no mesmo projeto do Azure e só se diferenciam pela lane do board (<b>[System.BoardLane]</b> dentro de <b>extraWiqlWhere</b>); RAC roda em outro projeto inteiro. Como cada produto carrega seu próprio bloco completo, novos produtos - mesmo que estejam em projetos, area paths ou tipos de Work Item totalmente diferentes - podem ser adicionados só incluindo mais uma chave dentro de <b>products</b>, sem editar código.
 </p>
 
 ---
@@ -266,8 +266,7 @@ Qual produto deseja exportar?
 
 <ul>
   <li>🔀 A escolha aplica o bloco correspondente em <b>products</b> do <b>config.json</b> - projeto do Azure, area path, tipos de Work Item, WIQL e título do relatório</li>
-  <li>📁 LIVRE e FLEET usam o mesmo projeto e só mudam a lane do board; RAC roda em outro projeto do Azure DevOps inteiro</li>
-  <li>🔁 Se digitar qualquer coisa diferente de <b>LIVRE</b>, <b>FLEET</b> ou <b>RAC</b>, o script avisa e pergunta de novo</li>
+  <li>📁 PRODUTO 1 e PRODUTO 2 usam o mesmo projeto e só mudam a lane do board; PRODUTO 3 roda em outro projeto do Azure DevOps inteiro</li>
 </ul>
 
 <h3>🏃 Seleção de sprint</h3>
