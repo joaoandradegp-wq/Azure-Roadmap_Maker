@@ -62,7 +62,7 @@ O fluxo completo é disparado por um único comando (<b>node azure.js</b>), que 
   <li>⚪ Identificação de itens em previsão</li>
   <li>🔴 Identificação visual de riscos e atrasos</li>
   <li>🏷️ Suporte a regras baseadas em Tags e States</li>
-  <li>🔀 Suporte a múltiplos produtos (LIVRE, FLEET e RAC) em um único config</li>
+  <li>🔀 Suporte a múltiplos produtos em um único config</li>
   <li>📑 Geração automática de múltiplas páginas no PowerPoint</li>
   <li>🧪 Testes offline sem necessidade de acesso ao Azure DevOps</li>
   <li>⚙️ Configuração através de arquivo JSON</li>
