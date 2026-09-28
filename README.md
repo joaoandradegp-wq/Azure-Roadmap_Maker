@@ -73,9 +73,9 @@ O fluxo completo é disparado por um único comando (<b>node azure.js</b>), que 
 <h2>📂 Estrutura do projeto</h2>
 
 <pre>
-StatusReport/
+Azure-Roadmap_Maker/
 │
-├── config.example.json
+│── gerar_roadmap.bat 
 ├── config.json
 │
 ├── azure.js
@@ -85,10 +85,6 @@ StatusReport/
 │   ├── azureClient.js
 │   ├── transform.js
 │   └── period.js
-│
-├── fixtures/
-│   ├── mock-workitems.json
-│   └── test-transform.js
 │
 ├── data/
 │   └── roadmap.json
@@ -523,20 +519,6 @@ O título recebe automaticamente a identificação da página:
 
 ---
 
-<h2>⚠️ Limitações conhecidas</h2>
-
-<h3>📈 Replanejamentos</h3>
-
-<p>
-A barra Gantt não representa o histórico completo de replanejamentos.
-</p>
-
-<p>
-O Azure DevOps fornece o estado atual do Work Item nessa consulta. Portanto, quando um card muda de sprint diversas vezes, o relatório representa a sprint atual, e não todo o histórico percorrido pelo item.
-</p>
-
----
-
 <h2>🛠 Tecnologias</h2>
 
 <ul>
@@ -548,43 +530,6 @@ O Azure DevOps fornece o estado atual do Work Item nessa consulta. Portanto, qua
   <li>JSON</li>
   <li>Regex</li>
 </ul>
-
----
-
-<h2>🔮 Próximos passos</h2>
-
-<ul>
-  <li>⏰ Automatizar a execução através de agendamento</li>
-  <li>📅 Executar automaticamente antes das reuniões de status</li>
-  <li>📜 Implementar timeline histórica através da API de revisions</li>
-  <li>📊 Criar resumo executivo automático</li>
-  <li>📈 Apresentar percentual de conclusão da sprint</li>
-  <li>🚨 Destacar automaticamente itens críticos</li>
-</ul>
-
----
-
-<h2>📊 Resultado</h2>
-
-<p align="center">
-  <b>Azure DevOps</b>
-  <br>
-  ↓
-  <br>
-  <b>Work Items</b>
-  <br>
-  ↓
-  <br>
-  <b>Regras de negócio</b>
-  <br>
-  ↓
-  <br>
-  <b>Roadmap</b>
-  <br>
-  ↓
-  <br>
-  <b>Status Report</b>
-</p>
 
 ---
 
