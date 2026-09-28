@@ -169,15 +169,15 @@ Os parâmetros compartilhados por todos os produtos ficam no topo do arquivo:
 </p>
 
 <ul>
-  <li><b>azure.organization</b> — organização do Azure DevOps</li>
-  <li><b>azure.patEnvVar</b> — variável de ambiente que contém o PAT</li>
-  <li><b>fields.*</b> — campos do Azure utilizados pelo sistema</li>
-  <li><b>statusMapping.byState</b> — mapeamento de status por State</li>
-  <li><b>statusMapping.byTag</b> — mapeamento de status por Tag</li>
-  <li><b>timeline.monthsBack</b> — quantidade de meses anteriores</li>
-  <li><b>timeline.monthsForward</b> — quantidade de meses posteriores</li>
-  <li><b>sprintCadence</b> — configuração da cadência das sprints</li>
-  <li><b>squad</b> — squad apresentado no cabeçalho</li>
+  <li><b>azure.organization</b>: organização do Azure DevOps</li>
+  <li><b>azure.patEnvVar</b>: variável de ambiente que contém o PAT</li>
+  <li><b>fields.*</b>: campos do Azure utilizados pelo sistema</li>
+  <li><b>statusMapping.byState</b>: mapeamento de status por State</li>
+  <li><b>statusMapping.byTag</b>: mapeamento de status por Tag</li>
+  <li><b>timeline.monthsBack</b>: quantidade de meses anteriores</li>
+  <li><b>timeline.monthsForward</b>: quantidade de meses posteriores</li>
+  <li><b>sprintCadence</b>: configuração da cadência das sprints</li>
+  <li><b>squad</b>: squad apresentado no cabeçalho</li>
 </ul>
 
 <h3>🔀 Bloco <code>products</code></h3>
@@ -187,11 +187,11 @@ Tudo o que muda de um produto pra outro fica dentro de <b>products.LIVRE</b>, <b
 </p>
 
 <ul>
-  <li><b>project</b> — projeto do Azure DevOps consultado</li>
-  <li><b>areaPath</b> — Area Path utilizada como filtro</li>
-  <li><b>workItemTypes</b> — tipos de Work Item que serão consultados</li>
-  <li><b>extraWiqlWhere</b> — condições adicionais da WIQL</li>
-  <li><b>title</b> — título do relatório exibido no PowerPoint</li>
+  <li><b>project</b>: projeto do Azure DevOps consultado</li>
+  <li><b>areaPath</b>: Area Path utilizada como filtro</li>
+  <li><b>workItemTypes</b>: tipos de Work Item que serão consultados</li>
+  <li><b>extraWiqlWhere</b>: condições adicionais da WIQL</li>
+  <li><b>title</b>: título do relatório exibido no PowerPoint</li>
 </ul>
 
 <p>
@@ -219,7 +219,7 @@ O escopo mínimo necessário é:
 </p>
 
 <ul>
-  <li>📋 Work Items — Read</li>
+  <li>📋 Work Items - Read</li>
 </ul>
 
 <h3>Windows PowerShell</h3>
@@ -251,17 +251,17 @@ Um único comando executa o processo completo: busca os dados no Azure DevOps, p
 </p>
 
 <pre>
-node azure.js
+gerar_roadmap.bat
 </pre>
 
-<h3>🏷️ Seleção de produto (LIVRE, FLEET ou RAC)</h3>
+<h3>🏷️ Seleção de produto</h3>
 
 <p>
 Antes de buscar os Work Items, o script pergunta:
 </p>
 
 <pre>
-Qual produto deseja exportar? (LIVRE, FLEET ou RAC)
+Qual produto deseja exportar?
 ></pre>
 
 <ul>
@@ -286,33 +286,6 @@ Qual Sprint deseja exportar? (ex: 9 ou 9,10 — disponíveis: 8, 9, 10, 11)
   <li>🔁 Se a sprint digitada não existir entre os itens buscados, o script mostra a lista de sprints disponíveis e pergunta novamente, sem encerrar</li>
   <li>⏭️ Se nenhum item tiver sprint reconhecível, a pergunta é pulada e todos os itens são exportados</li>
 </ul>
-
-<h3>⚙️ Flags para automação</h3>
-
-<p>
-Para pular a pergunta interativa (ex: rodando num agendador), informe o produto e/ou as sprints direto:
-</p>
-
-<pre>
-node azure.js config.json data/roadmap.json --produto=FLEET
-node azure.js config.json data/roadmap.json --produto=RAC --sprints=9,10
-</pre>
-
-<p>
-Para gerar somente o <b>roadmap.json</b>, sem chamar o <b>render.js</b> na sequência:
-</p>
-
-<pre>
-node azure.js config.json data/roadmap.json --no-render
-</pre>
-
-<h3>📁 Rodando as etapas separadas, com caminhos personalizados</h3>
-
-<pre>
-node azure.js config.json data/roadmap.json --no-render
-
-node render.js data/roadmap.json output/status_report.pptx
-</pre>
 
 ---
 
