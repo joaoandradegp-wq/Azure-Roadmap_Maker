@@ -199,7 +199,7 @@ O campo <b>extraWiqlWhere</b> deve conter somente as condições adicionais. O s
 </p>
 
 <p>
-LIVRE e FLEET hoje rodam no mesmo projeto do Azure e só se diferenciam pela lane do board (<b>[System.BoardLane]</b> dentro de <b>extraWiqlWhere</b>); RAC roda em outro projeto inteiro. Como cada produto carrega seu próprio bloco completo, novos produtos — mesmo que estejam em projetos, area paths ou tipos de Work Item totalmente diferentes — podem ser adicionados só incluindo mais uma chave dentro de <b>products</b>, sem editar código.
+LIVRE e FLEET hoje rodam no mesmo projeto do Azure e só se diferenciam pela lane do board (<b>[System.BoardLane]</b> dentro de <b>extraWiqlWhere</b>); RAC roda em outro projeto inteiro. Como cada produto carrega seu próprio bloco completo, novos produtos - mesmo que estejam em projetos, area paths ou tipos de Work Item totalmente diferentes - podem ser adicionados só incluindo mais uma chave dentro de <b>products</b>, sem editar código.
 </p>
 
 ---
@@ -247,7 +247,7 @@ export AZURE_DEVOPS_PAT=seu_token_aqui
 <h2>🚀 Execução</h2>
 
 <p>
-Um único comando executa o processo completo: busca os dados no Azure DevOps, pergunta qual produto e quais sprints exportar, gera o <b>roadmap.json</b> e, na sequência, já chama o <b>render.js</b> sozinho, gerando o PowerPoint — sem precisar rodar dois comandos separados.
+Um único comando executa o processo completo: busca os dados no Azure DevOps, pergunta qual produto e quais sprints exportar, gera o <b>roadmap.json</b> e, na sequência, já chama o <b>render.js</b> sozinho, gerando o PowerPoint - sem precisar rodar dois comandos separados.
 </p>
 
 <pre>
@@ -265,7 +265,7 @@ Qual produto deseja exportar?
 ></pre>
 
 <ul>
-  <li>🔀 A escolha aplica o bloco correspondente em <b>products</b> do <b>config.json</b> — projeto do Azure, area path, tipos de Work Item, WIQL e título do relatório</li>
+  <li>🔀 A escolha aplica o bloco correspondente em <b>products</b> do <b>config.json</b> - projeto do Azure, area path, tipos de Work Item, WIQL e título do relatório</li>
   <li>📁 LIVRE e FLEET usam o mesmo projeto e só mudam a lane do board; RAC roda em outro projeto do Azure DevOps inteiro</li>
   <li>🔁 Se digitar qualquer coisa diferente de <b>LIVRE</b>, <b>FLEET</b> ou <b>RAC</b>, o script avisa e pergunta de novo</li>
 </ul>
@@ -277,12 +277,12 @@ Se algum Work Item tiver uma sprint numerada reconhecível, o script pergunta in
 </p>
 
 <pre>
-Qual Sprint deseja exportar? (ex: 9 ou 9,10 — disponíveis: 8, 9, 10, 11)
+Qual Sprint deseja exportar? (ex: 9 ou 9,10 - disponíveis: 8, 9, 10, 11)
 ></pre>
 
 <ul>
   <li>🔢 Aceita um número (<b>9</b>) ou vários separados por vírgula (<b>9,10</b>)</li>
-  <li>0️⃣ <b>09</b> e <b>9</b> são equivalentes — o zero à esquerda é ignorado</li>
+  <li>0️⃣ <b>09</b> e <b>9</b> são equivalentes - o zero à esquerda é ignorado</li>
   <li>🔁 Se a sprint digitada não existir entre os itens buscados, o script mostra a lista de sprints disponíveis e pergunta novamente, sem encerrar</li>
   <li>⏭️ Se nenhum item tiver sprint reconhecível, a pergunta é pulada e todos os itens são exportados</li>
 </ul>
@@ -357,9 +357,9 @@ O ícone apresentado no final da barra Gantt representa a situação da entrega.
 </p>
 
 <ul>
-  <li>⚪ <b>Previsão</b> — item ainda aberto</li>
-  <li>🟢 <b>Concluída no prazo</b> — entregue até a data prevista</li>
-  <li>🟠 <b>Concluída com atraso</b> — entregue depois da data prevista</li>
+  <li>⚪ <b>Previsão</b> - item ainda aberto</li>
+  <li>🟢 <b>Concluída no prazo</b> - entregue até a data prevista</li>
+  <li>🟠 <b>Concluída com atraso</b> - entregue depois da data prevista</li>
 </ul>
 
 <p>
