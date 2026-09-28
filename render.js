@@ -1,10 +1,3 @@
-// render.js
-// Lê data/roadmap.json (formato v2 - Gantt com quinzenas) e gera output/status_report.pptx.
-// Se o roadmap tiver mais itens do que cabem em uma página, divide automaticamente
-// em várias páginas (uma página do PPTX por página), repetindo cabeçalho/legenda/grade.
-//
-// Uso: node render.js [caminho_json] [caminho_saida]
-
 const fs = require("fs");
 const path = require("path");
 const pptxgen = require("pptxgenjs");
@@ -15,7 +8,7 @@ const outPath = process.argv[3] || path.join(__dirname, "output", "status_report
 const data = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
 
 const pres = new pptxgen();
-pres.layout = "LAYOUT_WIDE"; // 13.3" x 7.5"
+pres.layout = "LAYOUT_WIDE"; 
 
 const PAGE_W = 13.3;
 const PAGE_H = 7.5;
@@ -35,10 +28,8 @@ const subHeaderH = 0.22;
 const headerH = yearHeaderH + monthHeaderH + subHeaderH;
 const rowH = 0.5;
 
-// Quantas linhas cabem por página, deixando uma margem inferior de 0.3"
 const ROWS_PER_PAGE = Math.max(1, Math.floor((PAGE_H - gridTop - headerH - 0.3) / rowH));
 
-// ---------- Helpers de período ----------
 function flattenPeriods(months) {
   const flat = [];
   let idx = 0;
@@ -67,7 +58,6 @@ function formatDateBR(iso) {
   return `${d}/${m}`;
 }
 
-// Estima a largura de um texto em polegadas para o layout dinâmico da legenda
 function estimateTextWidth(text, fontSize) {
   return Math.max(0.35, text.length * fontSize * 0.0092);
 }
@@ -75,10 +65,6 @@ function estimateTextWidth(text, fontSize) {
 const flatPeriods = flattenPeriods(data.months);
 const totalCols = flatPeriods.length;
 
-/**
- * Desenha uma página completa (cabeçalho + legenda + grade + linhas + linha de hoje)
- * para o bloco de itens `roadmapChunk`.
- */
 function renderPage(roadmapChunk, pageInfo) {
   const slide = pres.addSlide();
   slide.background = { color: "FFFFFF" };
@@ -113,7 +99,6 @@ function renderPage(roadmapChunk, pageInfo) {
     align: "right", margin: 0,
   });
 
-  // ---------- Legenda: Status – Fase ----------
   const legendY1 = 0.58;
   const legendFont = 8.5;
   slide.addText("Status – Fase", {
@@ -141,7 +126,6 @@ function renderPage(roadmapChunk, pageInfo) {
     px += 0.17 + labelW + 0.12;
   });
 
-  // ---------- Legenda: Status – Entregas ----------
   const legendX2 = px + 0.15;
   slide.addText("Status – Entregas", {
     x: legendX2, y: legendY1, w: 1.55, h: 0.22,
@@ -185,7 +169,6 @@ function renderPage(roadmapChunk, pageInfo) {
     dx += 0.19 + labelW + 0.12;
   });
 
-  // ---------- Grade do roadmap ----------
   const gridLeft = MARGIN + nameColW + statusColW;
   const gridWidth = PAGE_W - MARGIN - gridLeft;
   const cellW = gridWidth / totalCols;
@@ -251,7 +234,6 @@ function renderPage(roadmapChunk, pageInfo) {
     sx += cellW;
   });
 
-  // ---------- Linhas do roadmap (só o bloco desta página) ----------
   let rowY = gridTop + headerH;
 
   roadmapChunk.forEach((item, idx) => {
@@ -282,7 +264,6 @@ function renderPage(roadmapChunk, pageInfo) {
     const endFrac = typeof item.endPeriod.fraction === "number" ? item.endPeriod.fraction : 1;
     const barX = gridLeft + (startIdx + startFrac) * cellW;
     const barEndX = gridLeft + (endIdx + endFrac) * cellW;
-    // largura mínima garantida, pra itens de 1 dia não sumirem (barra de largura ~0)
     const barW = Math.max(cellW * 0.06, barEndX - barX);
     const barH = rowH * 0.42;
     const barY = rowY + (rowH - barH) / 2;
@@ -325,7 +306,6 @@ function renderPage(roadmapChunk, pageInfo) {
 
   const tableBottom = rowY;
 
-  // ---------- Linha vertical de "hoje" ----------
   if (data.todayPeriod) {
     const todayIdx = periodToFlatIndex(flatPeriods, data.todayPeriod);
     const fraction = typeof data.todayPeriod.fraction === "number" ? data.todayPeriod.fraction : 0;
@@ -346,7 +326,6 @@ function renderPage(roadmapChunk, pageInfo) {
   });
 }
 
-// ---------- Divide o roadmap em páginas e desenha cada uma ----------
 const roadmap = data.roadmap || [];
 const totalPages = Math.max(1, Math.ceil(roadmap.length / ROWS_PER_PAGE));
 
