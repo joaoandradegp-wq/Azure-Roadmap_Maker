@@ -33,7 +33,29 @@ async function askProductSelection() {
   }
 }
 
-function applyProductToConfig(config, produto) {
+async function askIncludeBugs() {
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+
+  try {
+    while (true) {
+      const answer = await rl.question(`\nIncluir demandas com tag Bug no roadmap? (S/N)\n> `);
+      const normalized = answer.trim().toUpperCase();
+
+      if (normalized === "S" || normalized === "N") {
+        return normalized === "S";
+      }
+
+      console.log(`Entrada inválida. Digite S ou N.`);
+    }
+  } finally {
+    rl.close();
+  }
+}
+
+// Remove da WIQL a exclusão da tag Bug (modo online com "incluir Bug").
+const BUG_EXCLUSION_RE = /\s*AND\s+\[System\.Tags\]\s+NOT\s+CONTAINS\s+'Bug'/i;
+
+function applyProductToConfig(config, produto, { includeBugs = false } = {}) {
   const bloco = config.products && config.products[produto];
 
   if (!bloco) {
@@ -49,8 +71,11 @@ function applyProductToConfig(config, produto) {
     query: {
       areaPath: bloco.areaPath,
       workItemTypes: bloco.workItemTypes,
-      extraWiqlWhere: bloco.extraWiqlWhere,
+      extraWiqlWhere: includeBugs
+        ? (bloco.extraWiqlWhere || "").replace(BUG_EXCLUSION_RE, "")
+        : bloco.extraWiqlWhere,
     },
+    includeBugs,
     project: { ...(config.project || {}), title: bloco.title, squad: config.squad },
   };
 }
@@ -139,6 +164,7 @@ async function main() {
   const sprintsFlag = args.find((a) => a.startsWith("--sprints="));
   const produtoFlag = args.find((a) => a.startsWith("--produto="));
   const offline = args.includes("--offline");
+  const bugsFlag = args.includes("--bugs") ? true : args.includes("--sem-bugs") ? false : null;
 
   const configPath = positional[0] || path.join(__dirname, "config.json");
   const outPath = positional[1] || path.join(__dirname, "data", "roadmap.json");
@@ -163,8 +189,10 @@ async function main() {
   } else {
     produto = await askProductSelection();
   }
-  config = applyProductToConfig(config, produto);
+  const includeBugs = bugsFlag !== null ? bugsFlag : await askIncludeBugs();
+  config = applyProductToConfig(config, produto, { includeBugs });
   console.log(`Produto selecionado: ${produto}`);
+  console.log(`Itens com tag Bug: ${includeBugs ? "INCLUÍDOS" : "não incluídos"}`);
 
   let workItems;
   if (offline) {
@@ -174,6 +202,22 @@ async function main() {
     workItems = await fetchWorkItems(config);
   }
   console.log(`${workItems.length} work item(s) encontrado(s).`);
+
+  if (includeBugs) {
+    const comBug = workItems.filter((it) =>
+      String(it.fields[config.fields.tags] || "")
+        .split(";")
+        .some((t) => t.trim().toLowerCase() === "bug")
+    ).length;
+    console.log(`${comBug} item(ns) com tag Bug entre os itens carregados.`);
+    if (offline && comBug === 0) {
+      console.log(
+        `ATENÇÃO: o JSON offline não tem nenhum item com tag Bug. Provavelmente ele foi extraído com o filtro\n` +
+        `"[System.Tags] NOT CONTAINS 'Bug'". Remova esse trecho da constante COMUM do script do console,\n` +
+        `extraia de novo e substitua o workitems-${produto}.json.`
+      );
+    }
+  }
 
   const availableSprints = [
     ...new Set(
@@ -241,5 +285,6 @@ module.exports = {
   askSprintSelection,
   askProductSelection,
   applyProductToConfig,
+  askIncludeBugs,
   PRODUTOS,
 };
