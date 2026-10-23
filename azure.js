@@ -55,6 +55,44 @@ function applyProductToConfig(config, produto) {
   };
 }
 
+function loadOfflineWorkItems(produto) {
+  const dataDir = path.join(__dirname, "data");
+  const file = path.join(dataDir, `workitems-${produto}.json`);
+
+  if (!fs.existsSync(file)) {
+    const disponiveis = fs.existsSync(dataDir)
+      ? fs.readdirSync(dataDir).filter((f) => /^workitems-.*\.json$/i.test(f))
+      : [];
+    throw new Error(
+      `Arquivo offline não encontrado: ${file}\n` +
+      `Coloque o JSON extraído pelo console do navegador na pasta data com o nome workitems-${produto}.json.\n` +
+      (disponiveis.length
+        ? `Arquivos workitems-*.json encontrados na pasta data: ${disponiveis.join(", ")}`
+        : `Nenhum arquivo workitems-*.json encontrado na pasta data.`)
+    );
+  }
+
+  let parsed;
+  try {
+    // remove BOM, caso o arquivo tenha sido salvo com ele
+    parsed = JSON.parse(fs.readFileSync(file, "utf-8").replace(/^\uFEFF/, ""));
+  } catch (err) {
+    throw new Error(`O arquivo ${file} não é um JSON válido: ${err.message}`);
+  }
+
+  // aceita tanto o array direto (script do console) quanto { value: [...] } (resposta crua da API)
+  const items = Array.isArray(parsed) ? parsed : parsed && Array.isArray(parsed.value) ? parsed.value : null;
+  if (!items) {
+    throw new Error(`O arquivo ${file} não tem o formato esperado (lista de work items).`);
+  }
+  if (items.some((it) => !it || typeof it !== "object" || !it.fields)) {
+    throw new Error(`O arquivo ${file} tem itens sem o campo "fields" — confira se foi gerado pelo script do console.`);
+  }
+
+  console.log(`Modo OFFLINE: lendo ${file}`);
+  return items;
+}
+
 function parseSprintSelection(raw) {
   const tokens = raw.split(",").map((t) => t.trim()).filter(Boolean);
   if (tokens.length === 0) return null;
@@ -100,6 +138,7 @@ async function main() {
   const positional = args.filter((a) => !a.startsWith("--"));
   const sprintsFlag = args.find((a) => a.startsWith("--sprints="));
   const produtoFlag = args.find((a) => a.startsWith("--produto="));
+  const offline = args.includes("--offline");
 
   const configPath = positional[0] || path.join(__dirname, "config.json");
   const outPath = positional[1] || path.join(__dirname, "data", "roadmap.json");
@@ -127,8 +166,13 @@ async function main() {
   config = applyProductToConfig(config, produto);
   console.log(`Produto selecionado: ${produto}`);
 
-  console.log(`Buscando work items em ${config.azure.organization}/${config.azure.project}...`);
-  const workItems = await fetchWorkItems(config);
+  let workItems;
+  if (offline) {
+    workItems = loadOfflineWorkItems(produto);
+  } else {
+    console.log(`Buscando work items em ${config.azure.organization}/${config.azure.project}...`);
+    workItems = await fetchWorkItems(config);
+  }
   console.log(`${workItems.length} work item(s) encontrado(s).`);
 
   const availableSprints = [
