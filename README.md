@@ -75,7 +75,7 @@ Organiza as demandas com indicadores visuais de andamento, risco, atraso, pausa 
 
 ---
 
-### ⚙️ Configuração
+## ⚙️ Configuração
 
 <details>
 <summary><b>☁️ Conexão com o Azure DevOps</b></summary>
@@ -133,7 +133,7 @@ A opção de incluir bugs remove da condição configurada a exclusão específi
 
 ---
 
-### 📴 Modo Offline
+## 📴 Modo Offline
 
 Use arquivos JSON exportados anteriormente para gerar o relatório sem consultar o Azure DevOps.
 
@@ -147,7 +147,7 @@ O JSON pode ser uma lista de Work Items ou um objeto com a propriedade `value` c
 
 > ⚠️ Para incluir bugs no modo offline, o JSON precisa conter os itens com a tag `Bug`. Os dados locais não são atualizados automaticamente.
 
-### 🎛️ Opções de Execução
+## 🎛️ Opções de Execução
 
 | Opção | Descrição |
 |---|---|
@@ -188,7 +188,7 @@ Quando as opções não são informadas por parâmetro, o programa solicita as e
 
 ---
 
-### 🛠 Tecnologias
+## 🛠 Tecnologias
 
 <ul>
   <li>Node.js</li>
