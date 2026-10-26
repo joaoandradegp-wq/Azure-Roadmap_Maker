@@ -14,7 +14,7 @@ O Azure Roadmap Maker automatiza a geração de roadmaps a partir de Work Items 
 
 ---
 
-### ✨ Funcionalidades
+## ✨ Funcionalidades
 
 <table style="border: none; border-collapse: collapse;">
 <tr>
@@ -79,8 +79,8 @@ Organiza as demandas com indicadores visuais de andamento, risco, atraso, pausa 
 
 <details>
 <summary><b>☁️ Conexão com o Azure DevOps</b></summary>
-<br>
-### 1. Configure o arquivo
+  
+#### 1. Configure o arquivo
 
 Copie `config.example.json` para `config.json` e mantenha a estrutura do arquivo de exemplo.
 
@@ -93,7 +93,7 @@ No bloco `azure`, configure:
 
 O arquivo também deve conter `products.LIVRE`, `products.FLEET` e `products.RAC`. Para cada produto, configure o projeto, o `areaPath`, os tipos de Work Item, as condições adicionais da consulta e o título do relatório.
 
-### 2. Configure o token de acesso
+#### 2. Configure o token de acesso
 
 Crie um Personal Access Token (PAT) no Azure DevOps com permissão de leitura de Work Items. Não coloque o token diretamente no `config.json`.
 
@@ -111,7 +111,7 @@ setx AZURE_DEVOPS_PAT "seu_token_aqui"
 
 Após usar `setx`, abra um novo terminal. O nome da variável deve corresponder ao valor configurado em `azure.patEnvVar`.
 
-### 3. Execute o programa
+#### 3. Execute o programa
 
 ```bash
 node azure.js
@@ -121,7 +121,7 @@ node azure.js
 
 <details>
 <summary><b>🏷️ Tags e filtros</b></summary>
-<br>
+
 | Tag ou opção | Comportamento |
 |---|---|
 | `Bug` | Pode ser incluída ou excluída na execução. No modo online, a consulta do produto precisa permitir esse filtro. |
@@ -179,8 +179,6 @@ Quando as opções não são informadas por parâmetro, o programa solicita as e
 <tr><td>🟢 <b>Concluída no prazo</b></td><td>Entrega até a data prevista</td></tr>
 <tr><td>🟠 <b>Concluída com atraso</b></td><td>Entrega após a data prevista</td></tr>
 </table>
-
----
 
 ### 📅 Regras de Datas
 
