@@ -119,8 +119,7 @@ node azure.js
 
 </details>
 
-<details>
-<summary><b>🏷️ Tags e filtros</b></summary>
+<b>🏷️ Tags e filtros</b>
 
 | Tag ou opção | Comportamento |
 |---|---|
@@ -129,11 +128,9 @@ node azure.js
 
 A opção de incluir bugs remove da condição configurada a exclusão específica da tag `Bug`.
 
-</details>
-
 ---
 
-## 📴 Modo Offline
+### 📴 Modo Offline
 
 Use arquivos JSON exportados anteriormente para gerar o relatório sem consultar o Azure DevOps.
 
@@ -147,7 +144,7 @@ O JSON pode ser uma lista de Work Items ou um objeto com a propriedade `value` c
 
 > ⚠️ Para incluir bugs no modo offline, o JSON precisa conter os itens com a tag `Bug`. Os dados locais não são atualizados automaticamente.
 
-## 🎛️ Opções de Execução
+### 🎛️ Opções de Execução
 
 | Opção | Descrição |
 |---|---|
@@ -162,7 +159,7 @@ Quando as opções não são informadas por parâmetro, o programa solicita as e
 
 ---
 
-### 🚦 Legenda do Roadmap
+### 🚦 Roadmap
 
 <table>
 <tr><th>Status da demanda</th><th>Significado</th></tr>
