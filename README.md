@@ -1,497 +1,196 @@
 <h1 align="center">📊 Azure Roadmap Maker</h1>
 
 <p align="center">
-Gerador automático de <b>Status Report</b> a partir do Azure DevOps, transformando Work Items em um roadmap visual e gerando apresentações PowerPoint automaticamente.
+O Azure Roadmap Maker automatiza a geração de roadmaps a partir de Work Items do Azure DevOps e cria apresentações de Status Report em PowerPoint. Permite selecionar produtos, sprints e regras para inclusão de bugs, consultar dados online ou utilizar arquivos JSON locais, facilitando o acompanhamento de demandas, prazos e entregas.
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Status-Em%20Evolução-brightgreen">
-  <img src="https://img.shields.io/badge/Linguagem-Node.js-green">
-  <img src="https://img.shields.io/badge/Azure%20DevOps-API-blue">
-  <img src="https://img.shields.io/badge/Output-PowerPoint-orange">
-  <img src="https://img.shields.io/badge/Language-PT--BR-lightgrey">
+  <img src="https://img.shields.io/badge/Plataforma-Node.js-green">
+  <img src="https://img.shields.io/badge/Fonte-Azure%20DevOps-blue">
+  <img src="https://img.shields.io/badge/Saída-PowerPoint-orange">
+  <img src="https://img.shields.io/badge/Idioma-PT--BR-purple">
 </p>
 
 ---
 
-<h2>📌 Sobre</h2>
+### ✨ Funcionalidades
 
-<p>
-O <b>Azure Roadmap Maker</b> é uma ferramenta desenvolvida para automatizar a criação de <b>Status Reports</b> a partir dos dados existentes no <b>Azure DevOps</b>.
-</p>
+<table style="border: none; border-collapse: collapse;">
+<tr>
+<td width="50%" valign="top" style="border: none; padding: 15px;">
 
-<p>
-O sistema consulta automaticamente os Work Items utilizando a API do Azure DevOps, aplica as regras de negócio configuradas, transforma os dados em uma estrutura de roadmap e, por fim, gera uma apresentação <b>PowerPoint (.pptx)</b> pronta para utilização em reuniões de acompanhamento.
-</p>
+#### ☁️ CONEXÃO COM AZURE DEVOPS
 
-<p>
-A arquitetura foi construída de forma modular, permitindo que a etapa de coleta de dados seja executada separadamente da etapa de geração da apresentação. Dessa forma, o arquivo <b>roadmap.json</b> funciona como uma camada intermediária entre o Azure DevOps e o PowerPoint.
-</p>
-<p align="center">
-  <b>Azure DevOps → WIQL → Work Items → roadmap.json → PowerPoint</b>
-</p>
+Consulta Work Items diretamente no Azure DevOps usando a organização, o projeto e os filtros configurados para cada produto.
 
----
+<br><br>
+</td>
+<td width="50%" valign="top" style="border: none; padding: 15px;">
 
-<h2>🔄 Funcionamento</h2>
+#### 📊 ROADMAP EM POWERPOINT
 
-<pre>
-┌───────────────┐     ┌───────────┐     ┌────────────┐     ┌───────────────┐     ┌──────────────┐      ┌────────────┐     ┌────────────────────┐
-│ Azure DevOps  │ ──► │ azure.js  │ ──► │ WIQL / API │ ──► │  Work Items   │ ──► │ transform.js │  ──► │roadmap.json│ ──► │ status_report.pptx │
-└───────────────┘     └───────────┘     └────────────┘     └───────────────┘     └──────────────┘      └────────────┘     └────────────────────┘
-</pre>
+Gera uma apresentação com a linha do tempo das demandas, prazos e status, dividindo o conteúdo em várias páginas quando necessário.
 
-<p>
-O fluxo completo é disparado por um único comando (<b>node azure.js</b>), que executa as duas etapas em sequência. Também é possível rodar cada etapa separadamente, ou utilizar um <b>roadmap.json</b> previamente gerado/editado para testes e validações.
-</p>
+<br>
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top" style="border: none; padding: 15px;">
 
----
+#### 🎛️ SELEÇÃO DE PRODUTO E SPRINTS
 
-<h2>🚀 Principais funcionalidades</h2>
+Permite escolher entre `LIVRE`, `FLEET` e `RAC`, além de filtrar uma ou mais sprints para montar o relatório desejado.
 
-<ul>
-  <li>☁️ Consulta automática de Work Items no Azure DevOps</li>
-  <li>🔎 Utilização de WIQL para filtragem dos dados</li>
-  <li>🧩 Transformação dos Work Items em estrutura de roadmap</li>
-  <li>📊 Geração automática de apresentação PowerPoint</li>
-  <li>📅 Cálculo automático de períodos e sprints</li>
-  <li>🚀 Cálculo de datas de deploy</li>
-  <li>📈 Barras Gantt proporcionais às datas reais</li>
-  <li>🟢 Identificação de entregas realizadas no prazo</li>
-  <li>🟠 Identificação de entregas realizadas com atraso</li>
-  <li>⚪ Identificação de itens em previsão</li>
-  <li>🔴 Identificação visual de riscos e atrasos</li>
-  <li>🏷️ Suporte a regras baseadas em Tags e States</li>
-  <li>🔀 Suporte a múltiplos produtos em um único config</li>
-  <li>📑 Geração automática de múltiplas páginas no PowerPoint</li>
-  <li>🧪 Testes offline sem necessidade de acesso ao Azure DevOps</li>
-  <li>⚙️ Configuração através de arquivo JSON</li>
-</ul>
+<br><br>
+</td>
+<td width="50%" valign="top" style="border: none; padding: 15px;">
 
----
+#### 🏷️ FILTRO DE BUGS E TAGS
 
-<h2>📂 Estrutura do projeto</h2>
+Permite incluir ou excluir itens com a tag `Bug`. Demandas marcadas como `RASCUNHO` não são exibidas no roadmap.
 
-<pre>
-Azure-Roadmap_Maker/
-│
-│── gerar_roadmap.bat 
-├── config.json
-│
-├── azure.js
-├── render.js
-│
-├── lib/
-│   ├── azureClient.js
-│   ├── transform.js
-│   └── period.js
-│
-├── data/
-│   └── roadmap.json
-│
-└── output/
-    └── status_report.pptx
-</pre>
+<br>
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top" style="border: none; padding: 15px;">
+
+#### 📴 GERAÇÃO OFFLINE
+
+Utiliza arquivos JSON exportados anteriormente para gerar o relatório sem consultar o Azure DevOps durante a execução.
+
+<br><br>
+</td>
+<td width="50%" valign="top" style="border: none; padding: 15px;">
+
+#### 🚦 INDICADORES DE STATUS E PRAZO
+
+Organiza as demandas com indicadores visuais de andamento, risco, atraso, pausa e conclusão, facilitando a leitura do relatório.
+
+<br>
+</td>
+</tr>
+</table>
 
 ---
 
-<h2>🧩 Componentes</h2>
+### ⚙️ Configuração
 
-<h3>☁️ azure.js</h3>
+<details>
+<summary><b>☁️ Conexão com o Azure DevOps</b></summary>
+<br>
+### 1. Configure o arquivo
 
-<p>
-Responsável pela comunicação com o <b>Azure DevOps</b>.
-</p>
+Copie `config.example.json` para `config.json` e mantenha a estrutura do arquivo de exemplo.
 
-<p>
-O script pergunta qual produto exportar, aplica o bloco de configuração correspondente, executa a WIQL configurada, recupera os IDs dos Work Items e consulta os dados necessários através da API. Ao final, gera o arquivo <b>data/roadmap.json</b>.
-</p>
+No bloco `azure`, configure:
 
-<ul>
-  <li>🏷️ Seleção do produto</li>
-  <li>🔎 Execução de WIQL</li>
-  <li>☁️ Consulta à API do Azure DevOps</li>
-  <li>📋 Recuperação dos Work Items</li>
-  <li>⚙️ Aplicação dos filtros configurados</li>
-  <li>📄 Geração do roadmap.json</li>
-</ul>
+| Campo | Descrição |
+|---|---|
+| `organization` | Nome da organização do Azure DevOps |
+| `patEnvVar` | Nome da variável de ambiente que armazenará o token |
 
-<h3>🔄 lib/azureClient.js</h3>
+O arquivo também deve conter `products.LIVRE`, `products.FLEET` e `products.RAC`. Para cada produto, configure o projeto, o `areaPath`, os tipos de Work Item, as condições adicionais da consulta e o título do relatório.
 
-<p>
-Centraliza as chamadas à API do Azure DevOps, incluindo a execução da WIQL e a consulta dos Work Items encontrados.
-</p>
+### 2. Configure o token de acesso
 
-<h3>🧠 lib/transform.js</h3>
+Crie um Personal Access Token (PAT) no Azure DevOps com permissão de leitura de Work Items. Não coloque o token diretamente no `config.json`.
 
-<p>
-Responsável pela transformação dos Work Items retornados pelo Azure DevOps para a estrutura utilizada pelo roadmap.
-</p>
+No PowerShell, para usar o token apenas na janela atual:
 
-<p>
-É neste módulo que estão concentradas as principais regras de negócio do relatório, incluindo sprint, deploy, Gantt, status, previsão e filtros.
-</p>
-
-<h3>📅 lib/period.js</h3>
-
-<p>
-Responsável pela geração e pelo mapeamento dos períodos quinzenais utilizados na timeline do roadmap.
-</p>
-
-<h3>📊 render.js</h3>
-
-<p>
-Responsável por ler o <b>roadmap.json</b> e gerar a apresentação <b>status_report.pptx</b>.
-</p>
-
-<p>
-Quando a quantidade de itens ultrapassa o espaço disponível em uma página, o sistema divide automaticamente o roadmap em múltiplas páginas, mantendo cabeçalho, legenda e grade em cada uma.
-</p>
-
----
-
-<h2>⚙️ Configuração</h2>
-
-<p>
-A configuração principal é realizada através do arquivo <b>config.json</b>.
-</p>
-
-<p>
-Para iniciar, copie o arquivo de exemplo:
-</p>
-
-<pre>
-cp config.example.json config.json
-</pre>
-
-<p>
-Os parâmetros compartilhados por todos os produtos ficam no topo do arquivo:
-</p>
-
-<ul>
-  <li><b>azure.organization</b>: organização do Azure DevOps</li>
-  <li><b>azure.patEnvVar</b>: variável de ambiente que contém o PAT</li>
-  <li><b>fields.*</b>: campos do Azure utilizados pelo sistema</li>
-  <li><b>statusMapping.byState</b>: mapeamento de status por State</li>
-  <li><b>statusMapping.byTag</b>: mapeamento de status por Tag</li>
-  <li><b>timeline.monthsBack</b>: quantidade de meses anteriores</li>
-  <li><b>timeline.monthsForward</b>: quantidade de meses posteriores</li>
-  <li><b>sprintCadence</b>: configuração da cadência das sprints</li>
-  <li><b>squad</b>: squad apresentado no cabeçalho</li>
-</ul>
-
-<h3>🔀 Bloco <code>products</code></h3>
-
-<p>
-Tudo o que muda de um produto pra outro fica dentro de <b>products.PRODUTO_01</b>, <b>products.PRODUTO_02</b> e <b>products.PRODUTO_03</b>, cada um com:
-</p>
-
-<ul>
-  <li><b>project</b>: projeto do Azure DevOps consultado</li>
-  <li><b>areaPath</b>: Area Path utilizada como filtro</li>
-  <li><b>workItemTypes</b>: tipos de Work Item que serão consultados</li>
-  <li><b>extraWiqlWhere</b>: condições adicionais da WIQL</li>
-  <li><b>title</b>: título do relatório exibido no PowerPoint</li>
-</ul>
-
-<p>
-O campo <b>extraWiqlWhere</b> deve conter somente as condições adicionais. O sistema adiciona automaticamente o operador <b>AND</b>, portanto o valor não deve começar com <b>AND</b>.
-</p>
-
-<p>
-PRODUTO 01 e PRODUTO 2 hoje rodam no mesmo projeto do Azure e só se diferenciam pela lane do board (<b>[System.BoardLane]</b> dentro de <b>extraWiqlWhere</b>); RAC roda em outro projeto inteiro. Como cada produto carrega seu próprio bloco completo, novos produtos - mesmo que estejam em projetos, area paths ou tipos de Work Item totalmente diferentes - podem ser adicionados só incluindo mais uma chave dentro de <b>products</b>, sem editar código.
-</p>
-
----
-
-<h2>🔐 Azure DevOps PAT</h2>
-
-<p>
-Para acessar os Work Items, o sistema utiliza um <b>Personal Access Token (PAT)</b> do Azure DevOps.
-</p>
-
-<p>
-O token não deve ser armazenado diretamente no <b>config.json</b>. Ele deve ser disponibilizado através de uma variável de ambiente.
-</p>
-
-<p>
-O escopo mínimo necessário é:
-</p>
-
-<ul>
-  <li>📋 Work Items - Read</li>
-</ul>
-
-<h3>Windows PowerShell</h3>
-
-<pre>
+```powershell
 $env:AZURE_DEVOPS_PAT="seu_token_aqui"
-</pre>
+```
 
-<p>
-Para salvar permanentemente no perfil:
-</p>
+Para salvar a variável no perfil do Windows:
 
-<pre>
+```powershell
 setx AZURE_DEVOPS_PAT "seu_token_aqui"
-</pre>
+```
 
-<h3>Linux / macOS</h3>
+Após usar `setx`, abra um novo terminal. O nome da variável deve corresponder ao valor configurado em `azure.patEnvVar`.
 
-<pre>
-export AZURE_DEVOPS_PAT=seu_token_aqui
-</pre>
+### 3. Execute o programa
 
----
+```bash
+node azure.js
+```
 
-<h2>🚀 Execução</h2>
+</details>
 
-<p>
-Um único comando executa o processo completo: busca os dados no Azure DevOps, pergunta qual produto e quais sprints exportar, gera o <b>roadmap.json</b> e, na sequência, já chama o <b>render.js</b> sozinho, gerando o PowerPoint - sem precisar rodar dois comandos separados.
-</p>
+<details>
+<summary><b>🏷️ Tags e filtros</b></summary>
+<br>
+| Tag ou opção | Comportamento |
+|---|---|
+| `Bug` | Pode ser incluída ou excluída na execução. No modo online, a consulta do produto precisa permitir esse filtro. |
+| `RASCUNHO` | Itens com essa tag não aparecem no roadmap. |
 
-<pre>
-gerar_roadmap.bat
-</pre>
+A opção de incluir bugs remove da condição configurada a exclusão específica da tag `Bug`.
 
-<h3>🏷️ Seleção de produto</h3>
-
-<p>
-Antes de buscar os Work Items, o script pergunta:
-</p>
-
-<pre>
-Qual produto deseja exportar?
-></pre>
-
-<ul>
-  <li>🔀 A escolha aplica o bloco correspondente em <b>products</b> do <b>config.json</b> - projeto do Azure, area path, tipos de Work Item, WIQL e título do relatório</li>
-  <li>📁 PRODUTO 1 e PRODUTO 2 usam o mesmo projeto e só mudam a lane do board; PRODUTO 3 roda em outro projeto do Azure DevOps inteiro</li>
-</ul>
-
-<h3>🏃 Seleção de sprint</h3>
-
-<p>
-Se algum Work Item tiver uma sprint numerada reconhecível, o script pergunta interativamente:
-</p>
-
-<pre>
-Qual Sprint deseja exportar? (ex: 9 ou 9,10 - disponíveis: 8, 9, 10, 11)
-></pre>
-
-<ul>
-  <li>🔢 Aceita um número (<b>9</b>) ou vários separados por vírgula (<b>9,10</b>)</li>
-  <li>0️⃣ <b>09</b> e <b>9</b> são equivalentes - o zero à esquerda é ignorado</li>
-  <li>🔁 Se a sprint digitada não existir entre os itens buscados, o script mostra a lista de sprints disponíveis e pergunta novamente, sem encerrar</li>
-  <li>⏭️ Se nenhum item tiver sprint reconhecível, a pergunta é pulada e todos os itens são exportados</li>
-</ul>
+</details>
 
 ---
 
-<h2>🏃 Sprints e Deploys</h2>
+### 📴 Modo Offline
 
-<p>
-O sistema possui regras próprias para interpretar as sprints e calcular as respectivas datas de entrega.
-</p>
+Use arquivos JSON exportados anteriormente para gerar o relatório sem consultar o Azure DevOps.
 
-<ul>
-  <li>🏃 Número da sprint extraído do <b>Iteration Path</b></li>
-  <li>🔎 Busca alternativa da sprint no título do Work Item</li>
-  <li>🏷️ Formatação automática do título como <b>SP09 - Nome do Card</b></li>
-  <li>📅 Datas calculadas através da cadência configurada</li>
-  <li>🚀 Deploys permitidos somente às <b>terças e quintas-feiras</b></li>
-  <li>📆 Deploys não são planejados para a última semana do mês</li>
-  <li>➡️ Datas nessa janela são automaticamente transferidas para o próximo mês</li>
-</ul>
+| Produto | Arquivo |
+|---|---|
+| `LIVRE` | `data/workitems-LIVRE.json` |
+| `FLEET` | `data/workitems-FLEET.json` |
+| `RAC` | `data/workitems-RAC.json` |
 
-<p>
-As datas das sprints não são obtidas diretamente dos campos de data dos Work Items. Elas são calculadas a partir de uma sprint de referência configurada em <b>sprintCadence</b>.
-</p>
+O JSON pode ser uma lista de Work Items ou um objeto com a propriedade `value` contendo a lista. Cada item precisa ter a propriedade `fields`, incluindo os campos utilizados pelo roadmap, como tags e informações de sprint.
 
----
+> ⚠️ Para incluir bugs no modo offline, o JSON precisa conter os itens com a tag `Bug`. Os dados locais não são atualizados automaticamente.
 
-<h2>📊 Barra Gantt</h2>
+### 🎛️ Opções de Execução
 
-<p>
-A barra Gantt representa visualmente o período de execução de cada Work Item dentro da timeline.
-</p>
+| Opção | Descrição |
+|---|---|
+| `--offline` | Lê os Work Items de um arquivo JSON local |
+| `--produto=LIVRE` | Seleciona o produto |
+| `--sprints=9,10` | Filtra uma ou mais sprints |
+| `--bugs` | Inclui itens com tag `Bug` |
+| `--sem-bugs` | Exclui itens com tag `Bug` |
+| `--no-render` | Gera o JSON sem chamar o renderizador do PowerPoint |
 
-<ul>
-  <li>📅 Início = início calculado da sprint</li>
-  <li>🚀 Item fechado = data real de deploy</li>
-  <li>🔮 Item aberto = data prevista de deploy</li>
-  <li>📈 Posicionamento proporcional ao dia dentro da quinzena</li>
-</ul>
-
-<p>
-A posição horizontal não utiliza somente a célula da quinzena. O sistema calcula a posição proporcional ao dia exato, permitindo diferenciar, por exemplo, dois itens encerrados em dias diferentes dentro da mesma quinzena.
-</p>
+Quando as opções não são informadas por parâmetro, o programa solicita as escolhas durante a execução. Se não encontrar sprints numeradas nos dados, utiliza todos os itens sem filtro de sprint.
 
 ---
 
-<h2>🔧 Correção da data de fechamento</h2>
+### 🚦 Legenda do Roadmap
 
-<p>
-O <b>ClosedDate</b> do Azure DevOps nem sempre representa o momento real do deploy.
-</p>
+<table>
+<tr><th>Status da demanda</th><th>Significado</th></tr>
+<tr><td>⚪ <b>Não iniciado</b></td><td>Demanda ainda não iniciada</td></tr>
+<tr><td>🟢 <b>No prazo</b></td><td>Dentro do prazo previsto</td></tr>
+<tr><td>🟡 <b>Risco de atraso</b></td><td>Demanda sinalizada como risco</td></tr>
+<tr><td>🔴 <b>Atraso</b></td><td>Previsão vencida ou entrega atrasada</td></tr>
+<tr><td>🟠 <b>Pausado</b></td><td>Demanda pausada</td></tr>
+</table>
 
-<p>
-Quando o Work Item é fechado no dia seguinte ao deploy, o sistema verifica se o dia anterior era uma terça ou quinta-feira. Caso seja, assume essa data anterior como a data real da entrega.
-</p>
-
-<p>
-A correção é limitada a apenas <b>um dia para trás</b>.
-</p>
-
-<p>
-Além disso, todas as datas recebidas do Azure passam por normalização antes das comparações, removendo o horário para evitar diferenças causadas por timestamps.
-</p>
-
----
-
-<h2>🚦 Status de Entrega</h2>
-
-<p>
-O ícone apresentado no final da barra Gantt representa a situação da entrega.
-</p>
-
-<ul>
-  <li>⚪ <b>Previsão</b> - item ainda aberto</li>
-  <li>🟢 <b>Concluída no prazo</b> - entregue até a data prevista</li>
-  <li>🟠 <b>Concluída com atraso</b> - entregue depois da data prevista</li>
-</ul>
-
-<p>
-Quando uma entrega ocorre com atraso, o relatório apresenta a data originalmente esperada riscada e, em seguida, a data real do deploy.
-</p>
+<table>
+<tr><th>Status da entrega</th><th>Significado</th></tr>
+<tr><td>⚪ <b>Previsão</b></td><td>Demanda aberta com previsão</td></tr>
+<tr><td>🟢 <b>Concluída no prazo</b></td><td>Entrega até a data prevista</td></tr>
+<tr><td>🟠 <b>Concluída com atraso</b></td><td>Entrega após a data prevista</td></tr>
+</table>
 
 ---
 
-<h2>🔮 Previsões</h2>
+### 📅 Regras de Datas
 
-<p>
-Itens abertos nunca permanecem posicionados em uma data de deploy que já passou.
-</p>
-
-<ul>
-  <li>➡️ A previsão vencida é transferida para o próximo dia de deploy</li>
-  <li>⏳ Itens <b>Não iniciados</b> avançam mais um ciclo</li>
-  <li>📅 Itens em andamento exibem somente a nova previsão</li>
-  <li>✖️ Para itens não iniciados, a data intermediária pode ser exibida riscada</li>
-</ul>
-
-<p>
-Essa regra evita que um item que ainda não começou seja apresentado como se estivesse prestes a ser entregue imediatamente após o vencimento de sua previsão original.
-</p>
+- 🚀 Deploys são planejados para terças e quintas-feiras, evitando a última semana do mês.
+- ⏳ Previsões vencidas de demandas ainda abertas são movidas para uma próxima data prevista.
+- 📑 A apresentação é dividida automaticamente em várias páginas quando necessário.
 
 ---
 
-<h2>🟢 Status de Fase</h2>
-
-<p>
-O status visual da coluna <b>Status</b> é definido através do <b>statusMapping</b> configurado no <b>config.json</b>.
-</p>
-
-<p>
-A prioridade de avaliação é:
-</p>
-
-<ol>
-  <li>🏷️ Tags</li>
-  <li>📋 State</li>
-  <li>🚨 Regra final de atraso</li>
-</ol>
-
-<p>
-Tags possuem prioridade sobre o State. Alguns exemplos:
-</p>
-
-<ul>
-  <li><b>Pausado</b> → pausado</li>
-  <li><b>Risco</b> → risco</li>
-  <li><b>Bloqueado / Blocked</b> → atraso</li>
-  <li><b>New</b> → não iniciado</li>
-  <li><b>Active</b> → no prazo</li>
-</ul>
-
-<p>
-Existe ainda uma sobrescrita final: itens entregues depois do previsto ou itens abertos com previsão vencida passam para <b>atraso</b>.
-</p>
-
-<p>
-A exceção são os itens com tag <b>Pausado</b>, que permanecem como pausados mesmo quando a sprint está vencida.
-</p>
-
----
-
-<h2>🚫 Itens ignorados</h2>
-
-<p>
-Alguns Work Items são propositalmente excluídos do relatório.
-</p>
-
-<ul>
-  <li>🚫 Itens com Tag <b>Bug</b></li>
-  <li>🚫 Itens com Tag <b>RASCUNHO</b></li>
-  <li>🚫 Itens fora da janela configurada da timeline</li>
-</ul>
-
-<p>
-Os filtros são aplicados em duas camadas. Primeiro na WIQL, reduzindo a quantidade de dados trafegados, e novamente no <b>transform.js</b> como camada adicional de proteção.
-</p>
-
----
-
-<h2>🔤 Ordenação</h2>
-
-<p>
-A lista final é ordenada alfabeticamente pelo título exibido.
-</p>
-
-<p>
-Como o título pode receber o prefixo da sprint, a ordenação também acaba agrupando os itens por sprint.
-</p>
-
-<pre>
-SP09 - Card A
-SP09 - Card B
-SP10 - Card A
-SP10 - Card C
-</pre>
-
----
-
-<h2>📑 Múltiplas páginas</h2>
-
-<p>
-Quando o número de itens ultrapassa a quantidade que cabe em uma única página, o <b>render.js</b> divide automaticamente o roadmap em várias páginas do PowerPoint.
-</p>
-
-<p>
-Cada página mantém:
-</p>
-
-<ul>
-  <li>📌 Cabeçalho</li>
-  <li>📊 Legenda</li>
-  <li>📅 Grade da timeline</li>
-  <li>📈 Roadmap</li>
-</ul>
-
-<p>
-O título recebe automaticamente a identificação da página:
-
-</p>
-
-<pre>
-(1/N)
-(2/N)
-(3/N)
-</pre>
-
----
-
-<h2>🛠 Tecnologias</h2>
+### 🛠 Tecnologias
 
 <ul>
   <li>Node.js</li>
@@ -506,5 +205,5 @@ O título recebe automaticamente a identificação da página:
 ---
 
 <p align="center">
-<b>Azure Roadmap Maker</b> transforma os dados do Azure DevOps em uma visão visual e automatizada do andamento das entregas, reduzindo o trabalho manual na preparação de status reports e garantindo que as regras de sprint, deploy, prazo e risco sejam aplicadas de forma consistente. 💻
+Feito para facilitar a criação de roadmaps e o acompanhamento de prazos, sprints e entregas. 🚀
 </p>
