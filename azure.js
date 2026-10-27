@@ -99,13 +99,12 @@ function loadOfflineWorkItems(produto) {
 
   let parsed;
   try {
-    // remove BOM, caso o arquivo tenha sido salvo com ele
+
     parsed = JSON.parse(fs.readFileSync(file, "utf-8").replace(/^\uFEFF/, ""));
   } catch (err) {
     throw new Error(`O arquivo ${file} não é um JSON válido: ${err.message}`);
   }
 
-  // aceita tanto o array direto (script do console) quanto { value: [...] } (resposta crua da API)
   const items = Array.isArray(parsed) ? parsed : parsed && Array.isArray(parsed.value) ? parsed.value : null;
   if (!items) {
     throw new Error(`O arquivo ${file} não tem o formato esperado (lista de work items).`);
