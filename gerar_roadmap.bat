@@ -4,6 +4,34 @@ setlocal enabledelayedexpansion
 
 cd /d "%~dp0"
 
+:MENU
+echo ============================================
+echo   Azure Roadmap Maker
+echo ============================================
+echo.
+echo   1 - Online  ^(busca os work items no Azure DevOps com o PAT^)
+echo   2 - Offline ^(le o arquivo data\workitems-PRODUTO.json^)
+echo.
+set "MODO="
+set /p MODO="Escolha 1 ou 2 e aperte Enter: "
+
+if "!MODO!"=="1" goto ONLINE
+if "!MODO!"=="2" goto OFFLINE
+echo.
+echo Opcao invalida. Digite 1 ou 2.
+echo.
+goto MENU
+
+:OFFLINE
+echo.
+echo Modo OFFLINE: nao usa PAT nem acessa o Azure DevOps.
+echo Confira se o arquivo workitems-PRODUTO.json ^(ex: workitems-LIVRE.json^)
+echo esta na pasta data.
+echo.
+node azure.js --offline
+goto FIM
+
+:ONLINE
 if "%AZURE_DEVOPS_PAT%"=="" (
     echo Variavel AZURE_DEVOPS_PAT nao encontrada.
     echo.
@@ -34,6 +62,7 @@ if errorlevel 1 (
     )
 )
 
+:FIM
 echo.
 echo ============================================
 echo Pressione qualquer tecla para fechar esta janela...

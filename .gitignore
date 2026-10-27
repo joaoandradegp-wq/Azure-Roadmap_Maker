@@ -22,3 +22,5 @@ azure-sheets-sync/test-rules.js
 Thumbs.db
 *.log
 Azure-Roadmap_Maker.zip
+script_console_offline.h
+*.rar
