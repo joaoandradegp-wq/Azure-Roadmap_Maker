@@ -140,8 +140,6 @@ Use arquivos JSON exportados anteriormente para gerar o relatório sem consultar
 
 O JSON pode ser uma lista de Work Items ou um objeto com a propriedade `value` contendo a lista. Cada item precisa ter a propriedade `fields`, incluindo os campos utilizados pelo roadmap, como tags e informações de sprint.
 
-> ⚠️ Para incluir bugs no modo offline, o JSON precisa conter os itens com a tag `Bug`. Os dados locais não são atualizados automaticamente.
-
 #### 🎛️ Opções de Execução
 
 | Opção | Descrição |
