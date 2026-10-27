@@ -128,8 +128,6 @@ node azure.js
 
 A opção de incluir bugs remove da condição configurada a exclusão específica da tag `Bug`.
 
----
-
 #### 📴 Modo Offline
 
 Use arquivos JSON exportados anteriormente para gerar o relatório sem consultar o Azure DevOps.
@@ -177,7 +175,7 @@ Quando as opções não são informadas por parâmetro, o programa solicita as e
 <tr><td>🟠 <b>Concluída com atraso</b></td><td>Entrega após a data prevista</td></tr>
 </table>
 
-### 📅 Regras de Datas
+#### 📅 Regras de Datas
 
 - 🚀 Deploys são planejados para terças e quintas-feiras, evitando a última semana do mês.
 - ⏳ Previsões vencidas de demandas ainda abertas são movidas para uma próxima data prevista.
