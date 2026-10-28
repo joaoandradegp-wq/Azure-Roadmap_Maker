@@ -24,3 +24,5 @@ Thumbs.db
 Azure-Roadmap_Maker.zip
 script_console_offline.h
 *.rar
+status_report/data/status-config-LIVRE.json
+status_report/script_console_offline_status-report.h
