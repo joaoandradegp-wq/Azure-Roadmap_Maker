@@ -128,9 +128,7 @@ node azure.js
 
 A opção de incluir bugs remove da condição configurada a exclusão específica da tag `Bug`.
 
----
-
-### 📴 Modo Offline
+#### 📴 Modo Offline
 
 Use arquivos JSON exportados anteriormente para gerar o relatório sem consultar o Azure DevOps.
 
@@ -142,9 +140,7 @@ Use arquivos JSON exportados anteriormente para gerar o relatório sem consultar
 
 O JSON pode ser uma lista de Work Items ou um objeto com a propriedade `value` contendo a lista. Cada item precisa ter a propriedade `fields`, incluindo os campos utilizados pelo roadmap, como tags e informações de sprint.
 
-> ⚠️ Para incluir bugs no modo offline, o JSON precisa conter os itens com a tag `Bug`. Os dados locais não são atualizados automaticamente.
-
-### 🎛️ Opções de Execução
+#### 🎛️ Opções de Execução
 
 | Opção | Descrição |
 |---|---|
@@ -159,7 +155,7 @@ Quando as opções não são informadas por parâmetro, o programa solicita as e
 
 ---
 
-### 🚦 Roadmap
+### 🚦 Indicadores Visuais
 
 <table>
 <tr><th>Status da demanda</th><th>Significado</th></tr>
@@ -177,7 +173,7 @@ Quando as opções não são informadas por parâmetro, o programa solicita as e
 <tr><td>🟠 <b>Concluída com atraso</b></td><td>Entrega após a data prevista</td></tr>
 </table>
 
-### 📅 Regras de Datas
+#### 📅 Regras de Datas
 
 - 🚀 Deploys são planejados para terças e quintas-feiras, evitando a última semana do mês.
 - ⏳ Previsões vencidas de demandas ainda abertas são movidas para uma próxima data prevista.
