@@ -1,11 +1,5 @@
-# APERTA F12 ENQUANTO LOGADO NO AZURE, DENTRO DE "BOARD".
-# ESCREVA EM "CONSOLE" -> allow pasting
-# COLE O SCRIPT ABAIXO, DEFININDO PRIMEIRO, QUAL É O PRODUTO NA PRIMEIRA LINHA APENAS.
-#
-# ARQUIVO DE EXEMPLO: copie para script_console_offline.h e troque os valores "SEU_..." / "PRODUTO_..."
-
 (async () => {
-  const PRODUTO = "PRODUTO_A"; // PRODUTO_A, PRODUTO_B ou PRODUTO_C (chaves definidas em PRODUTOS abaixo)
+  const PRODUTO = "PRODUTO_A"; // PRODUTO_A, PRODUTO_B ou PRODUTO_C 
 
   const ORG = "SUA_ORGANIZACAO";   // https://dev.azure.com/<ORG>
   const API = "7.1";
