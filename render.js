@@ -69,7 +69,6 @@ function renderPage(roadmapChunk, pageInfo) {
   const slide = pres.addSlide();
   slide.background = { color: "FFFFFF" };
 
-  // ---------- Cabeçalho ----------
   let circleX = MARGIN;
   for (let i = 0; i < 4; i++) {
     slide.addShape("ellipse", {

@@ -52,7 +52,6 @@ async function askIncludeBugs() {
   }
 }
 
-// Remove da WIQL a exclusão da tag Bug (modo online com "incluir Bug").
 const BUG_EXCLUSION_RE = /\s*AND\s+\[System\.Tags\]\s+NOT\s+CONTAINS\s+'Bug'/i;
 
 function applyProductToConfig(config, produto, { includeBugs = false } = {}) {

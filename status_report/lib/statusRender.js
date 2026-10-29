@@ -5,7 +5,6 @@ const pptxgen = require("pptxgenjs");
 
 const FONT = "Segoe UI";
 
-// ------------------------------------------------------------ paleta (do modelo)
 const C = {
   bg: "F5F7FA", white: "FFFFFF", border: "E2E8F0", navy: "1E3A5F", blue: "3B82F6",
   text: "334155", muted: "64748B", soft: "F8FAFC", strip: "EEF2F7",
@@ -19,10 +18,8 @@ const WEEKDAYS = ["Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Q
 
 
 const estLines = (txt, w, size) => Math.max(1, Math.ceil(String(txt).length / Math.max(8, Math.floor(w / (size * 0.0078)))));
-const rr = (adj, w, h) => Math.min(adj, 0.5) * Math.min(w, h); // adj (ratio OOXML) -> raio em polegadas
+const rr = (adj, w, h) => Math.min(adj, 0.5) * Math.min(w, h);
 
-
-// ------------------------------------------------------------ slide
 async function renderStatusReport(m, outPath, assetsDir) {
   const pres = new pptxgen();
   pres.layout = "LAYOUT_WIDE"; // 13.33 x 7.5
@@ -64,7 +61,6 @@ async function renderStatusReport(m, outPath, assetsDir) {
 
   rect(0, 0, 13.333, 7.5, C.bg, "Fundo");
 
-  // ---- cabecalho
   rrect(0.31, 0.21, 12.71, 0.62, C.white, 0.4267, null, "Cabecalho");
   s.addImage({ path: img("icon_chart.png"), x: 0.52, y: 0.43, w: 0.21, h: 0.21, altText: "Icone titulo" });
   txt(`One Page Status Report - Sprint ${m.sprint}`, 0.89, 0.21, 4.4, 0.62, { size: 15, bold: true, color: C.navy, wrap: false, name: "Titulo" });
@@ -78,7 +74,6 @@ async function renderStatusReport(m, outPath, assetsDir) {
   rrect(11.45, 0.49, Math.max(0.06, (1.04 * m.progresso) / 100), 0.06, C.blue, 0.5, null, "Progresso");
   txt(`${m.progresso}%`, 12.56, 0.38, 0.4, 0.29, { size: 8, color: C.muted });
 
-  // ---- painel Em Andamento
   rrect(0.31, 0.94, 12.71, 3.15, C.white, 0.0227, C.border, "Painel Andamento");
   rrect(0.49, 1.12, 0.25, 0.25, C.blue, 0.5);
   s.addImage({ path: img("icon_spinner.png"), x: 0.55, y: 1.185, w: 0.13, h: 0.13, altText: "Icone andamento" });
@@ -95,7 +90,7 @@ async function renderStatusReport(m, outPath, assetsDir) {
   const ch = Math.min(0.53, pitch - 0.07);
   if (ch < 0.34) warnings.push(`${n} itens em Andamento: cards ficaram muito apertados.`);
   m.itens.forEach((it, i) => {
-    const col = Math.floor(i / rows), row = i % rows; // preenche coluna a coluna (como no modelo)
+    const col = Math.floor(i / rows), row = i % rows; 
     const x = xs[col], y = 1.58 + row * pitch;
     rrect(x, y, cw, ch, STATUS_FILL[it.status] || C.soft, 0.2566, it.status === "Andamento" ? C.border : null, `Card ${it.id}`);
     if (it.bug) s.addImage({ path: img("icon_bug.png"), x: x - 0.02, y: y + (ch - 0.4) / 2, w: 0.4, h: 0.4, altText: `Bug ${it.id}` });
@@ -108,7 +103,6 @@ async function renderStatusReport(m, outPath, assetsDir) {
     pill(x + cw - 0.5, y + (ch - 0.2) / 2, 0.42, 0.2, `${it.pct}%`);
   });
 
-  // ---- painel Detalhamento
   rrect(0.28, 4.2, 8.43, 2.41, C.white, 0.0227, C.border, "Painel Detalhamento");
   s.addShape(pres.ShapeType.ellipse, { x: 0.45, y: 4.35, w: 0.25, h: 0.25, fill: { color: "FFD966" } });
   s.addShape(pres.ShapeType.lightningBolt, { x: 0.49, y: 4.395, w: 0.16, h: 0.16, fill: { color: C.white } });
@@ -151,7 +145,6 @@ async function renderStatusReport(m, outPath, assetsDir) {
     if (y > 6.52) warnings.push(`Detalhamento: conteudo passou do limite do painel (coluna ${d.coluna}); reduza as notas.`);
   }
 
-  // ---- painel Janelas de Implantacao
   rrect(8.82, 4.2, 4.2, 2.41, C.white, 0.0227, C.border, "Painel Janelas");
   rrect(9.05, 4.32, 0.25, 0.25, "2E75B6", 0.5);
   s.addImage({ path: img("icon_bars.png"), x: 9.08, y: 4.35, w: 0.19, h: 0.19, altText: "Icone janelas" });
@@ -173,7 +166,6 @@ async function renderStatusReport(m, outPath, assetsDir) {
     if (jy > 6.55) warnings.push("Janelas: conteudo passou do limite do painel.");
   }
 
-  // ---- rodape
   rrect(0.31, 6.77, 12.71, 0.52, C.white, 0.614, null, "Rodape");
   STATUS_ORDER.forEach((st, i) => {
     const cx = 0.56 + (i % 2) * 1.45, cy = 6.82 + Math.floor(i / 2) * 0.22;

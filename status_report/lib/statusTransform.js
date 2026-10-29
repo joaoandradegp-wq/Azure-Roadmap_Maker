@@ -11,11 +11,6 @@ const {
 const BOARD_COLUMN_FIELD = "System.BoardColumn";
 const MS_DAY = 24 * 60 * 60 * 1000;
 
-// pct: número fixo, ou "auto" = % de tempo consumido da sprint (azul: você confere depois).
-// A ordem importa: a primeira regra que casar vale. "match" é regex aplicada ao nome da
-// coluna SEM acento e em minúsculas. Para mudar/estender sem mexer aqui, use
-// "statusReport": { "colunas": [ { "match": "...", "status": "...", "pct": 80 } ] } no config.json
-// (essas regras entram na frente das abaixo).
 const DEFAULT_COLUMN_RULES = [
   // --- amarelo: Em testes
   { match: "em testes.*qa|testes.*ambiente qa", status: "Em testes", pct: 80 },   // 1 - Em testes - Ambiente QA
@@ -33,7 +28,6 @@ const DEFAULT_COLUMN_RULES = [
   },
 ];
 
-// Fallback (JSON sem System.BoardColumn): aproxima pelo estado do Azure.
 const STATE_FALLBACK = {
   New: { status: "Andamento", pct: "auto" },
   Refinement: { status: "Andamento", pct: "auto" },
@@ -86,7 +80,6 @@ function compileRules(config) {
   return [...extra, ...DEFAULT_COLUMN_RULES].map((r) => ({ ...r, re: new RegExp(r.match) }));
 }
 
-// Sprint corrente pela data (cadência do config.json). Retorna número ou null.
 function currentSprintNumber(config, today = new Date()) {
   const c = config.sprintCadence;
   if (!c) return null;
@@ -110,7 +103,6 @@ function buildStatusReport(workItems, config, { sprint, includeBugs = false, tod
   const sprintEndExclusive = new Date(dates.end.getTime() + MS_DAY);
   const todayMid = stripTime(today);
 
-  // ---- tempo consumido
   let tempo;
   if (userCfg.tempo_consumido != null) tempo = +userCfg.tempo_consumido;
   else if (todayMid < dates.start) tempo = 0;
@@ -141,7 +133,6 @@ function buildStatusReport(workItems, config, { sprint, includeBugs = false, tod
     };
   }
 
-  // Regras de status/% de um item. Retorna null quando o item não entra no relatório.
   function classify(i, { strict }) {
     const ov = cfgItens[String(i.id)] || {};
     const isClosed = !!i.closedRaw || i.state === "Closed";
@@ -161,7 +152,6 @@ function buildStatusReport(workItems, config, { sprint, includeBugs = false, tod
       if (rule) {
         status = rule.status; pct = rule.pct; origem = "coluna";
       } else {
-        // com BoardColumn no JSON: coluna sem regra = Andamento (e avisa); sem BoardColumn: aproxima pelo estado
         const fb = hasBoardColumn ? { status: "Andamento", pct: "auto" } : STATE_FALLBACK[i.state] || { status: "Andamento", pct: "auto" };
         status = fb.status; pct = fb.pct; origem = hasBoardColumn ? "sem-regra" : "estado";
         if (hasBoardColumn && i.column) {
@@ -198,7 +188,6 @@ function buildStatusReport(workItems, config, { sprint, includeBugs = false, tod
     );
   }
 
-  // ---- cabeçalho
   const progresso = userCfg.progresso_geral != null
     ? +userCfg.progresso_geral
     : itens.length ? Math.round(itens.reduce((a, i) => a + i.pct, 0) / itens.length) : 0;
@@ -207,7 +196,6 @@ function buildStatusReport(workItems, config, { sprint, includeBugs = false, tod
   const periodo = userCfg.periodo || `${formatDateBR(dates.start)} a ${formatDateBR(dates.end)}`;
   const proxima = userCfg.proxima_sprint || `Sprint ${sprint + 1}: ${formatDateBR(nextDates.start)} - ${formatDateBR(nextDates.end)}`;
 
-  // ---- detalhamento (userCfg.detalhamento; se ausente, grupo Reforma automático)
   let detCfg = userCfg.detalhamento;
   if (detCfg == null) {
     const ids = itens.filter((i) => i.reforma).map((i) => i.id);
@@ -231,7 +219,6 @@ function buildStatusReport(workItems, config, { sprint, includeBugs = false, tod
     }
   }
 
-  // ---- janelas de implantação (userCfg.janelas; se ausente, Pronto GMUD na próxima data de deploy)
   let janCfg = userCfg.janelas;
   if (janCfg == null) {
     const pronto = itens.filter((i) => i.status === "Pronto GMUD").map((i) => i.id);
