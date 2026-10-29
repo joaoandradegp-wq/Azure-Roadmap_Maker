@@ -1,13 +1,3 @@
-// One Page Status Report (PPTX) — mesmo padrão do azure.js (Online / Offline).
-// Fica na pasta status_report dentro do Azure-Roadmap_Maker e reaproveita ../azure.js, ../config.json e ../lib.
-//
-//   node statusreport.js                    (pergunta produto, Bugs e Sprint; busca no Azure)
-//   node statusreport.js --offline          (lê status-config-PRODUTO.json, extraído pelo console)
-//   Flags opcionais: --produto=LIVRE --bugs | --sem-bugs --sprint=15 --hoje=28/10/2026
-//
-// JSON dos work items (offline): status-config-PRODUTO.json em status_report\data (ou em ..\data).
-// Dados manuais (detalhamento, janelas, ajustes por item): status_report\data\status-ajustes-PRODUTO.json
-// (ver data\status-ajustes.exemplo.json).
 const fs = require("fs");
 const path = require("path");
 const readline = require("readline/promises");
@@ -149,7 +139,6 @@ async function main() {
     process.exit(1);
   }
 
-  // padrão (Enter) = sprint corrente pela data; se não houver itens nela, a mais próxima anterior
   const cur = currentSprintNumber(config, today);
   const defaultSprint =
     availableSprints.includes(cur)
