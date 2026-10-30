@@ -11,6 +11,11 @@ const {
 const BOARD_COLUMN_FIELD = "System.BoardColumn";
 const MS_DAY = 24 * 60 * 60 * 1000;
 
+// pct: número fixo, ou "auto" = % de tempo consumido da sprint (azul: você confere depois).
+// A ordem importa: a primeira regra que casar vale. "match" é regex aplicada ao nome da
+// coluna SEM acento e em minúsculas. Para mudar/estender sem mexer aqui, use
+// "statusReport": { "colunas": [ { "match": "...", "status": "...", "pct": 80 } ] } no config.json
+// (essas regras entram na frente das abaixo).
 const DEFAULT_COLUMN_RULES = [
   // --- amarelo: Em testes
   { match: "em testes.*qa|testes.*ambiente qa", status: "Em testes", pct: 80 },   // 1 - Em testes - Ambiente QA
@@ -18,6 +23,8 @@ const DEFAULT_COLUMN_RULES = [
   { match: "pendente subida", status: "Em testes", pct: 85 },                     // 3 - Pendente subida HML
   { match: "testes.*(homologacao|hml)", status: "Em testes", pct: 95 },           // 4 - Em testes / Homologação
   { match: "correcao.*(hml|homologacao)", status: "Em testes", pct: 95 },         // 5 - Em correção (HML)
+  { match: "\\buat\\b", status: "Em testes", pct: 100 },                            // UAT com Cliente
+  { match: "disponivel para testes", status: "Em testes", pct: 80 },              // Disponível para testes (assumido 80%, como a 1ª etapa de QA)
   // --- cinza: Pronto GMUD
   { match: "pronto para gmud|adicionar na gmud", status: "Pronto GMUD", pct: 100 },
   // --- azul: Andamento
@@ -28,6 +35,7 @@ const DEFAULT_COLUMN_RULES = [
   },
 ];
 
+// Fallback (JSON sem System.BoardColumn): aproxima pelo estado do Azure.
 const STATE_FALLBACK = {
   New: { status: "Andamento", pct: "auto" },
   Refinement: { status: "Andamento", pct: "auto" },
@@ -80,6 +88,7 @@ function compileRules(config) {
   return [...extra, ...DEFAULT_COLUMN_RULES].map((r) => ({ ...r, re: new RegExp(r.match) }));
 }
 
+// Sprint corrente pela data (cadência do config.json). Retorna número ou null.
 function currentSprintNumber(config, today = new Date()) {
   const c = config.sprintCadence;
   if (!c) return null;
@@ -103,6 +112,7 @@ function buildStatusReport(workItems, config, { sprint, includeBugs = false, tod
   const sprintEndExclusive = new Date(dates.end.getTime() + MS_DAY);
   const todayMid = stripTime(today);
 
+  // ---- tempo consumido
   let tempo;
   if (userCfg.tempo_consumido != null) tempo = +userCfg.tempo_consumido;
   else if (todayMid < dates.start) tempo = 0;
@@ -133,6 +143,7 @@ function buildStatusReport(workItems, config, { sprint, includeBugs = false, tod
     };
   }
 
+  // Regras de status/% de um item. Retorna null quando o item não entra no relatório.
   function classify(i, { strict }) {
     const ov = cfgItens[String(i.id)] || {};
     const isClosed = !!i.closedRaw || i.state === "Closed";
@@ -152,6 +163,7 @@ function buildStatusReport(workItems, config, { sprint, includeBugs = false, tod
       if (rule) {
         status = rule.status; pct = rule.pct; origem = "coluna";
       } else {
+        // com BoardColumn no JSON: coluna sem regra = Andamento (e avisa); sem BoardColumn: aproxima pelo estado
         const fb = hasBoardColumn ? { status: "Andamento", pct: "auto" } : STATE_FALLBACK[i.state] || { status: "Andamento", pct: "auto" };
         status = fb.status; pct = fb.pct; origem = hasBoardColumn ? "sem-regra" : "estado";
         if (hasBoardColumn && i.column) {
@@ -167,19 +179,52 @@ function buildStatusReport(workItems, config, { sprint, includeBugs = false, tod
     return { ...i, status, pct: Math.round(pct), pctAuto: auto && (ov.pct === undefined || ov.pct === null), origem };
   }
 
+  function durationTag(tags) {
+    let max = null;
+    for (const t of tags) {
+      const m = /^(\d+)\s*sprints?$/i.exec(t);
+      if (m && +m[1] > 0 && (max === null || +m[1] > max)) max = +m[1];
+    }
+    return max;
+  }
+
+  function forecastDeploy(i) {
+    let end = dates.end;
+    const dur = durationTag(i.tags);
+    if (dur && dur > 1) {
+      const target = computeSprintDates(sprint + dur - 1, config.sprintCadence);
+      if (target) end = target.end;
+    }
+    const planned = nextDeployDate(end);
+    return planned < todayMid ? nextDeployDate(todayMid) : planned;
+  }
+
   const all = workItems.map(info);
   const byId = new Map(all.map((i) => [i.id, i]));
 
   const ocultar = new Set((userCfg.ocultar || []).map(Number));
-  let sel = all.filter((i) => i.sprint === sprint && !i.rascunho && !ocultar.has(i.id));
-  if (!includeBugs) sel = sel.filter((i) => !i.bug);
-  for (const x of userCfg.ids_extras || []) {
-    const b = byId.get(+x);
-    if (b && !sel.includes(b)) sel.push(b);
-  }
-  sel.sort((a, b) => a.id - b.id);
+  const isClosedItem = (i) => !!i.closedRaw || i.state === "Closed";
+  const extras = (userCfg.ids_extras || []).map((x) => byId.get(+x)).filter(Boolean);
 
-  const itens = sel.map((i) => classify(i, { strict: true })).filter(Boolean);
+  // Slide principal: itens da sprint SEM tag Bug (bugs vão para o slide de Bugs)
+  let sel = all.filter((i) => i.sprint === sprint && !i.rascunho && !ocultar.has(i.id) && !i.bug);
+  for (const b of extras) if (!b.bug && !sel.includes(b)) sel.push(b);
+  // Reforma primeiro, depois por ID (como no modelo)
+  const byReformaId = (x, y) => (y.reforma ? 1 : 0) - (x.reforma ? 1 : 0) || x.id - y.id;
+  const itens = sel.map((i) => classify(i, { strict: true })).filter(Boolean).sort(byReformaId);
+
+  // Slide de Bugs: bug não tem sprint no iteration path -> todos os abertos + os fechados dentro da sprint
+  let bugs = null;
+  if (includeBugs) {
+    let bsel = all.filter((i) => {
+      if (!i.bug || i.rascunho || ocultar.has(i.id)) return false;
+      if (!isClosedItem(i)) return true;
+      const c = i.closedRaw ? new Date(i.closedRaw) : null;
+      return !!c && c >= dates.start && c < sprintEndExclusive;
+    });
+    for (const b of extras) if (b.bug && !bsel.includes(b)) bsel.push(b);
+    bugs = bsel.map((i) => classify(i, { strict: true })).filter(Boolean).sort((x, y) => x.id - y.id);
+  }
 
   if (!hasBoardColumn) {
     notes.warnings.push(
@@ -188,6 +233,7 @@ function buildStatusReport(workItems, config, { sprint, includeBugs = false, tod
     );
   }
 
+  // ---- cabeçalho
   const progresso = userCfg.progresso_geral != null
     ? +userCfg.progresso_geral
     : itens.length ? Math.round(itens.reduce((a, i) => a + i.pct, 0) / itens.length) : 0;
@@ -196,47 +242,55 @@ function buildStatusReport(workItems, config, { sprint, includeBugs = false, tod
   const periodo = userCfg.periodo || `${formatDateBR(dates.start)} a ${formatDateBR(dates.end)}`;
   const proxima = userCfg.proxima_sprint || `Sprint ${sprint + 1}: ${formatDateBR(nextDates.start)} - ${formatDateBR(nextDates.end)}`;
 
-  let detCfg = userCfg.detalhamento;
-  if (detCfg == null) {
-    const ids = itens.filter((i) => i.reforma).map((i) => i.id);
-    detCfg = ids.length ? [{ tipo: "grupo", titulo: "Reforma Tributária:", ids, notas: [] }] : [];
-  }
-  const detalhamento = [];
-  for (const d of detCfg) {
-    const tipo = d.tipo || (d.id ? "item" : "grupo");
-    if (tipo === "grupo") {
-      detalhamento.push({ tipo: "grupo", titulo: d.titulo || "", ids: d.ids || [], notas: d.notas || [], coluna: d.coluna || "esq" });
-    } else {
-      const base = byId.get(+d.id);
-      if (!base) { notes.warnings.push(`Item ${d.id} do detalhamento não existe no JSON.`); continue; }
-      const r = classify(base, { strict: false });
-      detalhamento.push({
-        tipo: "item",
-        item: { ...r, proativoFlag: d.proativo !== undefined ? !!d.proativo : base.proativo },
-        notas: d.notas || [],
-        coluna: d.coluna || "dir",
-      });
-    }
-  }
-
+  // ---- janelas de implantação (userCfg.janelas; se ausente, calcula pela regra de entrega do Roadmap Maker)
+  // data = próximo deploy (terça/quinta, evitando a última semana do mês) a partir do fim da sprint
+  // (ou da última sprint, se o card tiver a tag "N sprints"); se já passou, próximo deploy a partir de hoje.
   let janCfg = userCfg.janelas;
   if (janCfg == null) {
-    const pronto = itens.filter((i) => i.status === "Pronto GMUD").map((i) => i.id);
-    janCfg = pronto.length ? [{ data: fmtDateFull(nextDeployDate(todayMid)), itens: pronto }] : [];
+    const porData = new Map();
+    for (const i of itens) {
+      if (i.status === "Publicado") continue; // já entregue
+      const d = forecastDeploy(i);
+      const key = d.getTime();
+      if (!porData.has(key)) porData.set(key, { date: d, ids: [] });
+      porData.get(key).ids.push(i.id);
+    }
+    janCfg = [...porData.values()]
+      .sort((a, b) => a.date - b.date)
+      .map((g) => ({ data: fmtDateFull(g.date), itens: g.ids }));
   }
-  const janelas = janCfg.map((j) => ({
-    data: fmtJanelaData(j.data || ""),
-    itens: (j.itens || []).map((x) => {
+  const janelas = janCfg.map((j) => {
+    const ids = [];
+    const itensJ = (j.itens || []).map((x) => {
       if (typeof x === "number" || /^\d+$/.test(String(x))) {
+        ids.push(+x);
         const b = byId.get(+x);
         return b ? b.title : `${x} (não encontrado)`;
       }
       return String(x);
-    }),
-  }));
+    });
+    return { data: fmtJanelaData(j.data || ""), itens: itensJ, ids };
+  });
+
+  // ---- Demandas represadas em GMUD: itens em "Pronto para GMUD"/"Adicionar na GMUD do dia" de OUTRAS sprints
+  const prontoRe = /pronto para gmud|adicionar na gmud/;
+  const rep = all
+    .filter((i) => !isClosedItem(i) && prontoRe.test(norm(i.column)) && i.sprint !== sprint && !i.rascunho && !ocultar.has(i.id))
+    .sort((x, y) => x.id - y.id);
+  const resolveList = (list) =>
+    (list || []).map((x) => {
+      if (typeof x === "number" || /^\d+$/.test(String(x))) { const b = byId.get(+x); return b ? b.title : `${x} (não encontrado)`; }
+      return String(x);
+    });
+  const represadas = userCfg.represadas
+    ? { demandas: resolveList(userCfg.represadas.demandas), bugs: includeBugs ? resolveList(userCfg.represadas.bugs) : [] }
+    : {
+        demandas: rep.filter((i) => !i.bug).map((i) => i.title),
+        bugs: includeBugs ? rep.filter((i) => i.bug).map((i) => i.title) : [],
+      };
 
   return {
-    model: { sprint, periodo, tempo, saude, progresso, itens, detalhamento, janelas, proxima },
+    model: { sprint, periodo, tempo, saude, progresso, itens, janelas, represadas, proxima, bugs },
     notes,
     dates,
   };

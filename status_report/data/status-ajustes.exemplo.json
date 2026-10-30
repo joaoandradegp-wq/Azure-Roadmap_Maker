@@ -1,0 +1,36 @@
+{
+  "saude": "Saudável",
+  "tempo_consumido": 70,
+  "progresso_geral": 90,
+  "periodo": "19/10 a 30/10",
+  "proxima_sprint": "Sprint 16: 02/11 - 13/11",
+  "itens": {
+    "712472": {
+      "pct": 75
+    },
+    "742038": {
+      "status": "Em testes",
+      "pct": 90
+    }
+  },
+  "ocultar": [],
+  "ids_extras": [],
+  "janelas": [
+    {
+      "data": "05/11/2026",
+      "itens": [
+        742038,
+        "Texto livre também funciona"
+      ]
+    }
+  ],
+  "represadas": {
+    "demandas": [
+      718548,
+      728395
+    ],
+    "bugs": [
+      734947
+    ]
+  }
+}

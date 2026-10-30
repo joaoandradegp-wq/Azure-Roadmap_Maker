@@ -1,3 +1,13 @@
+// One Page Status Report (PPTX) — mesmo padrão do azure.js (Online / Offline).
+// Fica na pasta status_report dentro do Azure-Roadmap_Maker e reaproveita ../azure.js, ../config.json e ../lib.
+//
+//   node statusreport.js                    (pergunta produto, Bugs e Sprint; busca no Azure)
+//   node statusreport.js --offline          (lê status-config-PRODUTO.json, extraído pelo console)
+//   Flags opcionais: --produto=LIVRE --bugs | --sem-bugs --sprint=15 --hoje=28/10/2026
+//
+// JSON dos work items (offline): status-config-PRODUTO.json em status_report\data (ou em ..\data).
+// Dados manuais (janelas, represadas, ajustes por item): status_report\data\status-ajustes-PRODUTO.json
+// (ver data\status-ajustes.exemplo.json).
 const fs = require("fs");
 const path = require("path");
 const readline = require("readline/promises");
@@ -73,11 +83,11 @@ function loadUserConfig(produto) {
   const file = path.join(__dirname, "data", `status-ajustes-${produto}.json`);
   if (!fs.existsSync(file)) {
     const skeleton = {
-      _ajuda: "Veja data/status-ajustes.exemplo.json. Chaves opcionais: saude, tempo_consumido, progresso_geral, periodo, proxima_sprint, itens, ocultar, ids_extras, detalhamento, janelas.",
+      _ajuda: "Veja data/status-ajustes.exemplo.json. Chaves opcionais: saude, tempo_consumido, progresso_geral, periodo, proxima_sprint, itens, ocultar, ids_extras, janelas, represadas.",
     };
     fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, JSON.stringify(skeleton, null, 2), "utf-8");
-    console.log(`Criado ${file} (opcional: detalhamento, janelas e ajustes manuais).`);
+    console.log(`Criado ${file} (opcional: janelas e ajustes manuais).`);
     return { file, cfg: {} };
   }
   try {
@@ -139,6 +149,7 @@ async function main() {
     process.exit(1);
   }
 
+  // padrão (Enter) = sprint corrente pela data; se não houver itens nela, a mais próxima anterior
   const cur = currentSprintNumber(config, today);
   const defaultSprint =
     availableSprints.includes(cur)
@@ -169,15 +180,24 @@ async function main() {
   const renderWarnings = await renderStatusReport(model, outPath, path.join(__dirname, "assets"));
 
   console.log(`\nSprint ${sprint} | ${model.periodo} | ${model.tempo}% tempo | ${model.progresso}% progresso | ${model.saude}`);
-  console.log(`${model.itens.length} item(ns):`);
-  for (const i of model.itens) {
-    const flags = `${i.pctAuto ? "*" : " "}${i.bug ? " [BUG]" : ""}`;
-    console.log(
-      `  ${i.id}  ${i.status.padEnd(12)} ${String(i.pct).padStart(3)}%${flags} ${i.title.slice(0, 50)}` +
-      (i.column ? `  <${i.column}>` : "")
-    );
+  const printItens = (lista) => {
+    for (const i of lista) {
+      const flags = `${i.pctAuto ? "*" : " "}${i.reforma ? " [REFORMA]" : ""}${i.proativo ? " [PROATIVO]" : ""}`;
+      console.log(
+        `  ${i.id}  ${i.status.padEnd(12)} ${String(i.pct).padStart(3)}%${flags} ${i.title.slice(0, 50)}` +
+        (i.column ? `  <${i.column}>` : "")
+      );
+    }
+  };
+  console.log(`${model.itens.length} item(ns) no slide principal:`);
+  printItens(model.itens);
+  if (model.bugs) {
+    console.log(`\n${model.bugs.length} bug(s) no slide de Bugs:`);
+    printItens(model.bugs);
   }
-  if (model.itens.some((i) => i.pctAuto)) {
+  const rep = model.represadas;
+  console.log(`\nRepresadas em GMUD: ${rep.demandas.length} demanda(s), ${rep.bugs.length} bug(s).`);
+  if ([...model.itens, ...(model.bugs || [])].some((i) => i.pctAuto)) {
     console.log(`\n* = % automático (tempo consumido da sprint) — confira/ajuste em ${userCfgFile} (itens).`);
   }
   for (const [col, ids] of notes.unmapped) {
