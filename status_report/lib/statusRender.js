@@ -50,7 +50,7 @@ function drawSlide(pres, m, opts, assetsDir, warnings) {
   // ---- cabecalho
   rrect(0.31, 0.21, 12.71, 0.62, C.white, 0.4267, null, "Cabecalho");
   s.addImage({ path: img("icon_chart.png"), x: 0.52, y: 0.43, w: 0.21, h: 0.21, altText: "Icone titulo" });
-  const titulo = `One Page Status Report - Sprint ${m.sprint}${bugs ? " Bugs" : ""}`;
+  const titulo = `One Page Status Report - Sprint ${m.sprintLabel || m.sprint}${bugs ? " Bugs" : ""}`;
   txt(titulo, 0.89, 0.21, 5.4, 0.62, { size: 15, bold: true, color: C.navy, wrap: false, name: "Titulo" });
   if (!bugs) {
     const px = Math.max(4.44, 0.89 + titulo.length * 0.117 + 0.3); // logo apos o titulo (sem sobrepor)
@@ -124,7 +124,7 @@ function drawSlide(pres, m, opts, assetsDir, warnings) {
   }
 }
 
-// ---- conteudo do painel de Janelas: datas de deploy + demandas represadas em GMUD
+// ---- conteudo do painel de Janelas: uma faixa por data de publicacao, com as demandas daquela data
 function drawJanelas(s, m, h, warnings) {
   const { rrect, txt, img } = h;
   const BOTTOM = 6.5;
@@ -132,21 +132,12 @@ function drawJanelas(s, m, h, warnings) {
   const cpl = (size, w) => Math.floor(w / (size * 0.0072));
   const lines = (t, size, w) => Math.max(1, Math.ceil(String(t).length / cpl(size, w)));
 
-  const rep = m.represadas || { demandas: [], bugs: [] };
-  const hasRep = rep.demandas.length > 0 || rep.bugs.length > 0;
-  if (!m.janelas.length && !hasRep) return;
+  if (!m.janelas.length) return;
 
   // altura total em funcao do tamanho da fonte
   const total = (size) => {
     let y = 1.59;
     for (const j of m.janelas) y += 0.24 + LH * size * j.itens.reduce((a, t) => a + lines(t, size, 3.35), 0) + 0.08;
-    if (hasRep) {
-      y += 0.24;
-      for (const grp of [rep.demandas, rep.bugs]) {
-        if (!grp.length) continue;
-        y += LH * size * (1 + grp.reduce((a, t) => a + lines(t, size, 3.2), 0)) + 0.1;
-      }
-    }
     return y;
   };
   let size = 8;
@@ -161,7 +152,7 @@ function drawJanelas(s, m, h, warnings) {
   const list = (items, x, y, w, hh) => {
     const runs = items.map((it, i) => ({
       text: it.text,
-      options: { bullet: { indent: it.sub ? 10 : 12 }, indentLevel: it.sub ? 1 : 0, breakLine: i < items.length - 1 },
+      options: { bullet: { indent: 12 }, indentLevel: 0, breakLine: i < items.length - 1 },
     }));
     s.addText(runs, { x, y, w, h: hh, fontFace: FONT, fontSize: size, color: C.text, valign: "top", margin: 0, isTextBox: true });
   };
@@ -174,23 +165,13 @@ function drawJanelas(s, m, h, warnings) {
     list(j.itens.map((t) => ({ text: t })), 9.2, y, 3.5, hh);
     y += hh + 0.08;
   }
-  if (hasRep) {
-    strip(y, "Demandas Represadas em GMUD");
-    y += 0.24;
-    const groups = [["Demandas:", rep.demandas], ["Bugs:", rep.bugs]].filter(([, g]) => g.length);
-    for (const [label, g] of groups) {
-      const hh = LH * size * (1 + g.reduce((a, t) => a + lines(t, size, 3.2), 0));
-      list([{ text: label }, ...g.map((t) => ({ text: t, sub: true }))], 9.2, y, 3.5, hh);
-      y += hh + 0.1;
-    }
-  }
 }
 
 // ------------------------------------------------------------ entrada
 async function renderStatusReport(m, outPath, assetsDir) {
   const pres = new pptxgen();
   pres.layout = "LAYOUT_WIDE"; // 13.33 x 7.5
-  pres.title = `One Page Status Report - Sprint ${m.sprint}`;
+  pres.title = `One Page Status Report - Sprint ${m.sprintLabel || m.sprint}`;
   const warnings = [];
 
   drawSlide(pres, m, { itens: m.itens, bugs: false }, assetsDir, warnings);

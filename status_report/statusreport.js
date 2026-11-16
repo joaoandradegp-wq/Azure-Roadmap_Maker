@@ -3,10 +3,10 @@
 //
 //   node statusreport.js                    (pergunta produto, Bugs e Sprint; busca no Azure)
 //   node statusreport.js --offline          (lê status-config-PRODUTO.json, extraído pelo console)
-//   Flags opcionais: --produto=LIVRE --bugs | --sem-bugs --sprint=15 --hoje=28/10/2026
+//   Flags opcionais: --produto=LIVRE --bugs | --sem-bugs --sprint=15 (ou 15,16 / 15-16) --hoje=28/10/2026
 //
 // JSON dos work items (offline): status-config-PRODUTO.json em status_report\data (ou em ..\data).
-// Dados manuais (janelas, represadas, ajustes por item): status_report\data\status-ajustes-PRODUTO.json
+// Dados manuais (janelas e ajustes por item): status_report\data\status-ajustes-PRODUTO.json
 // (ver data\status-ajustes.exemplo.json).
 const fs = require("fs");
 const path = require("path");
@@ -53,19 +53,36 @@ function loadOfflineWorkItems(produto) {
   return items;
 }
 
-async function askSprint(availableSprints, defaultSprint) {
+// Aceita "15", "15,16", "15 e 16" ou "15-16" (intervalo). Retorna lista ordenada ou null se inválido.
+function parseSprintList(raw, availableSprints) {
+  const txt = String(raw || "").trim();
+  const range = /^(\d+)\s*(?:-|a|até)\s*(\d+)$/i.exec(txt);
+  let nums;
+  if (range) {
+    const a = parseInt(range[1], 10), b = parseInt(range[2], 10);
+    nums = [];
+    for (let n = Math.min(a, b); n <= Math.max(a, b); n++) nums.push(n);
+  } else {
+    nums = (txt.match(/\d+/g) || []).map(Number);
+  }
+  nums = [...new Set(nums)].sort((x, y) => x - y);
+  if (!nums.length || nums.some((n) => !availableSprints.includes(n))) return null;
+  return nums;
+}
+
+async function askSprints(availableSprints, defaultSprint) {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   const list = availableSprints.join(", ");
   try {
     while (true) {
       const answer = (
         await rl.question(
-          `\nQual Sprint deseja no status report? (disponíveis: ${list} — Enter = ${defaultSprint})\n> `
+          `\nQual(is) Sprint(s) deseja no status report? Ex.: 15 ou 15,16 ou 15-16 (disponíveis: ${list} — Enter = ${defaultSprint})\n> `
         )
       ).trim();
-      if (answer === "") return defaultSprint;
-      const n = parseInt(answer, 10);
-      if (!isNaN(n) && availableSprints.includes(n)) return n;
+      if (answer === "") return [defaultSprint];
+      const sel = parseSprintList(answer, availableSprints);
+      if (sel) return sel;
       console.log(`Sprint inválida. Escolha entre: ${list}`);
     }
   } finally {
@@ -83,7 +100,7 @@ function loadUserConfig(produto) {
   const file = path.join(__dirname, "data", `status-ajustes-${produto}.json`);
   if (!fs.existsSync(file)) {
     const skeleton = {
-      _ajuda: "Veja data/status-ajustes.exemplo.json. Chaves opcionais: saude, tempo_consumido, progresso_geral, periodo, proxima_sprint, itens, ocultar, ids_extras, janelas, represadas.",
+      _ajuda: "Veja data/status-ajustes.exemplo.json. Chaves opcionais: saude, tempo_consumido, progresso_geral, periodo, proxima_sprint, itens, ocultar, ids_extras, janelas.",
     };
     fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, JSON.stringify(skeleton, null, 2), "utf-8");
@@ -156,30 +173,32 @@ async function main() {
       ? cur
       : [...availableSprints].reverse().find((n) => n <= cur) ?? availableSprints[availableSprints.length - 1];
 
-  let sprint;
+  let sprints;
   const sprintFlag = flag("sprint") || flag("sprints");
   if (sprintFlag) {
-    sprint = parseInt(sprintFlag.split("=")[1], 10);
-    if (!availableSprints.includes(sprint)) {
+    sprints = parseSprintList(sprintFlag.split("=")[1], availableSprints);
+    if (!sprints) {
       console.error(`--sprint inválido. Sprints disponíveis: ${availableSprints.join(", ")}`);
       process.exit(1);
     }
   } else {
-    sprint = await askSprint(availableSprints, defaultSprint);
+    sprints = await askSprints(availableSprints, defaultSprint);
   }
-  console.log(`Sprint selecionada: ${sprint}`);
+  const sprint = sprints[sprints.length - 1]; // a mais recente (compatibilidade)
+  const sprintLabel = sprints.length > 1 ? `${sprints[0]}-${sprint}` : String(sprint);
+  console.log(`Sprint(s) selecionada(s): ${sprints.join(", ")}`);
 
   const { file: userCfgFile, cfg: userCfg } = loadUserConfig(produto);
-  const { model, notes } = buildStatusReport(workItems, config, { sprint, includeBugs, today, userCfg });
+  const { model, notes } = buildStatusReport(workItems, config, { sprint, sprints, includeBugs, today, userCfg });
 
   const pad = (n) => String(n).padStart(2, "0");
   const stamp = `${today.getFullYear()}${pad(today.getMonth() + 1)}${pad(today.getDate())}`;
   const outDir = path.join(__dirname, "output");
-  const outPath = path.join(outDir, `status_report_${produto}_sprint${sprint}_${stamp}.pptx`);
+  const outPath = path.join(outDir, `status_report_${produto}_sprint${sprintLabel}_${stamp}.pptx`);
   fs.mkdirSync(outDir, { recursive: true });
   const renderWarnings = await renderStatusReport(model, outPath, path.join(__dirname, "assets"));
 
-  console.log(`\nSprint ${sprint} | ${model.periodo} | ${model.tempo}% tempo | ${model.progresso}% progresso | ${model.saude}`);
+  console.log(`\nSprint ${sprintLabel} | ${model.periodo} | ${model.tempo}% tempo | ${model.progresso}% progresso | ${model.saude}`);
   const printItens = (lista) => {
     for (const i of lista) {
       const flags = `${i.pctAuto ? "*" : " "}${i.reforma ? " [REFORMA]" : ""}${i.proativo ? " [PROATIVO]" : ""}`;
@@ -195,8 +214,8 @@ async function main() {
     console.log(`\n${model.bugs.length} bug(s) no slide de Bugs:`);
     printItens(model.bugs);
   }
-  const rep = model.represadas;
-  console.log(`\nRepresadas em GMUD: ${rep.demandas.length} demanda(s), ${rep.bugs.length} bug(s).`);
+  console.log(`\nJanelas de implantação: ${model.janelas.length}`);
+  for (const j of model.janelas) console.log(`  ${j.data}: ${j.itens.length} demanda(s)`);
   if ([...model.itens, ...(model.bugs || [])].some((i) => i.pctAuto)) {
     console.log(`\n* = % automático (tempo consumido da sprint) — confira/ajuste em ${userCfgFile} (itens).`);
   }

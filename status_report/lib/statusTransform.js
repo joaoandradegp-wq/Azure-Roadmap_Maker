@@ -97,7 +97,7 @@ function currentSprintNumber(config, today = new Date()) {
   return c.referenceSprintNumber + diff;
 }
 
-function buildStatusReport(workItems, config, { sprint, includeBugs = false, today = new Date(), userCfg = {} }) {
+function buildStatusReport(workItems, config, { sprint, sprints, includeBugs = false, today = new Date(), userCfg = {} }) {
   const F = config.fields || {};
   const fTags = F.tags || "System.Tags";
   const fState = F.state || "System.State";
@@ -107,8 +107,15 @@ function buildStatusReport(workItems, config, { sprint, includeBugs = false, tod
   const fColumn = F.boardColumn || BOARD_COLUMN_FIELD;
 
   if (!config.sprintCadence) throw new Error('Falta "sprintCadence" no config.json (usado para as datas da sprint).');
-  const dates = computeSprintDates(sprint, config.sprintCadence);
-  const nextDates = computeSprintDates(sprint + 1, config.sprintCadence);
+  // uma ou várias sprints (ex.: 15 e 16): o período vai do início da primeira ao fim da última
+  const sprintList = [...new Set((Array.isArray(sprints) && sprints.length ? sprints : [sprint]).map(Number))].sort((a, b) => a - b);
+  const firstSprint = sprintList[0];
+  const lastSprint = sprintList[sprintList.length - 1];
+  const sprintLabel = sprintList.length === 1 ? String(lastSprint) : `${sprintList.slice(0, -1).join(", ")} e ${lastSprint}`;
+  const dFirst = computeSprintDates(firstSprint, config.sprintCadence);
+  const dLast = computeSprintDates(lastSprint, config.sprintCadence);
+  const dates = { ...dFirst, start: dFirst.start, end: dLast.end };
+  const nextDates = computeSprintDates(lastSprint + 1, config.sprintCadence);
   const sprintEndExclusive = new Date(dates.end.getTime() + MS_DAY);
   const todayMid = stripTime(today);
 
@@ -189,10 +196,11 @@ function buildStatusReport(workItems, config, { sprint, includeBugs = false, tod
   }
 
   function forecastDeploy(i) {
-    let end = dates.end;
+    const base = sprintList.includes(i.sprint) ? i.sprint : lastSprint; // sprint do próprio item
+    let end = computeSprintDates(base, config.sprintCadence).end;
     const dur = durationTag(i.tags);
     if (dur && dur > 1) {
-      const target = computeSprintDates(sprint + dur - 1, config.sprintCadence);
+      const target = computeSprintDates(base + dur - 1, config.sprintCadence);
       if (target) end = target.end;
     }
     const planned = nextDeployDate(end);
@@ -207,7 +215,7 @@ function buildStatusReport(workItems, config, { sprint, includeBugs = false, tod
   const extras = (userCfg.ids_extras || []).map((x) => byId.get(+x)).filter(Boolean);
 
   // Slide principal: itens da sprint SEM tag Bug (bugs vão para o slide de Bugs)
-  let sel = all.filter((i) => i.sprint === sprint && !i.rascunho && !ocultar.has(i.id) && !i.bug);
+  let sel = all.filter((i) => sprintList.includes(i.sprint) && !i.rascunho && !ocultar.has(i.id) && !i.bug);
   for (const b of extras) if (!b.bug && !sel.includes(b)) sel.push(b);
   // Reforma primeiro, depois por ID (como no modelo)
   const byReformaId = (x, y) => (y.reforma ? 1 : 0) - (x.reforma ? 1 : 0) || x.id - y.id;
@@ -240,7 +248,7 @@ function buildStatusReport(workItems, config, { sprint, includeBugs = false, tod
   const gap = tempo - progresso;
   const saude = userCfg.saude || (gap <= 15 ? "Saudável" : gap <= 30 ? "Atenção" : "Crítico");
   const periodo = userCfg.periodo || `${formatDateBR(dates.start)} a ${formatDateBR(dates.end)}`;
-  const proxima = userCfg.proxima_sprint || `Sprint ${sprint + 1}: ${formatDateBR(nextDates.start)} - ${formatDateBR(nextDates.end)}`;
+  const proxima = userCfg.proxima_sprint || `Sprint ${lastSprint + 1}: ${formatDateBR(nextDates.start)} - ${formatDateBR(nextDates.end)}`;
 
   // ---- janelas de implantação (userCfg.janelas; se ausente, calcula pela regra de entrega do Roadmap Maker)
   // data = próximo deploy (terça/quinta, evitando a última semana do mês) a partir do fim da sprint
@@ -272,25 +280,8 @@ function buildStatusReport(workItems, config, { sprint, includeBugs = false, tod
     return { data: fmtJanelaData(j.data || ""), itens: itensJ, ids };
   });
 
-  // ---- Demandas represadas em GMUD: itens em "Pronto para GMUD"/"Adicionar na GMUD do dia" de OUTRAS sprints
-  const prontoRe = /pronto para gmud|adicionar na gmud/;
-  const rep = all
-    .filter((i) => !isClosedItem(i) && prontoRe.test(norm(i.column)) && i.sprint !== sprint && !i.rascunho && !ocultar.has(i.id))
-    .sort((x, y) => x.id - y.id);
-  const resolveList = (list) =>
-    (list || []).map((x) => {
-      if (typeof x === "number" || /^\d+$/.test(String(x))) { const b = byId.get(+x); return b ? b.title : `${x} (não encontrado)`; }
-      return String(x);
-    });
-  const represadas = userCfg.represadas
-    ? { demandas: resolveList(userCfg.represadas.demandas), bugs: includeBugs ? resolveList(userCfg.represadas.bugs) : [] }
-    : {
-        demandas: rep.filter((i) => !i.bug).map((i) => i.title),
-        bugs: includeBugs ? rep.filter((i) => i.bug).map((i) => i.title) : [],
-      };
-
   return {
-    model: { sprint, periodo, tempo, saude, progresso, itens, janelas, represadas, proxima, bugs },
+    model: { sprint: lastSprint, sprints: sprintList, sprintLabel, periodo, tempo, saude, progresso, itens, janelas, proxima, bugs },
     notes,
     dates,
   };
