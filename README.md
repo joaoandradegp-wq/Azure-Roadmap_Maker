@@ -40,7 +40,7 @@ Gera uma apresentação com a linha do tempo das demandas, prazos e status, divi
 
 #### 🎛️ SELEÇÃO DE PRODUTO E SPRINTS
 
-Permite escolher entre `LIVRE`, `FLEET` e `RAC`, além de filtrar uma ou mais sprints para montar o relatório desejado.
+Permite escolher entre `PRODUTO_01`, `PRODUTO_02` e `PRODUTO_03`, além de filtrar uma ou mais sprints para montar o relatório desejado.
 
 <br><br>
 </td>
@@ -91,7 +91,7 @@ No bloco `azure`, configure:
 | `organization` | Nome da organização do Azure DevOps |
 | `patEnvVar` | Nome da variável de ambiente que armazenará o token |
 
-O arquivo também deve conter `products.LIVRE`, `products.FLEET` e `products.RAC`. Para cada produto, configure o projeto, o `areaPath`, os tipos de Work Item, as condições adicionais da consulta e o título do relatório.
+O arquivo também deve conter `products.PRODUTO_01`, `products.PRODUTO_02` e `products.PRODUTO_03`. Para cada produto, configure o projeto, o `areaPath`, os tipos de Work Item, as condições adicionais da consulta e o título do relatório.
 
 #### 2. Configure o token de acesso
 
@@ -134,9 +134,9 @@ Use arquivos JSON exportados anteriormente para gerar o relatório sem consultar
 
 | Produto | Arquivo |
 |---|---|
-| `LIVRE` | `data/workitems-LIVRE.json` |
-| `FLEET` | `data/workitems-FLEET.json` |
-| `RAC` | `data/workitems-RAC.json` |
+| `PRODUTO_01` | `data/workitems-PRODUTO_01.json` |
+| `PRODUTO_02` | `data/workitems-PRODUTO_02.json` |
+| `PRODUTO_03` | `data/workitems-PRODUTO_03.json` |
 
 O JSON pode ser uma lista de Work Items ou um objeto com a propriedade `value` contendo a lista. Cada item precisa ter a propriedade `fields`, incluindo os campos utilizados pelo roadmap, como tags e informações de sprint.
 
@@ -145,7 +145,7 @@ O JSON pode ser uma lista de Work Items ou um objeto com a propriedade `value` c
 | Opção | Descrição |
 |---|---|
 | `--offline` | Lê os Work Items de um arquivo JSON local |
-| `--produto=LIVRE` | Seleciona o produto |
+| `--produto=PRODUTO_01` | Seleciona o produto |
 | `--sprints=9,10` | Filtra uma ou mais sprints |
 | `--bugs` | Inclui itens com tag `Bug` |
 | `--sem-bugs` | Exclui itens com tag `Bug` |
